@@ -55,3 +55,62 @@ if(!(is_int($age))){
 }
 
 //7. les conversions de chaine en nombre
+
+$strNumber='12.45';
+$number=(float)$strNumber;//on peut aussi utiliser $floatval
+
+//8. les fonctions  en mathematiques
+echo "<pre>";
+echo "la racine carrée de 16 est : ".sqrt(16);
+echo "<br>";
+echo "l'exponentielle de 2 est : ".exp(2);
+echo "<br>";
+echo "la logarithme naturelle de 2 est : ".log(2);
+
+echo "floor(2.6) est : ".floor(2.6).'<br>';
+
+echo "ceil(2,6) est : ".ceil(2.5).'<br>';
+echo "round(2.5) est : ".round(2.5).'<br>';
+echo "abs(2.5) est : ".abs(-100.5).'<br>';
+echo "pow(2, 20) est".pow(2, 20).'<br>';
+
+echo "</pre>";
+
+
+echo pow(2, 3); // Affiche 8 (2^3)
+
+
+//abs : Cette fonction retourne la valeur absolue d'un nombre, c'est-à-dire la distance de ce nombre à zéro sans tenir compte du signe.
+
+//ceil : Cette fonction retourne le plus petit entier supérieur ou égal à un nombre donné.
+
+//pow : Cette fonction retourne la valeur d'un nombre élevé à la puissance d'un autre nombre.
+
+//round : Cette fonction arrondit un nombre à l'entier le plus proche. Elle peut également arrondir à un certain nombre de décimales si un deuxième argument est fourni.
+
+//floor : Cette fonction retourne le plus grand entier inférieur ou égal à un nombre donné.
+
+//Ces fonctions sont couramment utilisées pour effectuer des opérations mathématiques de base en PHP.
+
+
+$nombre = 1234.56;
+echo number_format(
+ num: $nombre,
+ decimals: 2,
+ decimal_separator: '.',
+ thousands_separator: ','
+) . '<br>';
+
+
+echo "<pre>";
+
+$personDetails = [
+    'firstName' => 'Owen',
+    'lastName' => 'Eva',
+    'age' => 25,
+    'occupation' => 'Developer'
+   ];
+   foreach ($personDetails as $key => $value) {
+    echo "$key: $value<br>";
+   }
+   echo "</pre>";
