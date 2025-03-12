@@ -2,9 +2,13 @@
 
 $fruits = ["Apple", "Banana", "Cherry"];
 
-foreach ($fruits as $index => $fruit) {
-    echo "Fruit $index:$fruit<br/>";
+foreach($fruits as $key => $value){
+    echo "Fruits $key.$value<br>";
 }
+
+// foreach ($fruits as $index => $fruit) {
+//     echo "Fruit $index:$fruit<br/>";
+// }
 
 
 
@@ -31,3 +35,6 @@ $personDetails = [
     "age" => 30,
     "occupation" => "Developer"
 ];
+foreach($personDetails as $cle=>$valeur){
+    echo " $cle : $valeur <br>";
+}
