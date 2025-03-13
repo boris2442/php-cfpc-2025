@@ -1,27 +1,45 @@
 <?php
-if(isset($_POST['create'])){
+if (isset($_POST['create'])) {
     echo "formulaire ok";
-    $nom_student=$_POST['nom'];
-    echo "nom: $nom_student";
+    // if (empty($_POST['nom'])) {
+    //     echo "veuillez saisir le nom";
+    // }
+    // $nom_student = $_POST['nom'];
+    // echo "nom: $nom_student</br>";
+    // if (empty($_POST['prenom'])) {
+    //     echo "veuillez remplir le prenom";
+    // }
+    // if (empty($_POST['mail'])) {
+    //     echo "Veuillez remplir l'email";
+    // }
+    // $prenom_student = $_POST['prenom'];
+    // echo "prenom: $prenom_student</br>";
+    // $mail_student = $_POST['mail'];
+    // echo "mail: $mail_student</br>";
+  $message="";
+    if (empty($_POST['nom'])){
+        
+        $message="veuillez saisir le nom";
+        
+    }else if(empty($_POST['prenom'])){
+        $message="veuillez saisir le nom";
+     
+    }else if(empty($_POST['mail'])){
+        $message="veuillez saisir le nom";
+       
+    }else{
+        $nom_student = $_POST['nom'];
+        echo "nom: $nom_student</br>";
+        $prenom_student = $_POST['prenom'];
+        echo "prenom: $prenom_student</br>";
+        $mail_student = $_POST['mail'];
+        echo "mail: $mail_student</br>";
+    }
 }
 
 
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!doctype html>
 <html>
 
@@ -32,12 +50,14 @@ if(isset($_POST['create'])){
 </head>
 
 <body>
-    <h1 class="text-3xl font-bold underline">
-        Hell
-    </h1>
-
+  
+   
 
     <form action="" method="post" class="bg-white p-6 rounded shadow max-w-md mx-auto">
+        
+         <div class="bg-red-500 p-5 text-left mb-3"> <?php echo "$message";   ?></div>
+        
+      
         <div class="mb-4">
             <input type="text" name="nom" placeholder="Nom"
                 class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
