@@ -16,6 +16,29 @@ if (isset($_POST['create'])) {
     // echo "prenom: $prenom_student</br>";
     // $mail_student = $_POST['mail'];
     // echo "mail: $mail_student</br>";
+
+
+
+    $errors = [];
+    if (empty($_POST['nom'])) {
+        $errors[] = "Le champ 'nom' est obligatoire.";
+        // $fruit = ['apple', 'Orange'];
+        // var_dump(value: $fruit);
+    }
+    if (!empty($errors)) {
+        session_start();
+        session_start();
+        $_SESSION['errors'] = $errors;
+        header('Location:index.php');
+        exit;
+    }
+
+
+
+
+
+
+
     $message = "";
     if (empty($_POST['nom'])) {
 
@@ -47,6 +70,10 @@ if (isset($_POST['create'])) {
 
     $password_hash = password_hash($_POST['password'], PASSWORD_ARGON2ID);
     echo "</br>mot de passe hashé: $password_hash";
+
+
+
+
 }
 
 
@@ -93,7 +120,7 @@ if (isset($_POST['create'])) {
                 class="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
             <button href="http://localhost/php-2025/cours-php/cours-cfpc-php-2025/lecon-02/gestion-form.php"
                 class="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer">refresh</button>
-              
+
         </div>
     </form>
 
