@@ -209,6 +209,9 @@
   .inline-block {
     display: inline-block;
   }
+  .h-\[10vh\] {
+    height: 10vh;
+  }
   .w-full {
     width: 100%;
   }
