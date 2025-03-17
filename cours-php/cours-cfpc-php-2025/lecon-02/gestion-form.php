@@ -1,4 +1,8 @@
 <?php
+$nom_student="";
+$prenom_student="";
+$mail_student="";
+$password_hash="";
 if (isset($_POST['create'])) {
     echo "formulaire ok";
     // if (empty($_POST['nom'])) {
@@ -52,15 +56,15 @@ if (isset($_POST['create'])) {
         echo "nom: $nom_student</br>";
         $prenom_student = htmlspecialchars($_POST['prenom']) ?? "";
         echo "prenom: $prenom_student</br>";
-        $mail_student = $_POST['mail'];
+        $mail_student = htmlspecialchars($_POST['mail']) ?? "" ;
         echo "mail: $mail_student</br>";
     }
-    $mail = $_POST['mail'];
-    if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+    $mail_student = $_POST['mail'];
+    if (!filter_var($mail_student, FILTER_VALIDATE_EMAIL)) {
         // $message = "L'adresse email est incorrecte";
         echo "L'adresse email est incorrecte";
     } else {
-        echo "adresse mail:$mail";
+        echo "adresse mail:$mail_student";
     }
     if (!empty($_POST['password'])) {
         // echo "le mot de passe est obligatoire";
@@ -68,7 +72,7 @@ if (isset($_POST['create'])) {
     }
 
 
-    $password_hash = password_hash($_POST['password'], PASSWORD_ARGON2ID);
+    $password_hash =htmlspecialchars(password_hash($_POST['password'], PASSWORD_ARGON2ID)) ?? "" ;
     echo "</br>mot de passe hashé: $password_hash";
 
 
@@ -111,10 +115,12 @@ if (isset($_POST['create'])) {
         </div>
         <div class="mb-4">
             <input type="password" name="password" placeholder="mot de passe"
+            value="<?= $password_hash?>"
                 class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
         </div>
         <div class="mb-4">
             <input type="text" name="mail" placeholder="Email"
+            value="<?= $mail_student?>"
                 class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
         </div>
         <div class="text-center">
