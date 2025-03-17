@@ -34,8 +34,19 @@ if (isset($_POST['create'])) {
     }
     $mail = $_POST['mail'];
     if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-        $message = "L'adresse email est incorrecte";
+        // $message = "L'adresse email est incorrecte";
+        echo "L'adresse email est incorrecte";
+    } else {
+        echo "adresse mail:$mail";
     }
+    if (!empty($_POST['password'])) {
+        // echo "le mot de passe est obligatoire";
+
+    }
+
+
+    $password_hash = password_hash($_POST['password'], PASSWORD_ARGON2ID);
+    echo "</br>mot de passe hashé: $password_hash";
 }
 
 
@@ -70,12 +81,19 @@ if (isset($_POST['create'])) {
                 class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
         </div>
         <div class="mb-4">
-            <input type="email" name="mail" placeholder="Email"
+            <input type="password" name="password" placeholder="mot de passe"
+                class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
+        </div>
+        <div class="mb-4">
+            <input type="text" name="mail" placeholder="Email"
                 class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
         </div>
         <div class="text-center">
             <input type="submit" name="create" value="Créer"
                 class="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+            <button href="http://localhost/php-2025/cours-php/cours-cfpc-php-2025/lecon-02/gestion-form.php"
+                class="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer">refresh</button>
+              
         </div>
     </form>
 
