@@ -48,9 +48,9 @@ if (isset($_POST['create'])) {
     } else if (empty($_POST['mail'])) {
         $message = "veuillez saisir le nom";
     } else {
-        $nom_student = $_POST['nom'];
+        $nom_student = htmlspecialchars($_POST['nom']) ?? "";
         echo "nom: $nom_student</br>";
-        $prenom_student = $_POST['prenom'];
+        $prenom_student = htmlspecialchars($_POST['prenom']) ?? "";
         echo "prenom: $prenom_student</br>";
         $mail_student = $_POST['mail'];
         echo "mail: $mail_student</br>";
@@ -101,11 +101,13 @@ if (isset($_POST['create'])) {
 
         <div class="mb-4">
             <input type="text" name="nom" placeholder="Nom"
-                class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
+                class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"
+                value="<?php echo  $nom_student   ?>">
         </div>
         <div class="mb-4">
             <input type="text" name="prenom" placeholder="Prénom"
-                class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
+                class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"
+                value="<?= $prenom_student?>">
         </div>
         <div class="mb-4">
             <input type="password" name="password" placeholder="mot de passe"
