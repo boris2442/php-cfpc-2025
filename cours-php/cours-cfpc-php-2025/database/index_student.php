@@ -19,7 +19,7 @@ echo "<pre>";
 
 
 // if ($requete->rowCount() > 0) {
-if (count($result)>0) {
+if (count($result) > 0) {
     foreach ($result as $row) {
         // foreach ($result as $row) {
         echo " id:" . $row['id'] . " <br>";
@@ -37,15 +37,35 @@ if (count($result)>0) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index_student</title>
+    <title>table</title>
 </head>
-
 <body>
-
+   <table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>mail</th>
+            <th>Password</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        foreach ($result as $row):
+        ?>
+        <tr>
+            <td><?php echo $row['id'] ?></td>
+            <td><?php echo $row['name']  ?></td>
+            <td><?php echo $row['prenom']?></td>
+            <td><?php echo $row['mail']?></td>
+            <td><?php echo $row['password']?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+   </table> 
 </body>
-
 </html>
