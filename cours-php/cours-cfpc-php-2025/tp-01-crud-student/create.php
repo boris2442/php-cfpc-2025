@@ -39,7 +39,7 @@
     </form>
 
     <div class="mt-4 text-center">
-      <a class=" my-5 px-4 py-2 mr-5 bg-green-600 text-white rounded hover:bg-green-700" href="#">Liste
+      <a class=" my-5 px-4 py-2 mr-5 bg-green-600 text-white rounded hover:bg-green-700" href="http://localhost/php-2025/cours-php/cours-cfpc-php-2025/tp-01-crud-student/">Liste
         des étudiants
       </a>
     </div>
