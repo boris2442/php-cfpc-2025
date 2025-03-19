@@ -1,6 +1,6 @@
 <?php
 require_once "database.php";
-
+$sql="SELECT FROM `students`"
 
 
 
