@@ -7,20 +7,21 @@ $sql = "SELECT* FROM `student`";
 $requete = $db->prepare($sql);
 
 $requete->execute();
-$result = $requete->fetchAll();
+$result = $requete->fetchAll(PDO::FETCH_ASSOC);
 echo "<pre>";
-var_dump(value: $result);
+// var_dump(value: $result);
 echo "<pre>";
 
 
-if ($requete->rowCount() > 0) {
 // if ($result->rowCount() > 0) {
-    // if ($requete->rowCount()> 0) {
+// if ($requete->rowCount()> 0) {
 
 
 
-    foreach ($requete as $row) {
-    // foreach ($result as $row) {
+// if ($requete->rowCount() > 0) {
+if (count($result)>0) {
+    foreach ($result as $row) {
+        // foreach ($result as $row) {
         echo " id:" . $row['id'] . " <br>";
         echo " Nom:" . $row['name'] . " <br>";
         echo " prenom:" . $row['prenom'] . " <br>";
