@@ -16,6 +16,7 @@ require_once "database.php";
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
   <title>TP-01-Crud-student</title>
 </head>
 
@@ -29,7 +30,7 @@ require_once "database.php";
       <a class=" my-5 px-4 py-2 mr-5 bg-green-600 text-white rounded hover:bg-green-700" href="create.php">Créer un
         nouvel étudiant</a>
 
-      <a class=" my-5 px-4 py-2 mr-5 bg-green-600 text-white rounded hover:bg-green-700" href="">Actualiser
+      <a class=" my-5 px-4 py-2 mr-5 bg-green-600 text-white rounded hover:bg-green-700" href="http://localhost/php-2025/cours-php/cours-cfpc-php-2025/tp-01-crud-student/">Actualiser
       </a>
 
       <input type=" text" name="search" placeholder="Rechercher par nom ou email" value=""
