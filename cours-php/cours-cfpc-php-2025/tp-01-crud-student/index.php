@@ -68,7 +68,7 @@ if (count($users) > 0) {
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             <a class="text-green-600 hover:text-green-900 font-medium mr-4" href="update.php? id= <?php echo $user['id']; ?>">Modifier</a>
-                            <a class="text-red-600 hover:text-red-900 font-medium" href=""
+                            <a class="text-red-600 hover:text-red-900 font-medium" href="delete.php? id= <?php echo $user['id']; ?>"
                                 onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?');">Supprimer</a>
                         </td>
                     </tr>
