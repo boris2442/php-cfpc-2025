@@ -1,3 +1,5 @@
+//ce code permwt d'enlever l'extension en production
+
 RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME}.html -f

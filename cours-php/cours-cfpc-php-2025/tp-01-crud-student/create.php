@@ -1,16 +1,45 @@
 <?php
 require_once "database.php";
 $message = "";
+function clean_input($data){
+    // $data = trim($data);
+    // $data2 = stripslashes($data);
+    // $data_result = htmlspecialchars($data2);
+    // return $data_result;
+    return(htmlspecialchars(stripslashes(trim($data))));
+}
 if (isset($_POST['create'])) {
-    $nom = htmlspecialchars($_POST['nom']);
+    $nom = clean_input($_POST['nom']);
 
-    $prenom = htmlspecialchars($_POST['prenom']);
+    $prenom = clean_input($_POST['prenom']);
 
-    $mail = htmlspecialchars($_POST['mail']);
+    $mail = clean_input($_POST['mail']);
     if (empty($_POST['nom']) || empty($prenom) || empty($mail)) {
         // $message = "Veuillez remplir tous les champs";
         $message = ' <span style="background:red; padding:10px; color:white margin:15px;"> Veillez remplir les champs </span>';
     } else {
+
+        $sql_mail = "SELECT * FROM `students2` WHERE `mail`=:mail";
+        $query_mail = $db->prepare($sql_mail);
+        $query_mail->execute(['mail' => $mail]);
+        $result_mail = $query_mail->fetch();
+        if ($result_mail) {
+            $message = '<span style="background:red; padding:10px; color:white margin:15px;"> Email existe déjà</span>';
+            // header('Location: index.php');
+            exit;
+        } else {
+
+            $sql = "INSERT INTO  `students2` (`nom`, `prenom`, `mail`)VALUES(:nom, :prenom, :mail)";
+            $requete = $db->prepare($sql);
+            // $requete->execute([
+            //     ':nom' => $nom,
+            //     ':prenom' => $prenom,
+            //     ':mail' => $mail,
+            // ]);
+            //$info=compact('nom','prenom','mail');
+            $requete->execute(compact('nom', 'prenom', 'mail'));
+            $message = '<span style="background:green; padding:10px; color:white margin:15px;"> Etudiant ajouté avec succèss</span>';
+        }
     }
 }
 
