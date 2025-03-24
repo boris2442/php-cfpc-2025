@@ -1,12 +1,17 @@
 <?php
 require_once "database.php";
-$sql = "SELECT* FROM `students`";
+$sql = "SELECT* FROM `students2`";
 $requete = $db->prepare($sql);
 
 $requete->execute();
 
 // $users=$requete->fetchAll(PDO::FETCH_ASSOC);
 $users = $requete->fetchAll(PDO::FETCH_ASSOC);
+if (count($users) > 0) {
+    echo "Nombre d'etudiants: " . count($users);
+} else {
+    echo "Aucun etudiant trouve";
+}
 
 
 

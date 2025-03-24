@@ -1,5 +1,18 @@
 <?php
+require_once "database.php";
+$message = "";
+if (isset($_POST['create'])) {
+    $nom = htmlspecialchars($_POST['nom']);
 
+    $prenom = htmlspecialchars($_POST['prenom']);
+
+    $mail = htmlspecialchars($_POST['mail']);
+    if (empty($_POST['nom']) || empty($prenom) || empty($mail)) {
+        // $message = "Veuillez remplir tous les champs";
+        $message = ' <span style="background:red; padding:10px; color:white margin:15px;"> Veillez remplir les champs </span>';
+    } else {
+    }
+}
 
 ?>
 
@@ -19,7 +32,15 @@
         <h1 class="text-3xl font-bold text-green-900 text-center mb-4">Créer un nouveau Etudiant</h1>
 
 
+        <!-- <div class="mb-4">
+            <div class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"><?php echo $message; ?></div>
+
+        </div> -->
+        <!-- <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded "> -->
+        <?= $message ?>
+        <!--           </div> -->
         <form action="" method="post" class="bg-white p-6 rounded shadow max-w-md mx-auto">
+
             <div class="mb-4">
                 <input type="text" name="nom" placeholder="Nom"
                     class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
