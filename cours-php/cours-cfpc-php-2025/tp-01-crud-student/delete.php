@@ -9,7 +9,14 @@ if (isset($_GET['id'])) {
     $requete->bindParam(':id', $id);
 
     $requete->execute();
-    $message = "Etudiant dont 'iid est   $id   supprimé avec succès";
+    // $message = "Etudiant dont 'iid est   $id   supprimé avec succès";
+    if($requete->rowCount() > 0){
+        $message = "Etudiant dont l'id est $id supprimé avec succès";
+        // header("Location: index.php");
+        header("refresh:3;url=index.php");
+    }else{
+        $message = "Aucun étudiant trouvé";
+    }
 }
 
 

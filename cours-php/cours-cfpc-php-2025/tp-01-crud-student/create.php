@@ -1,13 +1,40 @@
 <?php
 require_once "database.php";
 $message = "";
-function clean_input($data){
+function clean_input($data)
+{
     // $data = trim($data);
     // $data2 = stripslashes($data);
     // $data_result = htmlspecialchars($data2);
     // return $data_result;
-    return(htmlspecialchars(stripslashes(trim($data))));
+    return (htmlspecialchars(stripslashes(trim($data))));
 }
+
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$sql="SELECT * FROM `students2`";
+if(!empty($search)){
+    $sql .= " WHERE nom LIKE :search OR mail LIKE :search";
+}
+$sql.="ORDER BY id DESC";
+
+$requete = $db->prepare($sql);
+if(!empty($search)){
+
+    $requete->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+}
+$requete->execute();
+$users = $requete->fetchAll(PDO::FETCH_ASSOC);
+echo "recherche effectuer avec succees";
+
+
+
+
+
+
+
+
+
+
 if (isset($_POST['create'])) {
     $nom = clean_input($_POST['nom']);
 
