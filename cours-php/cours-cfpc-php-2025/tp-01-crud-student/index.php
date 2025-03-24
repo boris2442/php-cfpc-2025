@@ -1,19 +1,76 @@
 <?php
 require_once "database.php";
-$sql = "SELECT* FROM `students2`";
+// if (isset($_GET['search'])) {
+//     $search = $_GET['search'];
+//     $sql = "SELECT * FROM `students2` WHERE `nom` LIKE :search OR `mail` LIKE :search";
+//     $requete = $db->prepare($sql);
+//     $requete->execute(['search' => "%$search%"]);
+//     $users = $requete->fetchAll(PDO::FETCH_ASSOC);
+//     var_dump($users);
+// } else {
+//     $sql = "SELECT * FROM `students2`";
+//     $requete = $db->prepare($sql);
+//     $requete->execute();
+//     $users = $requete->fetchAll(PDO::FETCH_ASSOC);
+// }
+
+
+
+
+
+
+
+
+
+
+// $sql = "SELECT* FROM `students2`";
+// $requete = $db->prepare($sql);
+
+// $requete->execute();
+
+
+// $users = $requete->fetchAll(PDO::FETCH_ASSOC);
+// if (count($users) > 0) {
+//     echo "Nombre d'etudiants: " . count($users);
+// } else {
+//     echo "Aucun etudiant trouve";
+// }
+
+
+
+
+
+
+
+
+
+
+
+// Nombre d'enregistrements par page
+$records_per_page = 5;
+
+// Page actuelle (par défaut : 1)
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+// Calcul de l'offset
+$offset = ($page - 1) * $records_per_page;
+
+// Récupérer le nombre total d'étudiants
+$total_sql = "SELECT COUNT(*) FROM `students2`";
+$total_requete = $db->prepare($total_sql);
+$total_requete->execute();
+$total_students = $total_requete->fetchColumn();
+
+// Calcul du nombre total de pages
+$total_pages = ceil($total_students / $records_per_page);
+
+// Récupérer les étudiants pour la page actuelle
+$sql = "SELECT * FROM `students2` LIMIT :limit OFFSET :offset";
 $requete = $db->prepare($sql);
-
+$requete->bindValue(':limit', $records_per_page, PDO::PARAM_INT);
+$requete->bindValue(':offset', $offset, PDO::PARAM_INT);
 $requete->execute();
-
-// $users=$requete->fetchAll(PDO::FETCH_ASSOC);
 $users = $requete->fetchAll(PDO::FETCH_ASSOC);
-if (count($users) > 0) {
-    echo "Nombre d'etudiants: " . count($users);
-} else {
-    echo "Aucun etudiant trouve";
-}
-
-
 
 ?>
 
@@ -78,6 +135,34 @@ if (count($users) > 0) {
         </table>
 
 
+
+
+
+
+ <!-- Pagination -->
+ <div class="mt-4 flex justify-center">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?= $page - 1 ?>" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mx-1">Précédent</a>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <a href="?page=<?= $i ?>" class="px-4 py-2 <?= $i == $page ? 'bg-green-700 text-white' : 'bg-green-600 text-white hover:bg-green-700' ?> rounded mx-1"><?= $i ?></a>
+            <?php endfor; ?>
+
+            <?php if ($page < $total_pages): ?>
+                <a href="?page=<?= $page + 1 ?>" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mx-1">Suivant</a>
+            <?php endif; ?>
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
     </div>
 </body>
 
