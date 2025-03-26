@@ -99,15 +99,15 @@ if (isset($_POST['create'])) {
         <form action="" method="post" class="bg-white p-6 rounded shadow max-w-md mx-auto">
 
             <div class="mb-4">
-                <input type="text" name="nom" placeholder="Nom"
+                <input type="text" name="nom" placeholder="Nom" value="<?= $nom ?? ""  ?>"
                     class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
             </div>
             <div class="mb-4">
-                <input type="text" name="prenom" placeholder="Prénom"
+                <input type="text" name="prenom" placeholder="Prénom" value="<?= $prenom ?? ""  ?>"
                     class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
             </div>
             <div class="mb-4">
-                <input type="email" name="mail" placeholder="Email"
+                <input type="email" name="mail" placeholder="Email" value="<?= $mail ?? ""  ?>"
                     class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
             </div>
             <div class="text-center">

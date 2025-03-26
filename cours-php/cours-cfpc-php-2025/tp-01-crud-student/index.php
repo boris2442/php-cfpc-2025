@@ -1,80 +1,55 @@
 <?php
 require_once "database.php";
-// if (isset($_GET['search'])) {
-//     $search = $_GET['search'];
-//     $sql = "SELECT * FROM `students2` WHERE `nom` LIKE :search OR `mail` LIKE :search";
-//     $requete = $db->prepare($sql);
-//     $requete->execute(['search' => "%$search%"]);
-//     $users = $requete->fetchAll(PDO::FETCH_ASSOC);
-//     // var_dump($users);
-// } else {
-//     $sql = "SELECT * FROM `students2`";
-//     $requete = $db->prepare($sql);
-//     $requete->execute();
-//     $users = $requete->fetchAll(PDO::FETCH_ASSOC);
-// }
-
-//code destin
-
-$search = isset($_GET["search"]) ? $_GET["search"] : '';
-
-//requette sql pour recuperer les etudiants en fonction de la recherche(mail et nom)
-$sql = "SELECT * FROM `students2`";
-if (!empty($search)) {
-    $sql .= "WHERE  nom LIKE '%$search%' OR prenom LIKE '%$search%' OR  mail LIKE '%$search%'";
-}
-$sql .= " ORDER BY id DESC";
-$requete = $db->prepare($sql);
-
-$requete->execute();
-$users = $requete->fetchAll();
-
-
-
-
-
-
-
-
-
-$sql = "SELECT* FROM `students2`";
-// $requete = $db->prepare($sql);
-
-$requete->execute();
-
-
-$users = $requete->fetchAll(PDO::FETCH_ASSOC);
-if (count($users) > 0) {
-    echo "Nombre d'etudiants: " . count($users);
-} else {
-    echo "Aucun étudiant trouvé";
-}
-
-// Nombre d'enregistrements par page
+// // // Nombre d'enregistrements par page
 $records_per_page = 5;
 
-// Page actuelle (par défaut : 1)
+// // Page actuelle (par défaut : 1)
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 
-// Calcul de l'offset
+// // // Calcul de l'offset
 $offset = ($page - 1) * $records_per_page;
 
-// Récupérer le nombre total d'étudiants
+// // // Récupérer le nombre total d'étudiants
 $total_sql = "SELECT COUNT(*) FROM `students2`";
 $total_requete = $db->prepare($total_sql);
 $total_requete->execute();
 $total_students = $total_requete->fetchColumn();
 
-// Calcul du nombre total de pages
+// // // Calcul du nombre total de pages
 $total_pages = ceil($total_students / $records_per_page);
 
-// Récupérer les étudiants pour la page actuelle
+// // // Récupérer les étudiants pour la page actuelle
 $sql = "SELECT * FROM `students2` LIMIT :limit OFFSET :offset";
 $requete = $db->prepare($sql);
 $requete->bindValue(':limit', $records_per_page, PDO::PARAM_INT);
 $requete->bindValue(':offset', $offset, PDO::PARAM_INT);
 $requete->execute();
 $users = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+$search = isset($_GET["search"]) ? trim($_GET["search"]) : "";
+// var_dump($search);
+
+// //requette sql pour recuperer les etudiants en fonction de la recherche(mail et nom)
+$sql = "SELECT * FROM `students2`";
+if (!empty($search)) {
+    $sql .= "WHERE  nom LIKE '%$search%' OR prenom LIKE  '%$search%' OR  mail LIKE '%$search%' ";
+}
+// $sql .= " ORDER BY id DESC";
+$requete = $db->prepare($sql);
+
+$requete->execute();
+$users = $requete->fetchAll();
+// var_dump($users);
+
+
+if (count($users) > 0) {
+    echo "Nombre d'etudiants: " . count($users);
+} else {
+    echo "Aucun étudiant trouvé";
+}
+
+
+
 
 ?>
 
@@ -103,7 +78,7 @@ $users = $requete->fetchAll(PDO::FETCH_ASSOC);
             <a class=" my-5 px-4 py-2 mr-5 bg-green-600 text-white rounded hover:bg-green-700" href="http://localhost/php-2025/cours-php/cours-cfpc-php-2025/tp-01-crud-student/">Actualiser
             </a>
 
-            <input type=" text" name="search" placeholder="Rechercher par nom ou email" value=""
+            <input type=" text" name="search" placeholder="Rechercher par nom ou email" value="<?= $search ?? ""  ; ?>"
                 class="my-5 px-4 py-2 border rounded-lg w-full md:w-1/3">
             <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Rechercher</button>
         </form>
@@ -122,7 +97,7 @@ $users = $requete->fetchAll(PDO::FETCH_ASSOC);
 
                 <?php foreach ($users as $user) : ?>
                     <tr class="hover:bg-green-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-green-900"><?php echo htmlspecialchars($user["nom"]) ?></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-green-900"><?php echo htmlspecialchars($user["nom"]) ?? "" ?></td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-green-900"><?php echo htmlspecialchars($user["prenom"]) ?>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-green-900"><?php echo htmlspecialchars($user["mail"]) ?>
