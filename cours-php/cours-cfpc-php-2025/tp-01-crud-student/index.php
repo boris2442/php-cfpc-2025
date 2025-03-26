@@ -6,7 +6,7 @@ require_once "database.php";
 //     $requete = $db->prepare($sql);
 //     $requete->execute(['search' => "%$search%"]);
 //     $users = $requete->fetchAll(PDO::FETCH_ASSOC);
-//     var_dump($users);
+//     // var_dump($users);
 // } else {
 //     $sql = "SELECT * FROM `students2`";
 //     $requete = $db->prepare($sql);
@@ -14,6 +14,20 @@ require_once "database.php";
 //     $users = $requete->fetchAll(PDO::FETCH_ASSOC);
 // }
 
+//code destin
+
+$search = isset($_GET["search"]) ? $_GET["search"] : '';
+
+//requette sql pour recuperer les etudiants en fonction de la recherche(mail et nom)
+$sql = "SELECT * FROM `students2`";
+if (!empty($search)) {
+    $sql .= "WHERE  nom LIKE '%$search%' OR prenom LIKE '%$search%' OR  mail LIKE '%$search%'";
+}
+$sql .= " ORDER BY id DESC";
+$requete = $db->prepare($sql);
+
+$requete->execute();
+$users = $requete->fetchAll();
 
 
 
@@ -24,7 +38,7 @@ require_once "database.php";
 
 
 $sql = "SELECT* FROM `students2`";
-$requete = $db->prepare($sql);
+// $requete = $db->prepare($sql);
 
 $requete->execute();
 
@@ -33,7 +47,7 @@ $users = $requete->fetchAll(PDO::FETCH_ASSOC);
 if (count($users) > 0) {
     echo "Nombre d'etudiants: " . count($users);
 } else {
-    echo "Aucun etudiant trouve";
+    echo "Aucun étudiant trouvé";
 }
 
 // Nombre d'enregistrements par page
@@ -72,7 +86,7 @@ $users = $requete->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-
+    <!-- <link rel="stylesheet" href="src/output.css"> -->
     <title>TP-01-Crud-student</title>
 </head>
 
@@ -129,8 +143,8 @@ $users = $requete->fetchAll(PDO::FETCH_ASSOC);
 
 
 
- <!-- Pagination -->
- <div class="mt-4 flex justify-center">
+        <!-- Pagination -->
+        <div class="mt-4 flex justify-center">
             <?php if ($page > 1): ?>
                 <a href="?page=<?= $page - 1 ?>" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mx-1">Précédent</a>
             <?php endif; ?>
@@ -143,13 +157,6 @@ $users = $requete->fetchAll(PDO::FETCH_ASSOC);
                 <a href="?page=<?= $page + 1 ?>" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mx-1">Suivant</a>
             <?php endif; ?>
         </div>
-
-
-
-
-
-
-
 
 
     </div>

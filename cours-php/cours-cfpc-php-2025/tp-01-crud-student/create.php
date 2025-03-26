@@ -10,21 +10,21 @@ function clean_input($data)
     return (htmlspecialchars(stripslashes(trim($data))));
 }
 
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$sql="SELECT * FROM `students2`";
-if(!empty($search)){
-    $sql .= " WHERE nom LIKE :search OR mail LIKE :search";
-}
-$sql.="ORDER BY id DESC";
+// $search = isset($_GET['search']) ? $_GET['search'] : '';
+// $sql="SELECT * FROM `students2`";
+// if(!empty($search)){
+//     $sql .= " WHERE nom LIKE :search OR mail LIKE :search";
+// }
+// $sql.="ORDER BY id DESC";
 
-$requete = $db->prepare($sql);
-if(!empty($search)){
+// $requete = $db->prepare($sql);
+// if(!empty($search)){
 
-    $requete->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
-}
-$requete->execute();
-$users = $requete->fetchAll(PDO::FETCH_ASSOC);
-echo "recherche effectuer avec succees";
+//     $requete->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+// }
+// $requete->execute();
+// $users = $requete->fetchAll(PDO::FETCH_ASSOC);
+// echo "recherche effectuer avec succees";
 
 
 
@@ -46,15 +46,15 @@ if (isset($_POST['create'])) {
         $message = ' <span style="background:red; padding:10px; color:white margin:15px;"> Veillez remplir les champs </span>';
     } else {
 
-        $sql_mail = "SELECT * FROM `students2` WHERE `mail`=:mail";
-        $query_mail = $db->prepare($sql_mail);
-        $query_mail->execute(['mail' => $mail]);
-        $result_mail = $query_mail->fetch();
-        if ($result_mail) {
-            $message = '<span style="background:red; padding:10px; color:white margin:15px;"> Email existe déjà</span>';
-            // header('Location: index.php');
-            exit;
-        } else {
+        // $sql_mail = "SELECT * FROM `students2` WHERE `mail`=:mail";
+        // $query_mail = $db->prepare($sql_mail);
+        // $query_mail->execute(['mail' => $mail]);
+        // $result_mail = $query_mail->fetch();
+        // if ($result_mail) {
+        //     $message = '<span style="background:red; padding:10px; color:white margin:15px;"> Email existe déjà</span>';
+        //     // header('Location: index.php');
+        //     exit;
+        // } else {
 
             $sql = "INSERT INTO  `students2` (`nom`, `prenom`, `mail`)VALUES(:nom, :prenom, :mail)";
             $requete = $db->prepare($sql);
@@ -65,8 +65,9 @@ if (isset($_POST['create'])) {
             // ]);
             //$info=compact('nom','prenom','mail');
             $requete->execute(compact('nom', 'prenom', 'mail'));
+            var_dump($requete);
             $message = '<span style="background:green; padding:10px; color:white margin:15px;"> Etudiant ajouté avec succèss</span>';
-        }
+        // }
     }
 }
 
