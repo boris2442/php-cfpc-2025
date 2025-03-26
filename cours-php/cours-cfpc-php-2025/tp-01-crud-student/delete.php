@@ -10,11 +10,11 @@ if (isset($_GET['id'])) {
 
     $requete->execute();
     // $message = "Etudiant dont 'iid est   $id   supprimé avec succès";
-    if($requete->rowCount() > 0){
+    if ($requete->rowCount() > 0) {
         $message = "Etudiant dont l'id est $id supprimé avec succès";
         // header("Location: index.php");
         header("refresh:3;url=index.php");
-    }else{
+    } else {
         $message = "Aucun étudiant trouvé";
     }
 }

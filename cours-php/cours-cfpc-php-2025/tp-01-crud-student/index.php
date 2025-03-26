@@ -23,28 +23,18 @@ require_once "database.php";
 
 
 
-// $sql = "SELECT* FROM `students2`";
-// $requete = $db->prepare($sql);
+$sql = "SELECT* FROM `students2`";
+$requete = $db->prepare($sql);
 
-// $requete->execute();
-
-
-// $users = $requete->fetchAll(PDO::FETCH_ASSOC);
-// if (count($users) > 0) {
-//     echo "Nombre d'etudiants: " . count($users);
-// } else {
-//     echo "Aucun etudiant trouve";
-// }
+$requete->execute();
 
 
-
-
-
-
-
-
-
-
+$users = $requete->fetchAll(PDO::FETCH_ASSOC);
+if (count($users) > 0) {
+    echo "Nombre d'etudiants: " . count($users);
+} else {
+    echo "Aucun etudiant trouve";
+}
 
 // Nombre d'enregistrements par page
 $records_per_page = 5;
