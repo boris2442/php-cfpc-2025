@@ -20,3 +20,5 @@ $title = "inscription page";
 </head>
 
 <body class="bg-green-100 pt-[100px] font-family-Poppins text-[16px]">
+
+

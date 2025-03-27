@@ -1,11 +1,20 @@
 <?php
 require_once "database.php";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    function clean_input($data)
+    {
+        // $data = trim($data);
+        // $data2 = stripslashes($data);
+        // $data_result = htmlspecialchars($data2);
+        // return $data_result;
+        return (htmlspecialchars(stripslashes(trim($data))));
+    }
+    
     //recuperation des donnees du formulaires
     $pseudo = htmlspecialchars($_POST['pseudo']);
     $mail = htmlspecialchars($_POST['mail']);
     $mail2 = htmlspecialchars($_POST['mail2']);
-    $mdp = $_POST['mdp'];
+    $mdp = htmlspecialchars(trim($_POST['mdp']));
     $mdp2 = $_POST['mdp2'];
 
     function register($pseudo, $mail, $mail2, $mdp, $mdp2)
@@ -45,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return "Les mots de passe ne correspondent pas";
         }
         //verification de langueur du mot de passe et verification si elle inclut les lettres, les chiffres, et les caracteres speciaux
+        //if(strlen($mdp<8) || !preg_match("#[0-9]+#", $mdp)|| !preg_match("#[a-zA-Z])"))
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{8,}$/', $mdp)) {
             return "👉Votre mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial";
         }
@@ -54,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO membres(pseudo, mail, mdp) VALUES(:pseudo, :mail, :password_hash)";
         $req = $db->prepare($sql);
         $req->execute(compact('pseudo', 'mail', 'password_hash'));
-        return "Votre compte a été créé avec succès";
+        return "Votre compte a été créé avec succès... veuillez <a href=\'connexion.php\ class='bg-green-500 p-[5px] '>cliquez ici pour vous connectez</a>'";
         //redirection vers la page de connexion
         // header('Location: connexion.php');
         // exit;
@@ -81,17 +91,17 @@ require_once "./header-and-footer/header.php";
             <div class="text-left flex flex-col gap-[7px]">
                 <label for="pseudo" class="">Pseudo :</label>
 
-                <input type="text" placeholder="Votre pseudo" id="pseudo" name="pseudo" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+                <input type="text" placeholder="Votre pseudo" id="pseudo" name="pseudo"  value="<?php echo $pseudo ?? ""  ?>"    class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"  />
             </div>
             <div class="text-left flex flex-col gap-[7px]">
                 <label for="mail">Mail :</label>
 
-                <input type="text" placeholder="Votre mail" id="mail" name="mail" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+                <input type="text" placeholder="Votre mail" id="mail"   value="<?php echo $mail ?? ""  ?>"    name="mail" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
             </div>
             <div class="text-left flex flex-col gap-[7px]">
                 <label for="mail2">Confirmation du mail :</label>
 
-                <input type="text" placeholder="Confirmez votre mail" id="mail2" name="mail2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+                <input type="text"    value="<?php echo $mail2 ?? ""  ?>"     placeholder="Confirmez votre mail" id="mail2" name="mail2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
             </div>
             <!-- <div class="text-left flex flex-col gap-[7px]">
                 <label for="mdp">Mot de passe :</label>
@@ -102,14 +112,15 @@ require_once "./header-and-footer/header.php";
     <label for="mdp">Mot de passe :</label>
     <div class="relative">
         <input type="password" placeholder="Votre mot de passe" id="mdp" name="mdp"
-            class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
-        <i class="fa fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i>
+            class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"  value="<?php echo $mdp ?? ""  ?>"        />
+        <!-- <i class="fa fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i> -->
+        <i class="fa-solid fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i>
     </div>
 </div>
             <div class="text-left flex flex-col gap-[7px]">
                 <label for="mdp2">Confirmation du mot de passe :</label>
 
-                <input type="password" placeholder="Confirmez votre mdp" id="mdp2" name="mdp2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+                <input type="password" placeholder="Confirmez votre mdp" id="mdp2" name="mdp2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"  value="<?php echo $mdp2 ?? ""  ?> "   />
             </div>
             <div class="text-left flex flex-col gap-[7px]">
                 <input type="submit" name="forminscription" value="S'inscrire" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 bg-green-100" />

@@ -14,3 +14,7 @@ RewriteRule ^(.*)$ $1.php [NC,L]
 
 RewriteCond %{THE_REQUEST} /([^.]+)\.php [NC]
 RewriteRule ^ /%1 [NC,L,R]
+
+
+
+autocomplete="off"//empeche le remplissage automatique
