@@ -27,12 +27,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return "Ce pseudo est deja utilisé";
         }
         //verification du mail
-        if($mail!=$mail2){
+        if ($mail != $mail2) {
             return "Les mails ne correspondent pas";
         }
-        if(!filter_var($mail, FILTER_VALIDATE_EMAIL)){
+        if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
             return "Votre mail n'est pas valide";
         }
+        $sql = "SELECT * FROM `membres` WHERE mail=:mail";
+        $reqMail = $db->prepare($sql);
+        $reqMail->execute(compact('mail'));
+        $mailExist = $reqMail->fetch();
+        if ($mailExist) {
+            return "Ce mail est déja utilisé";
+        }
+        //verification du mot de passe
+        if ($mdp != $mdp2) {
+            return "Les mots de passe ne correspondent pas";
+        }
+        //verification de langueur du mot de passe et verification si elle inclut les lettres, les chiffres, et les caracteres speciaux
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{8,}$/', $mdp)) {
+            return "Votre mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial";
+        }
+        //hashage du mot de passe
+        $password_hash = password_hash($mdp, PASSWORD_ARGON2ID);
+        //insertion des données dans la base de données
+        $sql = "INSERT INTO membres(pseudo, mail, mdp) VALUES(:pseudo, :mail, :password_hash)";
+        $req = $db->prepare($sql);
+        $req->execute(compact('pseudo','mail', 'password_hash'));
+        return "Votre compte a été créé avec succès";
+        //redirection vers la page de connexion
+        // header('Location: connexion.php');
+        // exit;
 
     }
     //verification de la validité de l'adresse mail
@@ -62,12 +87,12 @@ require_once "./header-and-footer/header.php";
             <div class="text-left flex flex-col gap-[7px]">
                 <label for="mail">Mail :</label>
 
-                <input type="text" placeholder="Votre mail" id="mail" name="mail" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+                <input type="text" placeholder="Votre mail" id="mail" name="mail" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"  />
             </div>
             <div class="text-left flex flex-col gap-[7px]">
                 <label for="mail2">Confirmation du mail :</label>
 
-                <input type="text" placeholder="Confirmez votre mail" id="mail2" name="mail2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+                <input type="text" placeholder="Confirmez votre mail"  id="mail2" name="mail2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
             </div>
             <div class="text-left flex flex-col gap-[7px]">
                 <label for="mdp">Mot de passe :</label>
