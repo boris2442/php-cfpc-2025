@@ -26,6 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($pseudoExist) {
             return "Ce pseudo est deja utilisé";
         }
+        //verification du mail
+        if($mail!=$mail2){
+            return "Les mails ne correspondent pas";
+        }
+        if(!filter_var($mail, FILTER_VALIDATE_EMAIL)){
+            return "Votre mail n'est pas valide";
+        }
+
     }
     //verification de la validité de l'adresse mail
     $error = register($pseudo, $mail, $mail2, $mdp, $mdp2);
