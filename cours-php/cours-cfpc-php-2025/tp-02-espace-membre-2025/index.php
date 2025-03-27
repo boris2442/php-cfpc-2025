@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO membres(pseudo, mail, mdp) VALUES(:pseudo, :mail, :password_hash)";
         $req = $db->prepare($sql);
         $req->execute(compact('pseudo', 'mail', 'password_hash'));
-        return "Votre compte a été créé avec succès... veuillez <a href=\'connexion.php\ class='bg-green-500 p-[5px] '>cliquez ici pour vous connectez</a>'";
+        return "Votre compte a été créé avec succès... veuillez <a href=\'connexion.php\ class=' '>cliquez ici pour vous connectez</a>'";
         //redirection vers la page de connexion
         // header('Location: connexion.php');
         // exit;
@@ -74,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <?php
+
 require_once "header-and-footer/header.php";
 ?>
 

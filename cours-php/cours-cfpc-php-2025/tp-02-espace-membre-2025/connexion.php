@@ -42,6 +42,7 @@ function authentificateUser($db, $mailConnect, $mdpConnect)
     if (!password_verify($mdpConnect, $userInfos['mdp'])) {
         return "Incorrect password. Please";
     }
+    return "Congratulation you are connecting!!!";
 }
 $error = handle($db);
 ?>
@@ -102,7 +103,7 @@ require_once "header-and-footer/header.php";
 </form>
 
 
-<!-- <script src="./javascript/script-index.js"></script> -->
+<script src="./javascript/script-index.js"></script>
 <?php
 require_once "header-and-footer/footer.php";
 ?>
