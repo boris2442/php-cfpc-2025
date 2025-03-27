@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <?php
-require_once "./header-and-footer/header.php";
+require_once "header-and-footer/header.php";
 ?>
 
 <div align="center">
@@ -108,13 +108,15 @@ require_once "./header-and-footer/header.php";
 
                 <input type="password" placeholder="Votre mot de passe" id="mdp" name="mdp" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
             </div> -->
+            <i class="far fa-facebook"></i>
             <div class="text-left flex flex-col gap-[7px]">
     <label for="mdp">Mot de passe :</label>
     <div class="relative">
         <input type="password" placeholder="Votre mot de passe" id="mdp" name="mdp"
             class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"  value="<?php echo $mdp ?? ""  ?>"        />
         <!-- <i class="fa fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i> -->
-        <i class="fa-solid fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i>
+        <!-- <i class="far fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i> -->
+        <i class="fa-solid fa-eye  absolute right-3 top-3 cursor-pointer text-gray-500"  id="togglePassword"></i>
     </div>
 </div>
             <div class="text-left flex flex-col gap-[7px]">
