@@ -37,3 +37,9 @@ autocomplete="off"//empeche le remplissage automatique
     });
 
 }}}
+
+
+
+
+//pour que les donnees ne se dupplique pas sans la base de donnees dans  database.php?
+   $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);

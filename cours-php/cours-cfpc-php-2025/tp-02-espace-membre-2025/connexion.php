@@ -1,36 +1,49 @@
 <?php
 require_once "database.php";
+// //recuperation des donnees du formulaires
+// $mailConnect = htmlspecialchars($_POST['mailconnect']);
+// $mdpConnect = htmlspecialchars($_POST['mdpconnect']);
+
+
+
 
 function handle($db)
 {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        return;
+        return "Error";
     }
 
-    //recuperation des donnees du formulaires
+    // // Vérifiez si le formulaire a été soumis
     $mailConnect = htmlspecialchars($_POST['mailconnect']);
     $mdpConnect = htmlspecialchars($_POST['mdpconnect']);
     if (empty($mailConnect) || empty($mdpConnect)) {
         return "Tous les champs doivent etre remplis";
     }
-    return authentificateUser($db, $mailConnect,     $mdpConnect);
+    return authentificateUser($db, $mailConnect, $mdpConnect);
+    return  "Congratulation you are connecting!!!";
 }
 
-function authentificateUser($db, $mailConnect,     $mdpConnect)
+function authentificateUser($db, $mailConnect, $mdpConnect)
 {
     $sql = "SELECT * FROM membres WHERE mail=:mailConnect ";
     $reqMail = $db->prepare($sql);
     $reqMail->execute(compact('mailConnect'));
-    $mailExist = $reqMail->fetch();
+    $mailExist = $reqMail->rowCount();
     // var_dump($mailExist);
     if (!$mailExist) {
         return "Ce mail n'existe pas";
     }
     //verification du password
-    if (password_verify($mdpConnect, $mailExist['mdp'])) {
+    $userInfos =   $reqMail->fetch();
+    echo "<pre>";
+    var_dump($userInfos['mdp']);
+    echo "</pre>";
+
+    if (!password_verify($mdpConnect, $userInfos['mdp'])) {
+        return "Incorrect password. Please";
     }
 }
-$error=handle($db);
+$error = handle($db);
 ?>
 
 <?php
@@ -62,11 +75,16 @@ require_once "header-and-footer/header.php";
             <input type="password" placeholder="mot de passe" id="mdp" name="mdpconnect" value="<?php echo $mdpConnect ?>" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
         </div> -->
 
-   <div class="text-left flex flex-col gap-[7px]">
+        <div class="text-left flex flex-col gap-[7px]">
             <label for="mdp">Password :</label>
             <div class="relative">
-                <input  type="password" placeholder="enter your password"  id="mdp" name="mdpconnect" 
-                    class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"  value="<?php echo $mdpconnect  ?? ''?>" />
+                <input type="text" placeholder="enter your password" id="mdp" name="mdpconnect"
+                    class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500"
+                    value=" " />
+
+
+
+
                 <!-- <i class="fa fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i> -->
                 <!-- <i class="far fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i> -->
                 <i class="fa-solid fa-eye  absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i>
@@ -78,13 +96,13 @@ require_once "header-and-footer/header.php";
         <div class="text-left flex flex-col gap-[7px]">
 
 
-            <input type="submit" placeholder="mot de passe" value="Se connecter !" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 bg-green-100" />
+            <input type="submit" value="Se connecter !" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 bg-green-100" />
         </div>
     </div>
 </form>
 
 
-<script src="./javascript/script-index.js"></script>
+<!-- <script src="./javascript/script-index.js"></script> -->
 <?php
 require_once "header-and-footer/footer.php";
 ?>
