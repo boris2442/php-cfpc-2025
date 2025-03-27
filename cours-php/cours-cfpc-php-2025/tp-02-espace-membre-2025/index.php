@@ -19,91 +19,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (strlen($pseudo) > 255) {
             return "Votre pseudo ne doit pas depasser 255 caracteres";
         }
+        $sql = "SELECT * FROM membres WHERE pseudo = :pseudo";
+        $reqPseudo = $db->prepare($sql);
+        $reqPseudo->execute(compact('pseudo'));
+        $pseudoExist = $reqPseudo->fetch();
+        if ($pseudoExist) {
+            return "Ce pseudo est deja utilisé";
+        }
     }
+    //verification de la validité de l'adresse mail
     $error = register($pseudo, $mail, $mail2, $mdp, $mdp2);
 }
 ?>
+<?php
+require_once "./header-and-footer/header.php";
+?>
 
-<!DOCTYPE html>
-<html lang="en">
+<div align="center">
+    <h2 class="text-4xl font-bold text-green-900 text-center mb-6">Inscription prof</h2>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
-    <title>Document</title>
-</head>
-
-<body>
-    <div align="center">
-        <h2>Inscription prof</h2>
-        <br /><br />
-        <form method="POST" action="">
+    <form method="POST" action="" class="bg-white p-6 rounded shadow max-w-lg mx-auto">
+        <div class="flex flex-col gap-[7px] pt-[7px]">
             <?php
             if (isset($error)) {
-                echo '<p style="white: red;background:red; padding:12px">' . $error . '</p>';
+                echo '<p class="bg-red-500 w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 text-white font-bold">' . $error . '</p>';
             }
 
-
-
-
-
             ?>
-            <table>
-                <tr>
-                    <td align="right">
-                        <label for="pseudo">Pseudo :</label>
-                    </td>
-                    <td>
-                        <input type="text" placeholder="Votre pseudo" id="pseudo" name="pseudo" />
+            <div class="text-left flex flex-col gap-[7px]">
+                <label for="pseudo" class="">Pseudo :</label>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">
-                        <label for="mail">Mail :</label>
-                    </td>
-                    <td>
-                        <input type="text" placeholder="Votre mail" id="mail" name="mail" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">
-                        <label for="mail2">Confirmation du mail :</label>
-                    </td>
-                    <td>
-                        <input type="text" placeholder="Confirmez votre mail" id="mail2" name="mail2" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">
-                        <label for="mdp">Mot de passe :</label>
-                    </td>
-                    <td>
-                        <input type="password" placeholder="Votre mot de passe" id="mdp" name="mdp" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">
-                        <label for="mdp2">Confirmation du mot de passe :</label>
-                    </td>
-                    <td>
-                        <input type="password" placeholder="Confirmez votre mdp" id="mdp2" name="mdp2" />
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td align="center">
-                        <br />
+                <input type="text" placeholder="Votre pseudo" id="pseudo" name="pseudo" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+            </div>
+            <div class="text-left flex flex-col gap-[7px]">
+                <label for="mail">Mail :</label>
 
-                        <input type="submit" name="forminscription" value="Je m'inscris" /> Déjà un compte ?<a
-                            href="connexion.php">Se connecter</a>
-                    </td>
-                </tr>
-            </table>
-        </form>
+                <input type="text" placeholder="Votre mail" id="mail" name="mail" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+            </div>
+            <div class="text-left flex flex-col gap-[7px]">
+                <label for="mail2">Confirmation du mail :</label>
 
-    </div>
-</body>
+                <input type="text" placeholder="Confirmez votre mail" id="mail2" name="mail2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+            </div>
+            <div class="text-left flex flex-col gap-[7px]">
+                <label for="mdp">Mot de passe :</label>
 
-</html>
+                <input type="password" placeholder="Votre mot de passe" id="mdp" name="mdp" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+            </div>
+            <div class="text-left flex flex-col gap-[7px]">
+                <label for="mdp2">Confirmation du mot de passe :</label>
+
+                <input type="password" placeholder="Confirmez votre mdp" id="mdp2" name="mdp2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+            </div>
+            <div class="text-left flex flex-col gap-[7px]">
+                <input type="submit" name="forminscription" value="S'inscrire" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 bg-green-100" />
+            </div>
+        </div>
+        Déjà un compte ?<a
+            href="connexion.php">Se connecter</a>
+
+    </form>
+
+</div>
+<?php
+require_once "./header-and-footer/footer.php";
+?>
