@@ -18,37 +18,40 @@ if (isset($_GET['id'])) {
 
 
 <?php
-require_once "header-and-footer/header.php";
 $title = "profil of user";
+require_once "header-and-footer/header.php";
 ?>
+<div class="max-w-[500px] bg-white mx-auto min-h-[450px] rounded-[7px] px-[7px]">
+    <h1 class="text-center text-4xl p-[7px] font-bold text-green-900">Bienvenue sur profil!...</h1>
 
-<h1>Bienvenue sur profil!...</h1>
+    <h2 class="text-2xl font-bold">Profil de: <span class="text-2xl"> <?= $userInfos['pseudo']; ?></span></h2>
 
-<h2>Profil de: <?= $userInfos['pseudo']; ?></h2>
-
-<?php if (!empty($userinfo['avatar'])) { ?>
-    <img src="membres/avatars/<?= $userinfo['avatar']; ?>" width="222">
-<?php  } ?>
-
-
+    <?php if (!empty($userInfos['avatar'])) { ?>
+        <img src="membres/avatars/<?= $userInfos['avatar']; ?>" width="222" alt="image de boris"/>
+    <?php  } ?>
 
 
 
-<h3>mail:<?= $userInfos['mail']; ?></h3>
 
+
+    <h3 class="font-bold text-2xl">mail:<?= $userInfos['mail']; ?></h3>
+
+    <?php
+    if (isset($_SESSION['id']) && $userInfos['id'] == $_SESSION['id']) {
+    ?>
+    <div class="flex justify-beetween gap-[20px] pt-[20px] mx-auto">
+        <div>
+            <a href="editprofil.php" class="bg-green-500 p-[5px] text-white rounded-[5px] hover:bg-900">Editer mon profil</a>
+        </div>
+        <div>
+            <a href="deconnexion.php" class="bg-green-500 text-white p-[5px] rounded-[5px] hover:bg-900">Se déconnecter</a>
+        </div>
+        </div>
+</div>
 <?php
-if (isset($_SESSION['id']) && $userInfos['id'] == $_SESSION['id']) {
-?>
-    <div>
-        <a href="editprofil.php">Editer mon profil</a>
-    </div>
-    <div>
-        <a href="deconnexion.php">Se déconnecter</a>
-    </div>
-<?php
-} else {
-    echo '<br />Vous ne pouvez pas accéder à ce profil';
-}
+    } else {
+        echo '<br /> Vous ne pouvez pas accéder à ce profil';
+    }
 ?>
 
 <?php

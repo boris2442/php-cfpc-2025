@@ -108,7 +108,7 @@ require_once "header-and-footer/header.php";
         <div class="text-left flex flex-col gap-[7px]">
 
 
-            <input type="submit" value="Se connecter !" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 bg-green-100" />
+            <input type="submit" value="Se connecter !" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 bg-green-100 " />
         </div>
     </div>
 </form>
