@@ -102,7 +102,7 @@ require_once "header-and-footer/header.php";
         <div class="text-left flex flex-col gap-[7px]">
             <label for="mail2">Confirmation du mail :</label>
 
-            <input type="text" value="<?php echo $mail2 ?? ""  ?>" placeholder="Confirmez votre mail"  id="mail2" name="mail2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+            <input type="text" value="<?php echo $mail2 ?? ""  ?>" placeholder="Confirmez votre mail" id="mail2" name="mail2" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
         </div>
         <!-- <div class="text-left flex flex-col gap-[7px]">
                 <label for="mdp">Mot de passe :</label>
