@@ -2,29 +2,7 @@
 require_once "database.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // if (!empty($_POST)) {
-    //     if (
-    //         isset($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['adresse'], $_POST['telephone'], $_POST['datenaissance'], $_POST['interet'])
-    //         && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['email']) && !empty($_POST['adresse']) && !empty($_POST['telephone']) && !empty($_POST['datenaissance']) && !empty($_POST['interet'])
-    //     ) {
-    //         $nom = clean_input($_POST['nom']);
-    //         $prenom = clean_input($_POST['prenom']);
-    //         $email = clean_input($_POST['email']);
-    //         $adresse = clean_input($_POST['adresse']);
-    //         $telephone = clean_input($_POST['telephone']);
-    //         $datenaissance = clean_input($_POST['datenaissance']);
-    //         $interet = clean_input($_POST['interet']);
 
-    //         if (strlen($nom) > 50) {
-    //             // $message="";
-    //             return "le nom de doit pas exceder 30 caracteres.";
-    //         }
-    //         if (strlen($prenom) > 50) {
-    //             return "le  prenom de doit pas exceder 50 caracteres.";
-    //         }
-
-    //     }
-    // }
     function clean_input($data)
     {
         return (htmlspecialchars(stripslashes((trim($data)))));
@@ -36,12 +14,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $adresse = clean_input($_POST['adresse']);
     $telephone = clean_input($_POST['telephone']);
     $datenaissance = clean_input($_POST['datenaissance']);
+    $document = $_FILES['document'];
+    $image = $_FILES['image'];
     $interet = clean_input($_POST['interet']);
+    $genre = isset($_POST['genre']) ? clean_input($_POST['genre']) : "";
+    $langues = isset($_POST['langues']) ? $_POST['langues'] : [];
+    $langues_str = implode(", ",  $langues);
+    $etudes = isset($_POST['etudes']) ? $_POST['etudes'] : [];
     // $genre=$_POST['genre'];
     // $langue=$post['langues'];
     // $etudes=$_POST['etudes'];
     // $photo=$_POST['photo'];
     // $image=$_POST['image'];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function create(
         $nom,
         $prenom,
@@ -49,7 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $adresse,
         $telephone,
         $datenaissance,
-        $interet
+        $interet,
+        $image,
+        $document
         // , $photo, $image, $langue, $etudes
     ) {
         global $db;
@@ -83,40 +83,109 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (strlen($interet) > 255) {
             return "L'intérêt est trop long";
         }
+        // Appel de la fonction handleImageUpload pour valider et traiter l'image
+        $imageResult = handleImageUpload($image);
+
+        // Vérifiez si handleImageUpload a retourné une erreur
+        if (is_string($imageResult)) {
+            return $imageResult; // Retourne le message d'erreur
+        }
+        // Appel de la fonction handleDocumentUpload pour valider et traiter le document
+        $documentResult = handleDocumentUpload($document);
+
+        // Vérifiez si handleDocumentUpload a retourné une erreur
+        if (is_string($documentResult)) {
+            return $documentResult; // Retourne le message d'erreur
+        }
     }
+
+
+
+
+
+
+
+
+
+
 
     function isValidDate($date, $format = 'd/m/Y')
     {
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) === $date;
     }
+    function handleImageUpload($file, $allowed_extensions = ['jpg', 'jpeg', 'png'], $max_size_mb = 5)
+    {
+        // Vérifiez si un fichier a été téléchargé sans erreur
+        if ($file['error'] !== 0) {
+            return "❌ Une erreur est survenue lors du téléchargement de l'image.";
+        }
 
+        // Récupération des informations sur le fichier
+        $image_name = $file['name'];
+        $image_tmp = $file['tmp_name'];
+        $image_size = $file['size'];
+        $image_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
 
-    // function isValidDate($date, $format = 'd/m/Y')
-    // {
-    //     $d = DateTime::createFromFormat($format, $date);
-    //     return $d && $d->format($format) === $date;
-    // }
+        // Vérification de l'extension
+        if (!in_array($image_extension, $allowed_extensions)) {
+            return "❌ Format d'image invalide. Formats autorisés : " . implode(', ', $allowed_extensions) . ".";
+        }
 
-    // // Exemple d'utilisation
-    // $datenaissance = $_POST['datenaissance'];
+        // Vérification de la taille (convertir Mo en octets)
+        $max_size_bytes = $max_size_mb * 1024 * 1024;
+        if ($image_size > $max_size_bytes) {
+            return "❌ L'image ne doit pas dépasser {$max_size_mb} Mo.";
+        }
 
-    // if (!isValidDate($datenaissance, 'd/m/Y')) {
-    //     return "La date de naissance est invalide.";
-    // }
+        // Lecture du fichier en binaire
+        $image_data = file_get_contents($image_tmp);
+
+        // Retourner les données de l'image en cas de succès
+        return [
+            'name' => $image_name,
+            'extension' => $image_extension,
+            'size' => $image_size,
+            'data' => $image_data // Contenu binaire de l'image
+        ];
+    }
+
+    function handleDocumentUpload($file, $allowed_extensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt'], $max_size_mb = 5)
+    {
+        // Vérifiez si un fichier a été téléchargé sans erreur
+        if ($file['error'] !== 0) {
+            return "❌ Une erreur est survenue lors du téléchargement du document.";
+        }
+
+        // Récupération des informations sur le fichier
+        $document_name = $file['name'];
+        $document_tmp = $file['tmp_name'];
+        $document_size = $file['size'];
+        $document_extension = strtolower(pathinfo($document_name, PATHINFO_EXTENSION));
+
+        // Vérification de l'extension
+        if (!in_array($document_extension, $allowed_extensions)) {
+            return "❌ Format de document invalide. Formats autorisés : " . implode(', ', $allowed_extensions) . ".";
+        }
+
+        // Vérification de la taille (convertir Mo en octets)
+        $max_size_bytes = $max_size_mb * 1024 * 1024;
+        if ($document_size > $max_size_bytes) {
+            return "❌ Le document ne doit pas dépasser {$max_size_mb} Mo.";
+        }
+
+        // Lecture du fichier en binaire
+        $document_data = file_get_contents($document_tmp);
+
+        // Retourner les données du document en cas de succès
+        return [
+            'name' => $document_name,
+            'extension' => $document_extension,
+            'size' => $document_size,
+            'data' => $document_data // Contenu binaire du document
+        ];
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 ?>
 
@@ -247,7 +316,7 @@ focus:border-green-500"></textarea>
         <!-- Upload Photo -->
         <div class="mb-4 text-left">
             <label for="photo" class="block text-gray-700">Photo :</label>
-            <input type="file" id="photo" name="photo"
+            <input type="file" id="photo" name="image"
                 class="w-full border border-green-300 p-2 rounded focus:outline-none
 focus:border-green-500">
         </div>

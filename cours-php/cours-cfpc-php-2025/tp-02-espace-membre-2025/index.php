@@ -81,7 +81,7 @@ require_once "header-and-footer/header.php";
 
 <h2 class="text-4xl font-bold text-green-900 text-center mb-6">Veuillez vous inscrire</h2>
 
-<form method="POST" action="" class="bg-white p-6 rounded shadow max-w-lg mx-auto">
+<form method="POST" action="" enctype="multipart/form-data" class="bg-white p-6 rounded shadow max-w-lg mx-auto">
     <div class="flex flex-col gap-[7px] pt-[7px]">
         <?php
         if (isset($error)) {

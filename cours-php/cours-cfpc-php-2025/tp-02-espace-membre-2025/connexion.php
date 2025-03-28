@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once "database.php";
 // //recuperation des donnees du formulaires
 // $mailConnect = htmlspecialchars($_POST['mailconnect']);
@@ -42,7 +44,16 @@ function authentificateUser($db, $mailConnect, $mdpConnect)
     if (!password_verify($mdpConnect, $userInfos['mdp'])) {
         return "Incorrect password. Please";
     }
+//     echo "<pre>";
+// var_dump($userInfos['mdp']); // Mot de passe haché
+// var_dump($mdpConnect);       // Mot de passe saisi
+// echo "</pre>";
     return "Congratulation you are connecting!!!";
+    $_SESSION['id'] = $userInfos['id'];
+    $_SESSION['avatar'] = $userInfos['pseudo'];
+    $_SESSION['mail'] = $userInfos['mail'];
+    // header("Location: profil.php");
+    // exit();
 }
 $error = handle($db);
 ?>
