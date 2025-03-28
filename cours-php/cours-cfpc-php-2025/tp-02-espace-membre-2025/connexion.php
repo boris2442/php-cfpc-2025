@@ -41,19 +41,19 @@ function authentificateUser($db, $mailConnect, $mdpConnect)
     var_dump($userInfos['mdp']);
     echo "</pre>";
 
-    if (!password_verify($mdpConnect, $userInfos['mdp'])) {
-        return "Incorrect password. Please";
+    if (password_verify($mdpConnect, $userInfos['mdp'])) {
+        return "ok";
     }
-//     echo "<pre>";
-// var_dump($userInfos['mdp']); // Mot de passe haché
-// var_dump($mdpConnect);       // Mot de passe saisi
-// echo "</pre>";
-    return "Congratulation you are connecting!!!";
+
+
+
     $_SESSION['id'] = $userInfos['id'];
-    $_SESSION['avatar'] = $userInfos['pseudo'];
+    $_SESSION['pseudo'] = $userInfos['pseudo'];
     $_SESSION['mail'] = $userInfos['mail'];
-    // header("Location: profil.php");
-    // exit();
+
+    header("Location: profil.php?id=". $_SESSION['id'] );
+    exit();
+    // return "Congratulation you are connecting!!!";
 }
 $error = handle($db);
 ?>
