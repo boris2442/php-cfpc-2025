@@ -184,9 +184,9 @@ require_once "database.php";
 
 
 if (
-    isset($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['email'], $_POST['adresse'], $_POST['telephone'], $_POST['datenaissance'], $_POST['genre'], $post['languages'], $_POST['etudes'], $_POST['interet'], $_FILES['photo'], $_FILES['document']) && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['email']) && !empty($_POST['adresse']) && !empty($_POST['telephone']) && !empty($_POST['datenaissance']) && !empty($_POST['interet'])
+    isset($_POST['nom'], $_POST['prenom'], $_POST['email'],  $_POST['adresse'], $_POST['telephone'], $_POST['datenaissance'], $_POST['genre'], $_POST['languages'], $_POST['etudes'], $_POST['interet'], $_FILES['photo'], $_FILES['document']) && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['email']) && !empty($_POST['adresse']) && !empty($_POST['telephone']) && !empty($_POST['datenaissance']) && !empty($_POST['interet'])
 ) {
-
+    $message = "";
     function clean_input($data)
     {
         return (htmlspecialchars(stripslashes((trim($data)))));
@@ -234,40 +234,79 @@ if (
     } else {
         $message = "veuilez choisir votre niveau d'etude";
     }
-    $interet=clean_input($_POST['interet']);
-    if(strlen($interet>255)){
-        $message="l'interet est tres long";
+    $interet = clean_input($_POST['interet']);
+    if (strlen($interet > 255)) {
+        $message = "l'interet est tres long";
     }
+    if ($_FILES['image']['error'] == 0) {
+        $image_name = $_FILES['image']['name'];
+        $image_tmp = $_FILES['image']['tmp_name'];
+        $image_size = $_FILES['image']['size'];
+        $image_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
+
+        $allowed_extensions = ['jpg', 'jpeg', 'png'];
+
+        // Vérification de l'extension
+        if (!in_array($image_extension, $allowed_extensions)) {
+            die("❌ Format d'image invalide. Formats autorisés : JPG, JPEG, PNG.");
+        }
+
+        // Vérification de la taille (max 3 Mo)
+        if ($image_size > 3 * 1024 * 1024) {
+            $message = "❌ L'image ne doit pas dépasser 3 Mo.";
+        }
+
+        // Lecture du fichier en binaire
+        $image = file_get_contents($image_tmp);
+
+        // Affichage pour vérification (supprimer en production)
+        $message = "✅ Image valide et prête à être stockée.";
+    } else {
+        $message = "❌ Erreur lors de l'envoi de l'image.";
+    }
+    //code reservé a l'insertion du document
+
+
+    if ($_FILES['document']['error'] == 0) {
+        $doc_tmp = $_FILES['document']['tmp_name'];
+        $doc_size = $_FILES['document']['size'];
+        $doc_extension = strtolower(pathinfo($_FILES['document']['name'], PATHINFO_EXTENSION));
+
+        $allowed_extensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx'];
+
+        // Vérification de l'extension
+        if (!in_array($doc_extension, $allowed_extensions)) {
+            $message = "❌ Format invalide (seuls PDF, DOC, DOCX, XLS, XLSX sont acceptés).";
+        }
+        // Vérification de la taille (max 3 Mo)
+        else if ($doc_size > 3 * 1024 * 1024) {
+            $message = "❌ Le fichier dépasse 3 Mo.";
+        } else {
+            // Lecture du fichier en binaire
+            $doc_content = file_get_contents($doc_tmp);
+        }
+    }
+    $sql = "INSERT INTO `users` (`noms`, `prenom`, `email`, `adressse`, `telephone`,`datenaissance`, `genre`, `langues`, `etudes`, `interet`, `photo`,`document`) VALUES(:nom, :prenom, :email, :adresse, :telephone, :datenaissance, :genre, :langues,:etudes, :interet, :photo, :document)";
+    $requete = $db->prepare($sql);
+
+    $requete->bindValue(':nom', $nom);
+    $requete->bindValue(':prenom', $prenom);
+    $requete->bindValue(':email', $email);
+    $requete->bindValue(':adresse', $adresse);
+    $requete->bindValue(':telephone', $telephone);
+    $requete->bindValue(':datenaissance', $datenaissance);
+    $requete->bindValue(':genre', $genre);
+    $requete->bindValue(':langues', $langues);
+    $requete->bindValue(':etudes', $etudes);
+    $requete->bindValue(':interet', $interet);
+    $requete->bindValue(':photo', $image);
+    $requete->bindValue(':document', $doc_content);
+    $requete->execute();
+    $message = "Success congratulations";
 } else {
     $message = "Tous les champs vont etre remplir";
 }
 
-if ($_FILES['image']['error'] == 0) {
-    $image_name = $_FILES['image']['name'];
-    $image_tmp = $_FILES['image']['tmp_name'];
-    $image_size = $_FILES['image']['size'];
-    $image_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
-
-    $allowed_extensions = ['jpg', 'jpeg', 'png'];
-
-    // Vérification de l'extension
-    if (!in_array($image_extension, $allowed_extensions)) {
-        die("❌ Format d'image invalide. Formats autorisés : JPG, JPEG, PNG.");
-    }
-
-    // Vérification de la taille (max 3 Mo)
-    if ($image_size > 3 * 1024 * 1024) {
-      $message="❌ L'image ne doit pas dépasser 3 Mo.";
-    }
-
-    // Lecture du fichier en binaire
-    $image = file_get_contents($image_tmp);
-
-    // Affichage pour vérification (supprimer en production)
-    $message= "✅ Image valide et prête à être stockée.";
-} else {
- $message="❌ Erreur lors de l'envoi de l'image.";
-}
 
 
 
@@ -300,7 +339,7 @@ require_once "header-and-footer/header.php";
     <h1 class="text-3xl font-bold text-green-900 mb-4">Créer un nouveau
         Étudiant</h1>
 
-    <form action="post" method="" class="bg-white
+    <form method="post" class="bg-white
 p-6 rounded shadow max-w-md mx-auto ">
         <!-- Nom -->
         <!-- <div class="mb-4 text-left">
@@ -310,6 +349,10 @@ p-6 rounded shadow max-w-md mx-auto ">
 focus:border-green-500">
         </div> -->
         <div class="mb-4 text-left">
+            <!--    <input type="text" class="bg-red-500" > -->
+            <p class="border-1 p-[8px] border-solid border-green-500 rounded-[7px]"><?= $message ?> </p>
+        </div>
+        <div class="mb-4 text-left ">
             <label for="nom" class="block text-gray-700">Nom :</label>
             <input type="text" id="nom" name="nom" placeholder="Nom" required
                 class="w-full border border-green-300 p-2 rounded focus:outline-none
@@ -408,14 +451,14 @@ focus:border-green-500"></textarea>
         <!-- Upload Photo -->
         <div class="mb-4 text-left">
             <label for="photo" class="block text-gray-700">Photo :</label>
-            <input type="file" id="photo" name="image"
+            <input type="file" id="photo" name="photo"
                 class="w-full border border-green-300 p-2 rounded focus:outline-none
 focus:border-green-500">
         </div>
         <!-- Upload Document -->
         <div class="mb-4">
             <label for="document" class="block text-gray-700">Document :</label>
-            <input type="file" id="document" name="document"
+            <input type="file" accept=".doc,.docx,.xls,.xlsx,.pdf" id="document" name="document"
                 class="w-full border border-green-300 p-2 rounded focus:outline-none
 focus:border-green-500">
         </div>
