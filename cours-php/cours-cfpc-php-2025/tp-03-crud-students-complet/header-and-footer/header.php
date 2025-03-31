@@ -18,6 +18,6 @@
     <title><?= isset($title) ? htmlspecialchars($title): "Espace membre tp3"    ?></title>
 </head>
 
-<body class="bg-green-100 pt-[100px] font-family-Poppins text-[16px]">
+<body class="bg-green-100 pt-[100px] font-family-Poppins  text-[16px]">
 
 
