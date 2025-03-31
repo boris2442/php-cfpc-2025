@@ -1,6 +1,3 @@
-<?php
-$title = "inscription page";
-?>
 
 
 <!DOCTYPE html>

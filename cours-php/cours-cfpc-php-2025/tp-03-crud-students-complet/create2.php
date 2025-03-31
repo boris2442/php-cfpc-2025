@@ -123,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <?php
+$title="create";
 require_once "header-and-footer/header.php";
 ?>
 <div class="container mx-auto p-4 text-center">

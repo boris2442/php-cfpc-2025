@@ -41,7 +41,7 @@ if (isset($_GET['id'])) {
 
 
 
-// }
+
 if (isset($_POST['update'])) {
     $nom = clean_input($_POST['nom']);
     $prenom = clean_input($_POST['prenom']);

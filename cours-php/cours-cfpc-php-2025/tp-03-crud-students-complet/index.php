@@ -8,6 +8,29 @@ $students = $requete->fetchAll(PDO::FETCH_ASSOC);
 
 
 
+$search = isset($_GET["search"]) ? trim($_GET["search"]) : "";
+// var_dump($search);
+
+// //requette sql pour recuperer les etudiants en fonction de la recherche(mail et nom)
+$sql = "SELECT * FROM `users`";
+if (!empty($search)) {
+    $sql .= "WHERE  nom LIKE '%$search%' OR prenom LIKE  '%$search%' OR email LIKE '%$search%' ";
+}
+// $sql .= " ORDER BY id DESC";
+$requete = $db->prepare($sql);
+
+$requete->execute();
+$students = $requete->fetchAll();
+// var_dump($users);
+
+
+if (count($students) > 0) {
+    echo "Nombre d'etudiants: " . count($students);
+} else {
+    echo "Aucun étudiant trouvé";
+}
+
+
 ?>
 
 
@@ -20,6 +43,7 @@ $students = $requete->fetchAll(PDO::FETCH_ASSOC);
 
 
 <?php
+$title="home";
 require_once "header-and-footer/header.php";
 ?>
 
@@ -27,7 +51,7 @@ require_once "header-and-footer/header.php";
     <h1 class="text-4xl font-bold text-green-900 text-center mb-6">Liste des
         Étudiants (Student2)</h1>
     <!-- Formulaire de recherche -->
-    <form method="" action="" class="mb-4 flex flex-col md:flex-row
+    <form method="get" action="" class="mb-4 flex flex-col md:flex-row
 items-center gap-4">
         <div class="flex flex-col md:flex-row items-center gap-4">
             <a href="create2.php" class="px-4 py-2 bg-green-600 text-white rounded
@@ -124,11 +148,11 @@ uppercase">Actions</th>
 
                         <td class="px-4 py-2 text-sm text-green-900"><?php echo $student['create']  ?></td>
                         <td class="px-4 py-2 text-sm">
-                            <a href=""
+                            <a href="update.php?id= <?php echo $student['id']; ?>"
                                 class="text-green-600 hover:text-green-900 font-medium mr2">Modifier</a>
-                            <a href=""
+                            <a href="delete.php?id=<?php echo $student['id']; ?>"
 
-                                class="text-red-600 hover:text-red-900 font-medium">Supprimer</a>
+                                class="text-red-600 hover:text-red-900 font-medium" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?');">Supprimer</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
