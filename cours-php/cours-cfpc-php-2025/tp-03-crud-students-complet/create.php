@@ -1,294 +1,247 @@
 <?php
-require_once "database.php";
+// require_once "database.php";
 
 
+
+// if (
+//     isset($_POST['nom'], $_POST['prenom'], $_POST['email'],  $_POST['adresse'], $_POST['telephone'], $_POST['datenaissance'], $_POST['genre'], $_POST['languages'], $_POST['etudes'], $_POST['interet'], $_FILES['image'], $_FILES['document']) && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['email']) && !empty($_POST['adresse']) && !empty($_POST['telephone']) && !empty($_POST['datenaissance']) && !empty($_POST['interet'])
+// ) {
+//     $message = "";
+//     function clean_input($data)
+//     {
+//         return (htmlspecialchars(stripslashes((trim($data)))));
+//     }
 //     $nom = clean_input($_POST['nom']);
+//     if (strlen($nom) > 50) {
+//         $message = "le nom est trop long!";
+//     }
 //     $prenom = clean_input($_POST['prenom']);
-//     $email = clean_input($_POST['email']);
+//     if (strlen($prenom) > 50) {
+//         $message = "le prenom est trop long!";
+//     }
+//     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+//         $message = "email non valide";
+//     }
+//     $email = $_POST['email'];
+
 //     $adresse = clean_input($_POST['adresse']);
+//     if (strlen($prenom) > 150) {
+//         $message = "l'adresse est trop long!";
+//     }
 //     $telephone = clean_input($_POST['telephone']);
+
+//     if (!preg_match('/^[0-9]+$/', $telephone)) {
+//         $message = "Le numéro de téléphone doit contenir uniquement des chiffres.";
+//     }
+//     if (strlen($telephone) > 20) {
+//         $message =  "Le numéro de téléphone ne doit pas  dépasser 20 chiffres.";
+//     }
 //     $datenaissance = clean_input($_POST['datenaissance']);
-//     $document = $_FILES['document'];
-//     $image = $_FILES['image'];
+
+//     if (isset($_POST['genre'])) {
+//         $genre = $_POST['genre'];
+//     } else {
+//         $message = "selectionnez votre genre";
+//     }
+//     if (isset($_POST['languages'])) {
+//         $languages = $_POST['languages'];
+//         $language_str = implode('/', $languages);
+//     } else {
+//         $message = "veuillez checker!";
+//     }
+//     if (isset($_POST['etudes'])) {
+//         $etudes = $_POST['etudes'];
+//     } else {
+//         $message = "veuilez choisir votre niveau d'etude";
+//     }
 //     $interet = clean_input($_POST['interet']);
-//     $genre = isset($_POST['genre']) ? clean_input($_POST['genre']) : "";
-//     $langues = isset($_POST['langues']) ? $_POST['langues'] : [];
-//     $langues_str = implode(", ",  $langues);
-//     $etudes = isset($_POST['etudes']) ? $_POST['etudes'] : [];
-//     // $genre=$_POST['genre'];
-//     // $langue=$post['langues'];
-//     // $etudes=$_POST['etudes'];
-//     // $photo=$_POST['photo'];
-//     // $image=$_POST['image'];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//     function create(
-//         $nom,
-//         $prenom,
-//         $email,
-//         $adresse,
-//         $telephone,
-//         $datenaissance,
-//         $interet,
-//         $image,
-//         $document
-//         // , $photo, $image, $langue, $etudes
-//     ) {
-//         global $db;
-//         if (
-//             empty($nom) || empty($prenom) || empty($email) || empty($adresse) || empty($telephone) || empty($datenaissance) || empty($interet)
-//         ) {
-//             return "tous les champs vont etre remplir...";
-//         }
-//         if (strlen($nom) > 50) {
-//             return "le nom est trop long!";
-//         }
-//         if (strlen($prenom) > 50) {
-//             return "Le prenom est trop long";
-//         }
-//         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-//             return "L'email est incorrect";
-//         }
-
-//         if (strlen($adresse) > 255) {
-//             return "L'adresse est trop longue";
-//         }
-//         if (!preg_match('/^[0-9]+$/', $telephone)) {
-//             return "Le numéro de téléphone doit contenir uniquement des chiffres.";
-//         }
-//         if (strlen($telephone) > 20) {
-//             return "Le numéro de téléphone ne doit pas dépasser 20 chiffres.";
-//         }
-//         if (!isValidDate($datenaissance, 'd/m/Y')) {
-//             return "invalid date use this format  JJ/MM/AAAA.";
-//         }
-//         if (strlen($interet) > 255) {
-//             return "L'intérêt est trop long";
-//         }
-//         // Appel de la fonction handleImageUpload pour valider et traiter l'image
-//         $imageResult = handleImageUpload($image);
-
-//         // Vérifiez si handleImageUpload a retourné une erreur
-//         if (is_string($imageResult)) {
-//             return $imageResult; // Retourne le message d'erreur
-//         }
-//         // Appel de la fonction handleDocumentUpload pour valider et traiter le document
-//         $documentResult = handleDocumentUpload($document);
-
-//         // Vérifiez si handleDocumentUpload a retourné une erreur
-//         if (is_string($documentResult)) {
-//             return $documentResult; // Retourne le message d'erreur
-//         }
+//     if (strlen($interet > 255)) {
+//         $message = "l'interet est tres long";
 //     }
-
-
-
-
-
-
-
-
-
-
-
-//     function isValidDate($date, $format = 'd/m/Y')
-//     {
-//         $d = DateTime::createFromFormat($format, $date);
-//         return $d && $d->format($format) === $date;
-//     }
-//     function handleImageUpload($file, $allowed_extensions = ['jpg', 'jpeg', 'png'], $max_size_mb = 5)
-//     {
-//         // Vérifiez si un fichier a été téléchargé sans erreur
-//         if ($file['error'] !== 0) {
-//             return "❌ Une erreur est survenue lors du téléchargement de l'image.";
-//         }
-
-//         // Récupération des informations sur le fichier
-//         $image_name = $file['name'];
-//         $image_tmp = $file['tmp_name'];
-//         $image_size = $file['size'];
+//     if ($_FILES['image']['error'] == 0) {
+//         $image_name = $_FILES['image']['name'];
+//         $image_tmp = $_FILES['image']['tmp_name'];
+//         $image_size = $_FILES['image']['size'];
 //         $image_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
+
+//         $allowed_extensions = ['jpg', 'jpeg', 'png'];
 
 //         // Vérification de l'extension
 //         if (!in_array($image_extension, $allowed_extensions)) {
-//             return "❌ Format d'image invalide. Formats autorisés : " . implode(', ', $allowed_extensions) . ".";
+//             die("❌ Format d'image invalide. Formats autorisés : JPG, JPEG, PNG.");
 //         }
 
-//         // Vérification de la taille (convertir Mo en octets)
-//         $max_size_bytes = $max_size_mb * 1024 * 1024;
-//         if ($image_size > $max_size_bytes) {
-//             return "❌ L'image ne doit pas dépasser {$max_size_mb} Mo.";
+//         // Vérification de la taille (max 3 Mo)
+//         if ($image_size > 3 * 1024 * 1024) {
+//             $message = "❌ L'image ne doit pas dépasser 3 Mo.";
 //         }
 
 //         // Lecture du fichier en binaire
-//         $image_data = file_get_contents($image_tmp);
+//         $image = file_get_contents($image_tmp);
 
-//         // Retourner les données de l'image en cas de succès
-//         return [
-//             'name' => $image_name,
-//             'extension' => $image_extension,
-//             'size' => $image_size,
-//             'data' => $image_data // Contenu binaire de l'image
-//         ];
+//         // Affichage pour vérification (supprimer en production)
+//         $message = "✅ Image valide et prête à être stockée.";
+//     } else {
+//         $message = "❌ Erreur lors de l'envoi de l'image.";
 //     }
+//     //code reservé a l'insertion du document
 
-//     function handleDocumentUpload($file, $allowed_extensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt'], $max_size_mb = 5)
-//     {
-//         // Vérifiez si un fichier a été téléchargé sans erreur
-//         if ($file['error'] !== 0) {
-//             return "❌ Une erreur est survenue lors du téléchargement du document.";
-//         }
 
-//         // Récupération des informations sur le fichier
-//         $document_name = $file['name'];
-//         $document_tmp = $file['tmp_name'];
-//         $document_size = $file['size'];
-//         $document_extension = strtolower(pathinfo($document_name, PATHINFO_EXTENSION));
+//     if ($_FILES['document']['error'] == 0) {
+//         $doc_tmp = $_FILES['document']['tmp_name'];
+//         $doc_size = $_FILES['document']['size'];
+//         $doc_extension = strtolower(pathinfo($_FILES['document']['name'], PATHINFO_EXTENSION));
+
+//         $allowed_extensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx'];
 
 //         // Vérification de l'extension
-//         if (!in_array($document_extension, $allowed_extensions)) {
-//             return "❌ Format de document invalide. Formats autorisés : " . implode(', ', $allowed_extensions) . ".";
+//         if (!in_array($doc_extension, $allowed_extensions)) {
+//             $message = "❌ Format invalide (seuls PDF, DOC, DOCX, XLS, XLSX sont acceptés).";
 //         }
-
-//         // Vérification de la taille (convertir Mo en octets)
-//         $max_size_bytes = $max_size_mb * 1024 * 1024;
-//         if ($document_size > $max_size_bytes) {
-//             return "❌ Le document ne doit pas dépasser {$max_size_mb} Mo.";
+//         // Vérification de la taille (max 3 Mo)
+//         else if ($doc_size > 3 * 1024 * 1024) {
+//             $message = "❌ Le fichier dépasse 3 Mo.";
+//         } else {
+//             // Lecture du fichier en binaire
+//             $doc_content = file_get_contents($doc_tmp);
 //         }
-
-//         // Lecture du fichier en binaire
-//         $document_data = file_get_contents($document_tmp);
-
-//         // Retourner les données du document en cas de succès
-//         return [
-//             'name' => $document_name,
-//             'extension' => $document_extension,
-//             'size' => $document_size,
-//             'data' => $document_data // Contenu binaire du document
-//         ];
 //     }
+//     $sql = "INSERT INTO `users` (`noms`, `prenom`, `email`, `adressse`, `telephone`,`datenaissance`, `genre`, `langues`, `etudes`, `interet`, `photo`,`document`) VALUES(:nom, :prenom, :email, :adresse, :telephone, :datenaissance, :genre, :langues,:etudes, :interet, :photo, :document)";
+//     $requete = $db->prepare($sql);
+
+//     $requete->bindValue(':nom', $nom);
+//     $requete->bindValue(':prenom', $prenom);
+//     $requete->bindValue(':email', $email);
+//     $requete->bindValue(':adresse', $adresse);
+//     $requete->bindValue(':telephone', $telephone);
+//     $requete->bindValue(':datenaissance', $datenaissance);
+//     $requete->bindValue(':genre', $genre);
+//     $requete->bindValue(':langues', $langues);
+//     $requete->bindValue(':etudes', $etudes);
+//     $requete->bindValue(':interet', $interet);
+//     $requete->bindValue(':photo', $image);
+//     $requete->bindValue(':document', $doc_content);
+//     $requete->execute();
+//     $message = "Success congratulations";
+// } else {
+//     $message = "Tous les champs vont etre remplir";
 // }
 
 
 
+require_once "database.php";
+
 if (
-    isset($_POST['nom'], $_POST['prenom'], $_POST['email'],  $_POST['adresse'], $_POST['telephone'], $_POST['datenaissance'], $_POST['genre'], $_POST['languages'], $_POST['etudes'], $_POST['interet'], $_FILES['photo'], $_FILES['document']) && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['email']) && !empty($_POST['adresse']) && !empty($_POST['telephone']) && !empty($_POST['datenaissance']) && !empty($_POST['interet'])
+    isset($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['adresse'], $_POST['telephone'], $_POST['datenaissance'], $_POST['genre'], $_POST['langues'], $_POST['etudes'], $_POST['interet'], $_FILES['photo'], $_FILES['document'])
+    && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['email']) && !empty($_POST['adresse']) && !empty($_POST['telephone']) && !empty($_POST['datenaissance']) && !empty($_POST['interet'])
 ) {
-    $message = "";
-    function clean_input($data)
-    {
-        return (htmlspecialchars(stripslashes((trim($data)))));
+    function clean_input($data) {
+        return htmlspecialchars(stripslashes(trim($data)));
     }
+
     $nom = clean_input($_POST['nom']);
     if (strlen($nom) > 50) {
-        $message = "le nom est trop long!";
+        $message = "Le nom est trop long !";
+        return;
     }
+
     $prenom = clean_input($_POST['prenom']);
     if (strlen($prenom) > 50) {
-        $message = "le prenom est trop long!";
+        $message = "Le prénom est trop long !";
+        return;
     }
+
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-        $message = "email non valide";
+        $message = "Email non valide.";
+        return;
     }
     $email = $_POST['email'];
 
     $adresse = clean_input($_POST['adresse']);
-    if (strlen($prenom) > 150) {
-        $message = "l'adresse est trop long!";
+    if (strlen($adresse) > 150) {
+        $message = "L'adresse est trop longue !";
+        return;
     }
-    $telephone = clean_input($_POST['telephone']);
 
+    $telephone = clean_input($_POST['telephone']);
     if (!preg_match('/^[0-9]+$/', $telephone)) {
         $message = "Le numéro de téléphone doit contenir uniquement des chiffres.";
+        return;
     }
-    if (strlen($telephone) > 20) {
-        $message =  "Le numéro de téléphone ne doit pas  dépasser 20 chiffres.";
+    if (strlen($telephone) > 30) {
+        $message = "Le numéro de téléphone ne doit pas dépasser 30 chiffres.";
+        return;
     }
+
     $datenaissance = clean_input($_POST['datenaissance']);
+    $genre = $_POST['genre']?? null ;
+    
+    if (!$genre) {
+        $message = "Sélectionnez votre genre.";
+        return;
+    }
+    
+    $langues = $_POST['langues']?? [] ;
+    if (isset($langues)) {
+        $message = "Veuillez cocher une langue.";
+        return;
+    }
+    $langues_str = implode('/', $langues);
+    
+    $etudes = $_POST['etudes'] ;
+    if (!$etudes) {
+        $message = "Veuillez choisir votre niveau d'étude.";
+        return;
+    }
 
-    if (isset($_POST['genre'])) {
-        $genre = $_POST['genre'];
-    } else {
-        $message = "selectionnez votre genre";
-    }
-    if (isset($_POST['languages'])) {
-        $languages = $_POST['languages'];
-        $language_str = implode('/', $languages);
-    } else {
-        $message = "veuillez checker!";
-    }
-    if (isset($_POST['etudes'])) {
-        $etudes = $_POST['etudes'];
-    } else {
-        $message = "veuilez choisir votre niveau d'etude";
-    }
     $interet = clean_input($_POST['interet']);
-    if (strlen($interet > 255)) {
-        $message = "l'interet est tres long";
+    if (strlen($interet) > 255) {
+        $message = "L'intérêt est trop long !";
+        return;
     }
-    if ($_FILES['image']['error'] == 0) {
-        $image_name = $_FILES['image']['name'];
-        $image_tmp = $_FILES['image']['tmp_name'];
-        $image_size = $_FILES['image']['size'];
-        $image_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
+var_dump($interet);
+    $image = null;
+    $doc_content = null;
 
+    if ($_FILES['photo']['error'] == 0) {
+        $image_tmp = $_FILES['photo']['tmp_name'];
+        $image_extension = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
         $allowed_extensions = ['jpg', 'jpeg', 'png'];
 
-        // Vérification de l'extension
         if (!in_array($image_extension, $allowed_extensions)) {
-            die("❌ Format d'image invalide. Formats autorisés : JPG, JPEG, PNG.");
+            $message = "❌ Format d'image invalide. Formats autorisés : JPG, JPEG, PNG.";
+            return;
         }
 
-        // Vérification de la taille (max 3 Mo)
-        if ($image_size > 3 * 1024 * 1024) {
+        if ($_FILES['photo']['size'] > 3 * 1024 * 1024) {
             $message = "❌ L'image ne doit pas dépasser 3 Mo.";
+            return;
         }
 
-        // Lecture du fichier en binaire
         $image = file_get_contents($image_tmp);
-
-        // Affichage pour vérification (supprimer en production)
-        $message = "✅ Image valide et prête à être stockée.";
-    } else {
-        $message = "❌ Erreur lors de l'envoi de l'image.";
     }
-    //code reservé a l'insertion du document
-
 
     if ($_FILES['document']['error'] == 0) {
         $doc_tmp = $_FILES['document']['tmp_name'];
-        $doc_size = $_FILES['document']['size'];
         $doc_extension = strtolower(pathinfo($_FILES['document']['name'], PATHINFO_EXTENSION));
-
         $allowed_extensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx'];
 
-        // Vérification de l'extension
         if (!in_array($doc_extension, $allowed_extensions)) {
-            $message = "❌ Format invalide (seuls PDF, DOC, DOCX, XLS, XLSX sont acceptés).";
+            $message = "❌ Format de document invalide.";
+            return;
         }
-        // Vérification de la taille (max 3 Mo)
-        else if ($doc_size > 3 * 1024 * 1024) {
+        if ($_FILES['document']['size'] > 3 * 1024 * 1024) {
             $message = "❌ Le fichier dépasse 3 Mo.";
-        } else {
-            // Lecture du fichier en binaire
-            $doc_content = file_get_contents($doc_tmp);
+            return;
         }
-    }
-    $sql = "INSERT INTO `users` (`noms`, `prenom`, `email`, `adressse`, `telephone`,`datenaissance`, `genre`, `langues`, `etudes`, `interet`, `photo`,`document`) VALUES(:nom, :prenom, :email, :adresse, :telephone, :datenaissance, :genre, :langues,:etudes, :interet, :photo, :document)";
-    $requete = $db->prepare($sql);
 
+        $doc_content = file_get_contents($doc_tmp);
+    }
+
+    $sql = "INSERT INTO `users` (`noms`, `prenom`, `email`, `adresse`, `telephone`, `datenaissance`, `genre`, `langues`, `etudes`, `interet`, `photo`, `document`) 
+            VALUES(:nom, :prenom, :email, :adresse, :telephone, :datenaissance, :genre, :langues, :etudes, :interet, :photo, :document)";
+    
+    $requete = $db->prepare($sql);
     $requete->bindValue(':nom', $nom);
     $requete->bindValue(':prenom', $prenom);
     $requete->bindValue(':email', $email);
@@ -296,29 +249,32 @@ if (
     $requete->bindValue(':telephone', $telephone);
     $requete->bindValue(':datenaissance', $datenaissance);
     $requete->bindValue(':genre', $genre);
-    $requete->bindValue(':langues', $langues);
+    $requete->bindValue(':langues', $langues_str);
     $requete->bindValue(':etudes', $etudes);
     $requete->bindValue(':interet', $interet);
     $requete->bindValue(':photo', $image);
     $requete->bindValue(':document', $doc_content);
-    $requete->execute();
-    $message = "Success congratulations";
+
+    if ($requete->execute()) {
+        $message = "✅ Succès ! Les données ont été enregistrées.";
+    } else {
+        $message = "❌ Erreur d'insertion dans la base de données.";
+    }
 } else {
-    $message = "Tous les champs vont etre remplir";
+    $message = "❌ Veuillez remplir tous les champs!";
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
 ?>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -340,7 +296,7 @@ require_once "header-and-footer/header.php";
         Étudiant</h1>
 
     <form method="post" class="bg-white
-p-6 rounded shadow max-w-md mx-auto ">
+p-6 rounded shadow max-w-md mx-auto " enctype="multipart/form-data">
         <!-- Nom -->
         <!-- <div class="mb-4 text-left">
             <label for="nom" class="block text-gray-700"></label>
@@ -350,7 +306,7 @@ focus:border-green-500">
         </div> -->
         <div class="mb-4 text-left">
             <!--    <input type="text" class="bg-red-500" > -->
-            <p class="border-1 p-[8px] border-solid border-green-500 rounded-[7px]"><?= $message ?> </p>
+            <p class="border-1 p-[8px] border-solid border-red-500 rounded-[4px]"><?= $message ?> </p>
         </div>
         <div class="mb-4 text-left ">
             <label for="nom" class="block text-gray-700">Nom :</label>
@@ -442,10 +398,10 @@ focus:border-green-500">
         </div>
         <!-- Intérêts -->
         <div class="mb-4 text-left">
-            <label for="interets" class="block text-gray-700">Vos intérêts :</label>
+            <label for="interets" class="block text-gray-700 ">Vos intérêts :</label>
             <textarea id="interets" name="interet" placeholder="Vos intérêts"
                 rows="4"
-                class="w-full border border-green-300 p-2 rounded focus:outline-none
+                class="resize-none w-full border border-green-300 p-2 rounded focus:outline-none
 focus:border-green-500"></textarea>
         </div>
         <!-- Upload Photo -->
