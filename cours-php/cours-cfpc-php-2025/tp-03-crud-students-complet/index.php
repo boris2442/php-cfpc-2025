@@ -1,8 +1,27 @@
 <?php
-require_once "header-and-footer/header.php";
+require_once "database.php";
+$sql = "SELECT * FROM `users`";
+
+$requete = $db->query($sql);
+
+$students = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 ?>
 
 
+
+
+
+
+
+
+
+
+<?php
+require_once "header-and-footer/header.php";
+?>
 
 <div class="container mx-auto p-4">
     <h1 class="text-4xl font-bold text-green-900 text-center mb-6">Liste des
@@ -11,11 +30,11 @@ require_once "header-and-footer/header.php";
     <form method="" action="" class="mb-4 flex flex-col md:flex-row
 items-center gap-4">
         <div class="flex flex-col md:flex-row items-center gap-4">
-            <a href="create.php" class="px-4 py-2 bg-green-600 text-white rounded
+            <a href="create2.php" class="px-4 py-2 bg-green-600 text-white rounded
 hover:bg-green-700">
                 Créer un nouvel étudiant
             </a>
-            <a href="" class="px-4 py-2 bg-green-600 text-white rounded
+            <a href="http://localhost/php-2025/cours-php/cours-cfpc-php-2025/tp-03-crud-students-complet/" class="px-4 py-2 bg-green-600 text-white rounded
 hover:bg-green-700">
                 Actualiser
             </a>
@@ -70,41 +89,49 @@ uppercase">Actions</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-green-100">
+                <?php foreach ($students as $student) : ?>
+                    <tr class="hover:bg-green-50">
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['id'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['nom'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['prenom'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['email'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['adresse'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['telephone'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['datenaissance'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['genre'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['langues'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['etudes'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900"><?= $student['interets'] ?></td>
+                        <td class="px-4 py-2 text-sm text-green-900">
 
-                <tr class="hover:bg-green-50">
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm text-green-900">
-
-                        <img src=""
-                            alt="Photo de " class="w16 h-16 object-cover rounded">
+                            <img src="data:image/png;base64,<?php echo base64_encode($student['photo'] ?? ''); ?>"
+                                alt="Image de <?php echo htmlspecialchars($student['nom'] ?? ''); ?>"
+                                style="width: 80px; height: 80px;" class="object-cover">
 
 
 
-                    </td>
-                    <td class="px-4 py-2 text-sm text-green-900">
+                        </td>
+                        <td class="px-4 py-2 text-sm text-green-900">
+                            <?php if (!empty($student['document'])) : ?>
+                                <a href="<?= htmlspecialchars($student['document']) ?>" target="_blank" class="text-blue-600 hover:underline">
+                                    Ouvrir le document
+                                </a>
+                            <?php else : ?>
+                                Aucun document
+                            <?php endif; ?>
 
-                    </td>
+                        </td>
 
-                    <td class="px-4 py-2 text-sm text-green-900"></td>
-                    <td class="px-4 py-2 text-sm">
-                        <a href=""
-                            class="text-green-600 hover:text-green-900 font-medium mr2">Modifier</a>
-                        <a href=""
+                        <td class="px-4 py-2 text-sm text-green-900"><?php echo $student['create']  ?></td>
+                        <td class="px-4 py-2 text-sm">
+                            <a href=""
+                                class="text-green-600 hover:text-green-900 font-medium mr2">Modifier</a>
+                            <a href=""
 
-                            class="text-red-600 hover:text-red-900 font-medium">Supprimer</a>
-                    </td>
-                </tr>
-
+                                class="text-red-600 hover:text-red-900 font-medium">Supprimer</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
