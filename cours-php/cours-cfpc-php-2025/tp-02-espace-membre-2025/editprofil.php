@@ -80,11 +80,16 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
 
     //mise a jour de l'avatar
     ////mise en avatar
-    //1.verification de l'ppload de l'image
-    //2-verification de ta taille de l'image
-    // 3-verification de l'extension de l'image
-
-
+    /** 
+     * Mise de l'avatar 
+      * 1 - Verification de l'upload de l'image
+      * 2 - Verification de la taille de l'image
+      * 3 - Verification de l'extension de l'image est autorisé
+      * 4 - Renommer l'image uploadée (id de l'user 'extension de l'image)
+      * 5 - Chemin de destination pour l'upload de l'image
+      * 6 - Deplacement de l'image uploadée vers le dossier de destination
+     * 
+     * */
     //verificatin de la presence d'un fichier upload
     if (!empty($_FILES['avatar']['name'])) {
         $maxsize = 2 * 1024 * 1024;  // 2megaoctet

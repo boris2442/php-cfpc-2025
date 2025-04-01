@@ -21,20 +21,20 @@ if (isset($_GET['id'])) {
 $title = "profil of user";
 require_once "header-and-footer/header.php";
 ?>
-<div class="max-w-[500px] bg-white mx-auto min-h-[450px] rounded-[7px] px-[7px]">
+<div class="max-w-[400px] bg-white mx-auto min-h-[450px] rounded-[7px] px-[7px] flex flex-col justify-center items-center  ">
     <h1 class="text-center text-4xl p-[7px] font-bold text-green-900">welcome to profil!...</h1>
 
     <h2 class="text-2xl font-bold">Profil de: <span class="text-2xl"> <?= $userInfos['pseudo']; ?></span></h2>
 
-    <?php if (!empty($userInfos['avatar'])) { ?>
-        <img src="membres/avatars/<?= $userInfos['avatar']; ?>" width="222" alt="image de boris" />
-    <?php  } ?>
 
 
 
 
 
     <h3 class="font-bold text-2xl">mail:<?= $userInfos['mail']; ?></h3>
+    <?php if (!empty($userInfos['avatar'])) { ?>
+        <img src="membres/avatars/<?= $userInfos['avatar']; ?>" width="" alt="image de boris" class="w-[200px] h-[200px] object-cover bg-red-500"  />
+    <?php  } ?>
 
     <?php
     if (isset($_SESSION['id']) && $userInfos['id'] == $_SESSION['id']) {
