@@ -85,7 +85,7 @@ require_once "header-and-footer/header.php";
     <div class="flex flex-col gap-[7px] pt-[7px]">
         <?php
         if (isset($error)) {
-            echo '<p class="bg-red-500  border-green-300 p-2 rounded focus:outline-none focus:border-green-500 text-white font-bold">' . $error . '</p>';
+            echo '<p class="bg-green-500  border-green-300 p-2 rounded focus:outline-none focus:border-green-500 text-white font-bold">' . $error . '</p>';
         }
 
         ?>

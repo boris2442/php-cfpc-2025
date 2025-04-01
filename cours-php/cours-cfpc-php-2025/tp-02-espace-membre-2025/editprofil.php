@@ -22,7 +22,7 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
                 $updatepseudo = $db->prepare("UPDATE membres SET pseudo=? WHERE id=?");
                 $updatepseudo->execute([$newspseudo, $_SESSION['id']]);
                 $_SESSION['pseudo'] = $newspseudo;
-                header('Location: profil.php?id=' . $_SESSION['id']);
+                // header('Location: profil.php?id=' . $_SESSION['id']);
             } else {
                 $erreur = "Ce pseudo est déjà utilisé !";
             }
@@ -45,7 +45,7 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
                 $updatemail = $db->prepare("UPDATE membres SET mail=?WHERE id=?");
                 $updatemail->execute([$newemail,  $_SESSION['id']]);
                 $_SESSION['mail'] = $newemail;
-                header('Location: profil.php?id=' . $_SESSION['id']);
+                // header('Location: profil.php?id=' . $_SESSION['id']);
             } else {
                 $erreur = "Cette adresse mail est déjà utilisée!";
             }
@@ -68,7 +68,7 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
             $mdp = password_hash($mdp1, PASSWORD_DEFAULT);
             $updatemdp = $db->prepare("UPDATE membres SET mdp=? WHERE id=?");
             $updatemdp->execute([$mdp, $_SESSION['id']]);
-            header('Location: profil.php?id=' . $_SESSION['id']);
+            //
         } else {
             $erreur = "Les deux mots de passe ne correspondent pas!";
         }
@@ -79,23 +79,45 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
 
 
     //mise a jour de l'avatar
+    ////mise en avatar
+    //1.verification de l'ppload de l'image
+    //2-verification de ta taille de l'image
+    // 3-verification de l'extension de l'image
+
 
     //verificatin de la presence d'un fichier upload
     if (!empty($_FILES['avatar']['name'])) {
         $maxsize = 2 * 1024 * 1024;  // 2megaoctet
         ///tableau des extensiona autorises
-        $valideExtension = ['.jpg', '.png', '.gif', '.jpeg'];
+        $valideExtension = ['jpg', 'png', 'gif', 'jpeg'];
         //verification de la taille de l'image
         if ($_FILES['avatar']['size'] <= $maxsize) {
-            $ext=strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
+            $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
             //verification de l'extension des fichiers autorises
-            if(in_array($ext, $valideExtension)){
+            if (in_array($ext, $valideExtension)) {
+                //renommer l'image upploader(id de l'utilisateur.extension de l'image)
+                $newFilename = $_SESSION['id'] . "." . $ext;
 
+                //chemin de destination complete pour l'uppload de l'image
+                $destination = "membres/avatars/" . $newFilename;
+                if(move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)){
+                    $requpdate=$db->prepare("UPDATE membres SET avatar=? WHERE id=? ");
+                    $requpdate->execute([$newFilename, $_SESSION['id']]);
+                    header('Location: profil.php?id=' . $_SESSION['id']);
+                    exit();
+                    // $requpdate=$db->
+                }else{
+                    $erreur="Erreur lors de l'upload";
+                }
+            } else {
+                $erreur = "format d'images non autoriser. ('.jpg', '.png', '.gif', '.jpeg' requis)";
             }
         } else {
             $erreur = "La taille de l'image ne doit pas exceder 2mo";
         }
+        // 
     } else {
+        $erreur = "Veuillez selectionner une image";
     }
 }
 
@@ -139,7 +161,7 @@ require_once "header-and-footer/header.php";
                     <input type="password" class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" name="newmdp2" value='' placeholder="Confirmation du mot de passe" />
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
-                    <label for="">Avatar :</label>
+                    <label for="">Avatar :</label>            
                     <input type="file" name="avatar" />
                 </div>
                 <div class="mx-auto w-[400px]">
@@ -147,9 +169,7 @@ require_once "header-and-footer/header.php";
                 </div>
             </div>
         </form>
-        <?php if (isset($msg)) {
-            echo $msg;
-        } ?>
+
     </div>
 </div>
 </body>
