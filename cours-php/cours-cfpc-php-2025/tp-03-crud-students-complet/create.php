@@ -132,7 +132,7 @@
 require_once "database.php";
 
 if (
-    isset($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['adresse'], $_POST['telephone'], $_POST['datenaissance'], $_POST['genre'], $_POST['langues'], $_POST['etudes'], $_POST['interet'], $_FILES['photo'], $_FILES['document'])
+    isset($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['adresse'], $_POST['telephone'], $_POST['datenaissance'], $_POST['genre'], $_POST['langues'], $_POST['etudes'], $_POST['interet'], $_FILES['photo'], $_FILES['document']) 
     && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['email']) && !empty($_POST['adresse']) && !empty($_POST['telephone']) && !empty($_POST['datenaissance']) && !empty($_POST['interet'])
 ) {
     function clean_input($data) {
