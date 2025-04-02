@@ -13,19 +13,24 @@
 //     echo "Succes:connexion a la database reussie";
 // }
 
-define("DBHOST", "localhost");
-define("DBUSER", "root");
+
 // define("DBUSER", "postgresql");
-define("DBPASS", "");
-define("DBNAME", "Database: espace_membre_2025");
+
 
 
 // $dsn = "pgsql:dbname=" . DBNAME . "; host=" . DBHOST;
+
+define("DBHOST", "localhost");
+define("DBUSER", "root");
+define("DBNAME", "espace_membre_2025");
+
+define("DBPASS", "");
 $dsn = "mysql:dbname=" . DBNAME . "; host=" . DBHOST;
 try {
     $db = new PDO($dsn, DBUSER, DBPASS);
-    // $db->setAttribute(attribute:PDO::FETCH_ASSOC);
+    $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     $db->exec("SET NAMES utf8");
+    // echo "Connexion à la base de données réussie";
 } catch (PDOException $e) {
-    die($e->getMessage());
+    die("Erreur: " . $e->getMessage());
 }
