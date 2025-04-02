@@ -2,9 +2,7 @@
 session_start();
 
 require_once "database.php";
-// //recuperation des donnees du formulaires
-// $mailConnect = htmlspecialchars($_POST['mailconnect']);
-// $mdpConnect = htmlspecialchars($_POST['mdpconnect']);
+
 
 
 
