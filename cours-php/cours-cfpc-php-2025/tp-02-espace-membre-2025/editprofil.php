@@ -159,7 +159,7 @@ require_once "header-and-footer/header.php";
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
                     <label>Mot de passe :</label>
-                    <input type="password" name="newmdp1" class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" placeholder="Mot de passe" value="" />
+                    <input type="password" name="newmdp1"  class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]"  placeholder="Mot de passe"  value="" />
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
                     <label>Confirmation - mot de passe :</label>
