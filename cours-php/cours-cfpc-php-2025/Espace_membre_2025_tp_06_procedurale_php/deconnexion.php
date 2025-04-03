@@ -1,6 +1,16 @@
 <?php
-//deconnexion de l'utilisateur
 session_start();
-$_SESSION = [];
-session_destroy(); //destruction de la session 
-header("location:connexion.php");
+
+// Supprimer tous les cookies
+if (isset($_COOKIE['email'])) {
+    setcookie('email', '', time() - 3600, "/"); // Supprime le cookie email
+}
+
+// Détruire la session
+session_unset();
+session_destroy();
+
+// Rediriger vers la page de connexion
+header("Location: connexion.php");
+exit();
+?>

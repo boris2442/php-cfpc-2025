@@ -48,6 +48,13 @@ if (!empty($_POST)) {
             $_SESSION['id'] = $user['id'];
             $_SESSION['pseudo'] = $users['pseudo'];
             $_SESSION['email'] = $users['mail'];
+            // Si l'utilisateur a coché "Se souvenir de moi"
+            if (isset($_POST['remember_me'])) {
+                setcookie('email', $users['email'], time() + 365 * 24 * 3600, "/", null, false, true); // Cookie valide pendant 1 an
+            } else {
+                // Si la case n'est pas cochée, supprimer le cookie existant
+                setcookie('email', '', time() - 3600, "/");
+            }
         }
         header("Location:profil.php?id=" . $_SESSION['id']);
         exit();
@@ -75,7 +82,7 @@ require_once "header-and-footer/header.php";
         <div class="text-left flex flex-col gap-[7px]">
             <label for="mail">Email :</label>
 
-            <input type="text" required placeholder="Votre mail" id="mail" value="<?php echo $mail ?? ""  ?>" name="email" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
+            <input type="text" required placeholder="Votre mail" id="mail" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>" name="email" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
         </div>
 
 
