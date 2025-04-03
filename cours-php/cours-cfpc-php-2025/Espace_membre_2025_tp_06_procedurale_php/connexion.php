@@ -116,8 +116,8 @@ require_once "header-and-footer/header.php";
             <!-- <a
     href="connexion.php" class="border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 bg-green-100">Se connecter
 </a> -->
-            <label for="souvenir">Se souvenir de moi!</label>
-            <input type="checkbox" name="souvenir" id="souvenir" value="Se souvenir de moi!">
+            <label for="souvenir">remember_me!</label>
+            <input type="checkbox" name="remember_me" id="souvenir" value="Se souvenir de moi!">
         </div>
         <div class="text-left flex flex-col gap-[7px]">
             <input type="submit" name="formconnexion" value="Se connecter" class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 bg-green-100" />
