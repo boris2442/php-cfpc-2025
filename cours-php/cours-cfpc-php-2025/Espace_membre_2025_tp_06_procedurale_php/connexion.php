@@ -5,8 +5,8 @@ $error = "";
 require "clean_input.php";
 if (!empty($_POST)) {
     if (
-        isset($_POST['email'], $_POST['password']) && isset($_POST['role'])
-        && !empty($_POST['email']) && !empty($_POST['password'])
+        isset($_POST['email'], $_POST['password'])  && !empty($_POST['email']) && !empty($_POST['password'])
+
 
     ) {
         $email = clean_input($_POST['email']);
@@ -18,8 +18,8 @@ if (!empty($_POST)) {
         $requete->bindValue(":email", $email);
         $requete->execute();
         $users = $requete->fetch();
-        if (!$users['email'] == $email) {
-            $error = "L'email ne correspond pas!";
+        if (!$users) {
+            $error = "❌ Aucun utilisateur trouvé avec cet email.";
         }
 
 
@@ -35,26 +35,24 @@ if (!empty($_POST)) {
             $error = " incorrect password";
         }
 
-        $role = $_POST['role'];
-        if ($role === 'admin') {
-            if (empty($_POST['access_code']) || $_POST['access_code'] !== '1999@') {
-                $error = "Code d'accès invalide. Veuillez cocher le rôle utilisateur ou entrer le bon code d'accès.";
-            }
-        }
-        if(!$users['roles']===$role){
-            $error="role incorrect";
-        }
-        if (empty($error) ){
+        // $role = $_POST['role'];
+        // if ($role === 'admin') {
+        //     if (empty($_POST['access_code']) || $_POST['access_code'] !== '1999@') {
+        //         $error = "Code d'accès invalide. Veuillez cocher le rôle utilisateur ou entrer le bon code d'accès.";
+        //     }
+        // }
+        // if(!$users['roles']===$role){
+        //     $error="role incorrect";
+        // }
+        if (empty($error)) {
             $_SESSION['id'] = $user['id'];
             $_SESSION['pseudo'] = $users['pseudo'];
             $_SESSION['email'] = $users['mail'];
         }
-
-
-        header("Location: profil.php?id=" . $_SESSION['id']);
+        header("Location:profil.php?id=" . $_SESSION['id']);
         exit();
     } else {
-        $error = "veuillez remplir tous les chams";
+        $error = "veuillez remplir tous les champs";
     }
 }
 
@@ -65,7 +63,7 @@ require_once "header-and-footer/header.php";
 ?>
 <h2 class="text-4xl font-bold text-green-900 text-center mb-6">Connectez vous!</h2>
 
-<form method="POST" action="" class=" bg-white p-6 rounded shadow max-w-lg mx-auto">
+<form method="POST" class=" bg-white p-6 rounded shadow max-w-lg mx-auto">
     <div class="flex flex-col gap-[7px] pt-[7px]">
         <?php
         if (isset($error)) {
@@ -98,7 +96,7 @@ require_once "header-and-footer/header.php";
             <input type="radio" name="role" id="users" value="user">
         </div> -->
 
-        <div class="text flex gap-[34px] justify-center">
+        <!-- <div class="text flex gap-[34px] justify-center">
             <label for="administrateur">Administrateur</label>
             <input type="radio" name="role" id="administrateur" value="admin" onclick="toggleAccessCode(true)">
             <label for="users">Utilisateur</label>
@@ -109,7 +107,7 @@ require_once "header-and-footer/header.php";
             <label for="access-code">Code d'accès :</label>
             <input type="text" id="access-code" name="access_code" placeholder="Entrez le code d'accès"
                 class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
-        </div>
+        </div> -->
 
 
         <div class="w-full text-left flex  gap-[7px] ">
