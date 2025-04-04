@@ -56,7 +56,7 @@ if (!empty($_POST)) {
                 setcookie('email', '', time() - 3600, "/");
             }
         }
-        header("Location:profil.php?id=" . $_SESSION['id']);
+        header("Location:profil.php?id=". $_SESSION['id']);
         exit();
     } else {
         $error = "veuillez remplir tous les champs";
