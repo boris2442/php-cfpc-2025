@@ -11,7 +11,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $getid = intval($_GET['id']);
 
 // Récupérer les informations de l'utilisateur
-$requser = $db->prepare('SELECT * FROM utilisateurs WHERE id = ?');
+$requser = $db->prepare('SELECT * FROM `utilisateurs` WHERE id = ?');
 $requser->execute([$getid]);
 $userInfos = $requser->fetch();
 

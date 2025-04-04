@@ -18,6 +18,8 @@ if (!empty($_POST)) {
         $requete->bindValue(":email", $email);
         $requete->execute();
         $users = $requete->fetch();
+        var_dump($users);
+        // $users = $requete->fetchAll(PDO::FETCH_ASSOC);
         if (!$users) {
             $error = "❌ Aucun utilisateur trouvé avec cet email.";
         }
@@ -45,7 +47,7 @@ if (!empty($_POST)) {
         //     $error="role incorrect";
         // }
         if (empty($error)) {
-            $_SESSION['id'] = $user['id'];
+            $_SESSION['id'] = $users['id'];
             $_SESSION['pseudo'] = $users['pseudo'];
             $_SESSION['email'] = $users['mail'];
             // Si l'utilisateur a coché "Se souvenir de moi"
@@ -55,9 +57,9 @@ if (!empty($_POST)) {
                 // Si la case n'est pas cochée, supprimer le cookie existant
                 setcookie('email', '', time() - 3600, "/");
             }
+            header("Location:profil.php?id=". $_SESSION['id']);
+            exit();
         }
-        header("Location:profil.php?id=". $_SESSION['id']);
-        exit();
     } else {
         $error = "veuillez remplir tous les champs";
     }
