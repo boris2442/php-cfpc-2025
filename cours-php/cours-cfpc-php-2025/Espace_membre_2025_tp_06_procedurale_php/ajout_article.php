@@ -88,17 +88,21 @@ require_once "header-and-footer/header.php";
         </form>
     </div>
     <div class="box-container bg-blue-500 h-[500px] overflow-auto rounded-[7px]">
-        <h2 class="text-4xl font-bold text-green-900 text-center mb-6">Listes des articles</h2>
+        <h2 class="text-4xl font-bold text-white text-center mb-6 uppercase p-[5px] ">Listes des articles</h2>
         <div class="flex gap-4 flex-wrap justify-center items-center">
             <?php
             foreach ($articles as $article):
             ?>
-                <div class="w-[300px] h-[250px] bg-white p-4 rounded shadow mb-4">
-                <h4 class="">Title: <?= clean_input( $article['title'])?></h4>
-                    <h3 class="">Autheur: <?= clean_input($article['author'])   ?></h3>
+                <div class="w-[300px] h-[250px] bg-white p-4 rounded shadow mb-4 relative">
+                <h4 class="text-blue-900  font-bold text-2xl">Title: <?= clean_input( $article['title'])?></h4>
+                    <h3 class=""><span class="text-blue-900  font-bold">Autheur: </span><span class=""><?= clean_input($article['author'])   ?></span></h3>
                 
-                    <h3 class="">Contenu <?= clean_input( $article['content'])?></h3>
-                    <p class="">Publié le : <?= clean_input($article['date'])?></p>
+                    <h3 class=""><span class="text-blue-900  font-bold">Contenu: </span><span class=""><?= clean_input( $article['content'])?></span> </h3>
+                    <p class=""><span class="text-blue-900  font-bold">Publié le : </span> <span class=""><?= clean_input($article['date'])?></span></p>
+                    <div class="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
+                    <button class="bg-blue-900 p-1 text-white hover:bg-blue-700 "><a href="delete.php?id=<?=  $article['id'] ?>">Supprimer</a></button>
+                    <button class="bg-blue-900 p-1 text-white hover:bg-blue-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
+                    </div>
                 </div>
             <?php endforeach; ?>
 
