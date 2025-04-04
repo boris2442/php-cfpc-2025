@@ -9,7 +9,6 @@ if (isset($_COOKIE['email'])) {
 // Détruire la session
 session_unset();
 session_destroy();
-
 // Rediriger vers la page de connexion
 header("Location: connexion.php");
 exit();

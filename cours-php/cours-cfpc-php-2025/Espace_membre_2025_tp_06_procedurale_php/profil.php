@@ -41,7 +41,7 @@ require_once "header-and-footer/header.php";
     <?php if (isset($_SESSION['id']) && $userInfos['id'] == $_SESSION['id']) { ?>
         <div class="flex justify-between gap-[20px] pt-[20px] mx-auto">
             <div>
-                <a href="editprofil.php" class="bg-green-500 p-[5px] text-white rounded-[5px] hover:bg-900">Editer mon profil</a>
+                <a href="editionprofil.php" class="bg-green-500 p-[5px] text-white rounded-[5px] hover:bg-900">Editer mon profil</a>
             </div>
             <div>
                 <a href="deconnexion.php" class="bg-green-500 text-white p-[5px] rounded-[5px] hover:bg-900">Se déconnecter</a>
