@@ -10,10 +10,8 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
 
     $user = $requser->fetch();
     var_dump($user);
-    // echo "<pre>";
-    // var_dump($user);
-    // echo "</pre>";
-    // if (!empty($_POST['newpseudo'])  !== $user['pseudo']) {
+
+    if (!empty($_POST['newspseudo']) ) {
         $newspseudo =clean_input(($_POST['newspseudo']));
         if (strlen($newspseudo) < 255) {
 
@@ -23,28 +21,27 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
                 $updatepseudo = $db->prepare("UPDATE utilisateurs  SET pseudo=? WHERE id=?");
                 $updatepseudo->execute([$newspseudo, $_SESSION['id']]);
                 $_SESSION['pseudo'] = $newspseudo;
-                // header('Location: profil.php?id=' . $_SESSION['id']);
+
             }
-            // header('Location: profil.php?id='. $_SESSION['id']);
-            // header('Location: profil.php?id=' . $_SESSION['id']);
+
         } else {
             $erreur = "Votre pseudo ne doit pas dépasser 255 caractères!";
         }
-    // }
-    //mise a jour de l'email
+    }
 
-    if (!empty($_POST['newmail']) && $_POST['newmail'] !== $user['mail']) {
-        // $newemail = htmlspecialchars(trim($_POST['newmail']));
+
+    if (!empty($_POST['newmail']) && $_POST['newmail'] !== $user['email']) {
+
         $newemail = clean_input($_POST['newmail']);
         if (filter_var($newemail, FILTER_VALIDATE_EMAIL)) {
-            $updatemail = $db->prepare("SELECT*FROM utilisateurs  WHERE mail=?");
+            $updatemail = $db->prepare("SELECT*FROM utilisateurs  WHERE email=?");
             $updatemail->execute([$newemail]);
             if ($updatemail->rowCount() == 0) {
-                // $mdp = password_hash($_POST['newmdp1'], PASSWORD_DEFAULT);
+        
                 $updatemail = $db->prepare("UPDATE utilisateurs  SET mail=?WHERE id=?");
                 $updatemail->execute([$newemail,  $_SESSION['id']]);
                 $_SESSION['mail'] = $newemail;
-                // header('Location: profil.php?id=' . $_SESSION['id']);
+ 
             } else {
                 $erreur = "Cette adresse mail est déjà utilisée!";
             }
@@ -61,11 +58,10 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
     ) {
         // $mdp1 = htmlspecialchars(trim($_POST['newmdp1']));
         $mdp1 = clean_input($_POST['newmdp1']);
-        // $mdp2 = clean_input($_POST['newmdp2']);
-        // $mdp2 = htmlspecialchars(trim($_POST['newmdp2']));
+
         if ($mdp1) {
             $mdp = password_hash($mdp1, PASSWORD_DEFAULT);
-            $updatemdp = $db->prepare("UPDATE utilisateurs SET mdp=? WHERE id=?");
+            $updatemdp = $db->prepare("UPDATE utilisateurs SET password=? WHERE id=?");
             $updatemdp->execute([$mdp, $_SESSION['id']]);
             //
         } else {
@@ -105,7 +101,7 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
                 //chemin de destination complete pour l'uppload de l'image
                 $destination = "membres/avatars/" . $newFilename;
                 if(move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)){
-                    $requpdate=$db->prepare("UPDATE membres SET avatar=? WHERE id=? ");
+                    $requpdate=$db->prepare("UPDATE utilisateurs SET avatar=? WHERE id=? ");
                     $requpdate->execute([$newFilename, $_SESSION['id']]);
                     header('Location: profil.php?id=' . $_SESSION['id']);
                     exit();
