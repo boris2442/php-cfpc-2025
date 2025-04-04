@@ -44,17 +44,51 @@ function authentificateUser($db, $mailConnect, $mdpConnect)
     }
 
 
-
+    //definir les variables de sessions et stocker les infos de l'utilisateur
     $_SESSION['id'] = $userInfos['id'];
     $_SESSION['pseudo'] = $userInfos['pseudo'];
     $_SESSION['mail'] = $userInfos['mail'];
 
-    header("Location: profil.php?id=". $_SESSION['id'] );
-    exit();
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //si l'utiliisateur est authentifier, on enregistre son role dans la session
+
+    $_SESSION['role'] = $userInfos['role'];
+    $_SESSION['auth'] = $userInfos;
+    //redirection selon le role de l'utilisateur
+    switch ($_SESSION['role']) {
+        case 'admin':
+            header("Location: admindofjjzeee/admindofjjzeee-dashbord.php");
+
+            break;
+        case 'user':
+            header("Location: profil.php?id=" . $_SESSION['id']);
+            break;
+            defeault:
+            return "role inconu";
+            // }
+            // header("Location: profil.php?id=" . $_SESSION['id']);
+            // exit();
+    }
+
     // return "Congratulation you are connecting!!!";
 }
 $error = handle($db);
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <?php
 $title = "connecting";

@@ -1,5 +1,3 @@
-
-
 <?php
 require_once "database.php";
 require "clean_input.php";
@@ -13,22 +11,33 @@ if (!empty($_POST)) {
     ) {
         $title = clean_input($_POST['article_title']);
         $content = clean_input($_POST['article_content']);
-        $author = clean_input($_POST['author_article']);
-        if(strlen($title)>50){
-            $error="Le titre de l'article ne depasse pas 50 caracteres";
+        $author_article = clean_input($_POST['author_article']);
+        if (strlen($title) > 50) {
+            $error = "Le titre de l'article ne depasse pas 50 caracteres";
         }
-        if(strlen($author)>50){
-            $error="Le nom de l'auteur ne depasse pas 50 caracteres";
+        if (strlen($author_article) > 50) {
+            $error = "Le nom de l'auteur ne depasse pas 50 caracteres";
         }
-        if(strlen($content)>240){
-            $error="Le contenu ne doit pas deborder 240 caracters";
+        if (strlen($content) > 240) {
+            $error = "Le contenu ne doit pas deborder 240 caracters";
         }
-        $sql="INSERT INTO `articles2` ( `author`,`title`, `name_article`,`content_article`) VALUES (:name_article, :author_article, :content_article)";
-        $requete=$db->prepare($sql);
-      
-     
+        $sql = "INSERT INTO `articles2` ( `author`,`title`,`content`) VALUES (:author_article,:title,:content_article)";
+        $requete = $db->prepare($sql);
+        $requete->bindValue(':author_article', $author_article);
+        $requete->bindValue(':title', $title);
+        $requete->bindValue(':content_article', $content);
+        $requete->execute();
+        // $articles = $requete->fetchAll(PDO::FETCH_ASSOC);
+        // var_dump($requete);
+
+   
     }
 }
+// Récupérer les articles pour les afficher
+$sql = "SELECT * FROM articles2 ORDER BY date DESC";
+$requete = $db->prepare($sql);
+$requete->execute();
+$articles = $requete->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
@@ -78,9 +87,21 @@ require_once "header-and-footer/header.php";
             </div>
         </form>
     </div>
-    <div class="box-container bg-red-500">
+    <div class="box-container bg-blue-500 h-[500px] overflow-auto rounded-[7px]">
         <h2 class="text-4xl font-bold text-green-900 text-center mb-6">Listes des articles</h2>
-        <div class="">
+        <div class="flex gap-4 flex-wrap justify-center items-center">
+            <?php
+            foreach ($articles as $article):
+            ?>
+                <div class="w-[300px] h-[250px] bg-white p-4 rounded shadow mb-4">
+                <h4 class="">Title: <?= clean_input( $article['title'])?></h4>
+                    <h3 class="">Autheur: <?= clean_input($article['author'])   ?></h3>
+                
+                    <h3 class="">Contenu <?= clean_input( $article['content'])?></h3>
+                    <p class="">Publié le : <?= clean_input($article['date'])?></p>
+                </div>
+            <?php endforeach; ?>
+
 
         </div>
     </div>
