@@ -50,6 +50,7 @@ if (!empty($_POST)) {
             $_SESSION['id'] = $users['id'];
             $_SESSION['pseudo'] = $users['pseudo'];
             $_SESSION['email'] = $users['mail'];
+            $_SESSION['role'] = $users['roles'];
             // Si l'utilisateur a coché "Se souvenir de moi"
             if (isset($_POST['remember_me'])) {
                 setcookie('email', $users['email'], time() + 365 * 24 * 3600, "/", null, false, true); // Cookie valide pendant 1 an

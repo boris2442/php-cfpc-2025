@@ -95,13 +95,13 @@ require_once "header-and-footer/header.php";
             ?>
                 <div class="w-[300px] h-[250px] bg-white p-4 rounded shadow mb-4 relative">
                 <h4 class="text-green-900  font-bold text-2xl"><span class="">Title:</span> <?= clean_input( $article['title'])?></h4>
-                    <h3 class=""><span class="text-green-900  font-bold ">Autheur: </span><span class=""><?= clean_input($article['author'])   ?></span></h3>
+                    <h3 class=""><span class="text-green-900  font-bold ">Auteur: </span><span class=""><?= clean_input($article['author'])   ?></span></h3>
                 
                     <h3 class=""><span class="text-green-900  font-bold">Contenu: </span><span class=""><?= clean_input( $article['content'])?></span> </h3>
                     <p class=""><span class="text-green-900  font-bold">Publié le : </span> <span class=""><?= clean_input($article['date'])?></span></p>
                     <div class="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
-                    <button class="bg-green-00 p-1 text-white hover:text-green-700 "><a href="delete.php?id=<?=  $article['id'] ?>">Supprimer</a></button>
-                    <button class="bg-green-00 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
+                    <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="delete.php?id=<?=  $article['id'] ?>">Supprimer</a></button>
+                    <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
                     </div>
                 </div>
             <?php endforeach; ?>
