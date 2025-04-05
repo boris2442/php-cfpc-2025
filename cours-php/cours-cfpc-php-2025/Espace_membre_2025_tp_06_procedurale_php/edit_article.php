@@ -41,7 +41,7 @@ if(isset($_POST['submit_article'])){
         }
     }
 }
-// if(isset($_POST['submit_article'])){
+
 
 
 
