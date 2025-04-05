@@ -58,7 +58,9 @@ if (!empty($_POST)) {
                 // Si la case n'est pas cochée, supprimer le cookie existant
                 setcookie('email', '', time() - 3600, "/");
             }
-            header("Location:profil.php?id=". $_SESSION['id']);
+            // header("Location:profil.php?id=". $_SESSION['id']);
+            header("location:profil.php?id=" . $_SESSION['id']);
+            // header("Location:ajout_article.php");
             exit();
         }
     } else {
