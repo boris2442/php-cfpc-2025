@@ -48,11 +48,16 @@ $articles = $requete->fetchAll(PDO::FETCH_ASSOC);
 $title = "Ajouter un article";
 require_once "header-and-footer/header.php";
 ?>
+dkdjkdjkdjwee
 <div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4">
-    <div class="box-container">
-        <h2 class="text-4xl font-bold text-green-900 text-center mb-6">creer un article</h2>
+    <div class="box-container  flex flex-col justify-center items-center">
+
+
+        <!--  -->
 
         <form method="POST" action="" class="bg-white p-6 rounded shadow max-w-lg mx-auto">
+        
+
             <div class="flex flex-col gap-[7px] pt-[7px]">
                 <?php if (!empty($error)) : ?>
                     <p class="bg-green-500 border-green-300 p-[9px] rounded focus:outline-none focus:border-green-500 text-white font-bold min-h-[30px]">
@@ -61,6 +66,7 @@ require_once "header-and-footer/header.php";
                 <?php endif; ?>
 
                 <div class="text-left flex flex-col gap-[7px]">
+                <!-- <h2 class="text-4xl font-bold text-green-900 text-center mb-6">creer un article</h2> -->
                     <label for="title">Titre de l'article</label>
                     <input type="text" placeholder="Title of article" id="title" name="article_title" value="" required class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500" />
                 </div>

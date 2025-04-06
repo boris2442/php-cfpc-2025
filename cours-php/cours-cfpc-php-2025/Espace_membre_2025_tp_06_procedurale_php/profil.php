@@ -22,6 +22,12 @@ if (!$userInfos) {
 }
 ?>
 
+
+
+
+
+
+
 <?php
 $title = "Profil de l'utilisateur";
 require_once "header-and-footer/header.php";
@@ -47,7 +53,7 @@ require_once "header-and-footer/header.php";
                 <a href="deconnexion.php" class="bg-green-500 text-white p-[5px] rounded-[5px] hover:bg-900">Se déconnecter</a>
             </div>
             <div>
-                <a href="ajout_article.php" class="bg-green-500 text-white p-[5px] rounded-[5px] hover:bg-900">Article</a>
+                <a href="ajout_article4.php" class="bg-green-500 text-white p-[5px] rounded-[5px] hover:bg-900">Article</a>
             </div>
         </div>
     <?php } else { ?>
