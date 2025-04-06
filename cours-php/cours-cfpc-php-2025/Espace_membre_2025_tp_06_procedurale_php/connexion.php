@@ -37,20 +37,12 @@ if (!empty($_POST)) {
             $error = " incorrect password";
         }
 
-        // $role = $_POST['role'];
-        // if ($role === 'admin') {
-        //     if (empty($_POST['access_code']) || $_POST['access_code'] !== '1999@') {
-        //         $error = "Code d'accès invalide. Veuillez cocher le rôle utilisateur ou entrer le bon code d'accès.";
-        //     }
-        // }
-        // if(!$users['roles']===$role){
-        //     $error="role incorrect";
-        // }
+      
         if (empty($error)) {
             $_SESSION['id'] = $users['id'];
             $_SESSION['pseudo'] = $users['pseudo'];
             $_SESSION['email'] = $users['mail'];
-            $_SESSION['role'] = $users['roles'];
+            $_SESSION['roles'] = $users['roles'];
             // Si l'utilisateur a coché "Se souvenir de moi"
             if (isset($_POST['remember_me'])) {
                 setcookie('email', $users['email'], time() + 365 * 24 * 3600, "/", null, false, true); // Cookie valide pendant 1 an
@@ -125,9 +117,7 @@ require_once "header-and-footer/header.php";
         <div class="w-full text-left flex  gap-[7px] ">
 
 
-            <!-- <a
-    href="connexion.php" class="border border-green-300 p-2 rounded focus:outline-none focus:border-green-500 bg-green-100">Se connecter
-</a> -->
+   
             <label for="souvenir">remember_me!</label>
             <input type="checkbox" name="remember_me" id="souvenir" value="Se souvenir de moi!">
         </div>

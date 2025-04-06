@@ -36,7 +36,7 @@ if (!isset($_SESSION['pseudo'])) {
 }
 
 // Pagination : Nombre d'articles par page
-$articlesPerPage = 4; 
+$articlesPerPage = 4;
 
 // Récupérer le numéro de la page actuelle (si aucun, la page 1 par défaut)
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -67,7 +67,7 @@ require_once "header-and-footer/header.php";
 
 <div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4">
     <div class="box-container bg-green-500 h-[500px] overflow-auto rounded-[7px]">
-    <h2 class="text-4xl font-bold text-green-900 text-center mb-6 uppercase">creer un article</h2>
+        <h2 class="text-4xl font-bold text-white text-center mb-4 uppercase">creer un article</h2>
         <form method="POST" action="" class="bg-white p-6 rounded shadow max-w-lg mx-auto">
             <div class="flex flex-col gap-[7px] pt-[7px]">
                 <?php if (!empty($error)) : ?>
@@ -107,10 +107,30 @@ require_once "header-and-footer/header.php";
 
                     <h3 class=""><span class="text-green-900  font-bold">Contenu: </span><span class=""><?= clean_input($article['content']) ?></span> </h3>
                     <p class=""><span class="text-green-900  font-bold">Publié le : </span> <span class=""><?= clean_input($article['date']) ?></span></p>
+
+                    <!-- Boutons de modification et suppression -->
                     <div class="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
-                        <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="delete.php?id=<?= $article['id'] ?>">Supprimer</a></button>
+                        <!-- <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="delete2.php?id=<?= $article['id'] ?>">Supprimer</a></button> -->
+
+
+                        <?php
+                        // Vérifie que l'utilisateur est connecté et qu'il est administrateur
+                        if (isset($_SESSION['users']) && $_SESSION['users']['roles'] === 'admin') :
+                        ?>
+                            <button class="bg-green-900 p-1 text-white hover:text-green-700">
+                                <a href="delete.php?id=<?= $article['id'] ?>">Supprimer</a>
+                            </button>
+                        <?php
+                        endif;
+                        ?>
+
+
+
+
                         <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
                     </div>
+
+
                 </div>
             <?php endforeach; ?>
         </div>
