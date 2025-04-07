@@ -176,12 +176,7 @@ $totalArticles = $requeteCount->fetchColumn();
 // Calculer le nombre total de pages
 $totalPages = ceil($totalArticles / $articlesPerPage);
 
-// Affichage des articles (exemple)
-foreach ($articles as $article) {
-    echo "<h2>" . htmlspecialchars($article['title']) . "</h2>";
-    echo "<p>" . htmlspecialchars($article['content']) . "</p>";
-    echo "<p><i>Publié le: " . htmlspecialchars($article['date']) . "</i></p>";
-}
+
 
 // Pagination : Liens de pagination
 for ($i = 1; $i <= $totalPages; $i++) {
@@ -254,15 +249,27 @@ require_once "header-and-footer/header.php";
 
 
 
-        <form method="GET" class="bg-green-100 w-[400px]  mx-auto my-[10px] rounded-[9999px] grid grid-cols-[80%_20%]">
+        <!-- <form method="GET" class="bg-green-100 w-[400px]  mx-auto my-[10px] rounded-[9999px] grid grid-cols-[80%_20%]">
 
 
             <input type="text" name="search" placeholder="recherchez les articles par titre " class=" p-[7px] border-none outline-none" />
             <input type="submit" name="" value="submit" class="bg-white rounded-r-full text-[18px]" />
-        </form>
+        </form> -->
 
 
 
+        <form method="GET" class="bg-green-100 w-[450px] mx-auto my-[10px] rounded-full grid grid-cols-[60%_20%_20%] overflow-hidden">
+    <input type="text" name="search" placeholder="Recherchez les articles par titre" 
+        class="p-[7px] border-none outline-none" />
+
+    <input type="submit" value="Rechercher" 
+        class="bg-white text-[16px] font-semibold hover:bg-gray-200 cursor-pointer" />
+
+    <a href="http://localhost/php-2025/cours-php/cours-cfpc-php-2025/Espace_membre_2025_tp_06_procedurale_php/" 
+       class="bg-green-100 text-center flex items-center justify-center text-[16px] font-semibold hover:bg-gray-200 cursor-pointer">
+        Actualiser
+    </a>
+</form>
 
 
         <div class="flex gap-4 flex-wrap justify-center items-center">
