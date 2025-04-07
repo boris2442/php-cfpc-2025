@@ -1,35 +1,44 @@
 <?php
 session_start();
 require_once "database.php";
+echo "Méthode utilisée : " . $_SERVER["REQUEST_METHOD"] . "<br>";
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $article_id = isset($_POST['article_id']) ? (int) $_POST['article_id'] : null;
+    $user_id = $_SESSION['users']['id'] ?? null;
 
+    if ($user_id && $article_id) {
+        // Vérifie si déjà liké
+        $check = $db->prepare("SELECT * FROM likes WHERE user_id = :user_id AND article_id = :article_id");
+        $check->execute([
+            ':user_id' => $user_id,
+            ':article_id' => $article_id
+        ]);
 
-var_dump($_POST['article_id']);
-if (!isset($_SESSION['users']['id'])) {
-    echo "Utilisateur non connecté.<br>";
-    exit();
-}
-
-if (isset($_POST['article_id']) && is_numeric($_POST['article_id'])) {
-    echo "Article ID reçu : " . $_POST['article_id'] . "<br>";
-
-    $article_id = intval($_POST['article_id']);
-    $user_id = $_SESSION['users']['id'];
-
-    // Vérifie si l'utilisateur a déjà liké cet article
-    $check = $db->prepare("SELECT * FROM likes WHERE user_id = ? AND article_id = ?");
-    $check->execute([$user_id, $article_id]);
-
-    if ($check->rowCount() == 0) {
-        $insert = $db->prepare("INSERT INTO likes (user_id, article_id) VALUES (?, ?)");
-        if ($insert->execute([$user_id, $article_id])) {
-            echo "Like enregistré.<br>";
+        if ($check->rowCount() === 0) {
+            // Nouveau like
+            $insert = $db->prepare("INSERT INTO likes (user_id, article_id) VALUES (:user_id, :article_id)");
+            $insert->execute([
+                ':user_id' => $user_id,
+                ':article_id' => $article_id
+            ]);
         } else {
-            echo "Erreur lors de l'enregistrement du like.<br>";
+            // Retirer le like
+            $delete = $db->prepare("DELETE FROM likes WHERE user_id = :user_id AND article_id = :article_id");
+            $delete->execute([
+                ':user_id' => $user_id,
+                ':article_id' => $article_id
+            ]);
         }
+
+        // Redirection propre
+        header("Location: index.php");
+        exit;
     } else {
-        echo "Déjà liké.<br>";
+        echo "Erreur : Utilisateur non connecté ou ID d'article manquant.";
     }
-    
 } else {
-    echo "Aucun article ID valide reçu.<br>";
+    echo "Requête invalide.";
 }

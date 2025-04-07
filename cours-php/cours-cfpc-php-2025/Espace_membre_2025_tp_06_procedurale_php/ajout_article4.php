@@ -1,5 +1,92 @@
 <?php
+
+
 // session_start();
+
+// require_once "database.php";
+// require "clean_input.php";
+
+// $error = "";
+
+
+// if (!isset($_SESSION['users']['pseudo'])) {
+//     $error = "Vous devez être connecté pour publier un article.";
+// } else {
+//     if (!empty($_POST)) {
+//         if (
+//             isset($_POST['article_title'], $_POST['article_content']) &&
+//             !empty($_POST['article_title']) && !empty($_POST['article_content'])
+//         ) {
+
+//             $title = clean_input($_POST['article_title']);
+//             $content = clean_input($_POST['article_content']);
+  
+//             $author_article = $_SESSION['users']['pseudo']; 
+
+//             if (strlen($title) > 50) {
+//                 $error = "Le titre de l'article ne doit pas dépasser 50 caractères.";
+//             } elseif (strlen($content) > 240) {
+//                 $error = "Le contenu ne doit pas dépasser 240 caractères.";
+//             } else {
+//                 $sql = "INSERT INTO `articles2` (`author`, `title`, `content`) VALUES (:author_article, :title, :content_article)";
+//                 $requete = $db->prepare($sql);
+//                 $requete->bindValue(':author_article', $author_article);
+//                 $requete->bindValue(':title', $title);
+//                 $requete->bindValue(':content_article', $content);
+//                 $requete->execute();
+//             }
+//         }
+//     }
+// }
+
+
+// $articlesPerPage = 4;
+
+
+// $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+// $startLimit = ($currentPage - 1) * $articlesPerPage;
+
+
+// $sql = "SELECT * FROM articles2 ORDER BY date DESC LIMIT :start, :limit";
+// $requete = $db->prepare($sql);
+// $requete->bindValue(':start', $startLimit, PDO::PARAM_INT);
+// $requete->bindValue(':limit', $articlesPerPage, PDO::PARAM_INT);
+// $requete->execute();
+// $articles = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+
+// $sqlCount = "SELECT COUNT(*) FROM articles2";
+// $requeteCount = $db->prepare($sqlCount);
+// $requeteCount->execute();
+// $totalArticles = $requeteCount->fetchColumn();
+
+
+// $totalPages = ceil($totalArticles / $articlesPerPage);
+
+
+
+
+// $sql = "SELECT * FROM `articles2`";
+// if (!empty($search)) {
+//     $sql .= "WHERE  title LIKE '%$search%' OR content LIKE  '%$search%' OR author LIKE '%$search%' ";
+// }
+// $requete = $db->prepare($sql);
+// $requete->execute();
+// $articles = $requete->fetchAll();
+// echo "<pre>";
+// var_dump($_SESSION['users']);
+
+// echo  "</pre>";
+
+
+
+
+
+
+
+
+
+
 
 session_start();
 
@@ -9,7 +96,6 @@ require "clean_input.php";
 $error = "";
 
 // Vérifie que l'utilisateur est connecté
-// if (!isset($_SESSION['pseudo'])) {
 if (!isset($_SESSION['users']['pseudo'])) {
     $error = "Vous devez être connecté pour publier un article.";
 } else {
@@ -21,8 +107,6 @@ if (!isset($_SESSION['users']['pseudo'])) {
 
             $title = clean_input($_POST['article_title']);
             $content = clean_input($_POST['article_content']);
-            // $author_article = $_SESSION['pseudo'];
-            // L'auteur est le pseudo connecté
             $author_article = $_SESSION['users']['pseudo']; // L'auteur est le pseudo connecté
 
             if (strlen($title) > 50) {
@@ -41,6 +125,9 @@ if (!isset($_SESSION['users']['pseudo'])) {
     }
 }
 
+// Récupère la recherche
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
 // Pagination : Nombre d'articles par page
 $articlesPerPage = 4;
 
@@ -48,37 +135,80 @@ $articlesPerPage = 4;
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $startLimit = ($currentPage - 1) * $articlesPerPage;
 
-// Récupération des articles avec limite pour la pagination
-$sql = "SELECT * FROM articles2 ORDER BY date DESC LIMIT :start, :limit";
+// Préparer la requête avec ou sans recherche
+$sql = "SELECT * FROM articles2";
+$params = [];
+
+if (!empty($search)) {
+    $sql .= " WHERE title LIKE :search OR content LIKE :search OR author LIKE :search";
+    $params[':search'] = "%$search%";
+}
+
+$sql .= " ORDER BY date DESC LIMIT :start, :limit";
+
+// Préparer et exécuter la requête avec la pagination
 $requete = $db->prepare($sql);
 $requete->bindValue(':start', $startLimit, PDO::PARAM_INT);
 $requete->bindValue(':limit', $articlesPerPage, PDO::PARAM_INT);
+
+if (!empty($search)) {
+    $requete->bindValue(':search', $params[':search'], PDO::PARAM_STR);
+}
+
 $requete->execute();
 $articles = $requete->fetchAll(PDO::FETCH_ASSOC);
 
 // Récupérer le nombre total d'articles pour la pagination
 $sqlCount = "SELECT COUNT(*) FROM articles2";
+if (!empty($search)) {
+    $sqlCount .= " WHERE title LIKE :search OR content LIKE :search OR author LIKE :search";
+}
+
 $requeteCount = $db->prepare($sqlCount);
+
+if (!empty($search)) {
+    $requeteCount->bindValue(':search', $params[':search'], PDO::PARAM_STR);
+}
+
 $requeteCount->execute();
 $totalArticles = $requeteCount->fetchColumn();
 
 // Calculer le nombre total de pages
 $totalPages = ceil($totalArticles / $articlesPerPage);
 
-
-
-
-$sql = "SELECT * FROM `articles2`";
-if (!empty($search)) {
-    $sql.= "WHERE  title LIKE '%$search%' OR content LIKE  '%$search%' OR author LIKE '%$search%' ";
+// Affichage des articles (exemple)
+foreach ($articles as $article) {
+    echo "<h2>" . htmlspecialchars($article['title']) . "</h2>";
+    echo "<p>" . htmlspecialchars($article['content']) . "</p>";
+    echo "<p><i>Publié le: " . htmlspecialchars($article['date']) . "</i></p>";
 }
-$requete = $db->prepare($sql);
-$requete->execute();
-$articles=$requete->fetchAll();
-echo "<pre>";
-var_dump($_SESSION['users']);
 
-echo  "</pre>";
+// Pagination : Liens de pagination
+for ($i = 1; $i <= $totalPages; $i++) {
+    echo "<a href='?page=$i&search=" . urlencode($search) . "'>$i</a> ";
+}
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
 
 <?php
@@ -162,7 +292,7 @@ require_once "header-and-footer/header.php";
                         ?>
                         <form method="POST" action="like_article.php">
                             <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
-                            <input type="submit" class="text-blue-600 hover:underline" value="👍">
+                            <input type="submit" class="text-blue-600" value="👍 Liker (<?= $article['like_count'] ?? 0 ?>)">
                         </form>
 
                         <?php
