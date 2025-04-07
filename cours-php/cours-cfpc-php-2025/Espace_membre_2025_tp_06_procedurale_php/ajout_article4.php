@@ -68,13 +68,13 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
 
 
 
-// $sql = "SELECT * FROM `articles2`";
-// if (!empty($search)) {
-//     $sql .= "WHERE  title LIKE '%$search%' OR content LIKE  '%$search%' OR author LIKE '%$search%' ";
-// }
-// $requete = $db->prepare($sql);
-// $requete->execute();
-// $articles=$requete->fetchAll();
+$sql = "SELECT * FROM `articles2`";
+if (!empty($search)) {
+    $sql.= "WHERE  title LIKE '%$search%' OR content LIKE  '%$search%' OR author LIKE '%$search%' ";
+}
+$requete = $db->prepare($sql);
+$requete->execute();
+$articles=$requete->fetchAll();
 echo "<pre>";
 var_dump($_SESSION['users']);
 
@@ -146,14 +146,23 @@ require_once "header-and-footer/header.php";
                     <h3 class=""><span class="text-green-900  font-bold">Contenu: </span><span class=""><?= clean_input($article['content']) ?></span> </h3>
                     <p class=""><span class="text-green-900  font-bold">Publié le : </span> <span class=""><?= clean_input($article['date']) ?></span></p>
 
-                    <!-- Boutons de modification et suppression -->
-                    <div class="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
-                        <!-- <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="delete2.php?id=<?= $article['id'] ?>">Supprimer</a></button> -->
-                        <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
 
+                    <div class="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
+
+                        <?php
+                        // Vérifie que l'utilisateur est connecté et qu'il est administrateur
+                        // if (isset($_SESSION['users']) && $_SESSION['users']['roles'] === 'admin') :
+                        if (isset($_SESSION['users']['roles']) && $_SESSION['users']['roles'] === 'admin') :
+
+
+                        ?>
+                            <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
+                        <?php
+                        endif;
+                        ?>
                         <form method="POST" action="like_article.php">
                             <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
-                            <input type="submit" class="text-blue-600 hover:underline" value="👍liker ">
+                            <input type="submit" class="text-blue-600 hover:underline" value="👍">
                         </form>
 
                         <?php
@@ -170,20 +179,9 @@ require_once "header-and-footer/header.php";
                         endif;
                         ?>
 
-
-                     
-
-            
-
-
                     </div>
-
-
                 </div>
             <?php endforeach; ?>
-
-
-
 
         </div>
 
