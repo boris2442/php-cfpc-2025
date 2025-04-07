@@ -65,9 +65,7 @@ $totalArticles = $requeteCount->fetchColumn();
 // Calculer le nombre total de pages
 $totalPages = ceil($totalArticles / $articlesPerPage);
 
-echo "<pre>";
-print_r($_SESSION['users']);
-echo "</pre>";
+
 
 
 // $sql = "SELECT * FROM `articles2`";
@@ -77,7 +75,10 @@ echo "</pre>";
 // $requete = $db->prepare($sql);
 // $requete->execute();
 // $articles=$requete->fetchAll();
+echo "<pre>";
+var_dump($_SESSION['users']);
 
+echo  "</pre>";
 ?>
 
 <?php
@@ -85,7 +86,8 @@ $title = "Ajouter un article";
 require_once "header-and-footer/header.php";
 ?>
 <?php require_once "navbar.php" ?>
-<div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4">
+<div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4 mt-[40px]">
+    <!-- <div class="container grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-4 p-4 "> -->
     <div class="box-container  bg-green-500 h-[500px] overflow-auto rounded-[7px]">
 
         <h2 class="text-4xl font-bold text-white text-center mb-4 uppercase">creer un article</h2>
@@ -147,7 +149,12 @@ require_once "header-and-footer/header.php";
                     <!-- Boutons de modification et suppression -->
                     <div class="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
                         <!-- <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="delete2.php?id=<?= $article['id'] ?>">Supprimer</a></button> -->
+                        <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
 
+                        <form method="POST" action="like_article.php">
+                            <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
+                            <input type="submit" class="text-blue-600 hover:underline" value="👍liker ">
+                        </form>
 
                         <?php
                         // Vérifie que l'utilisateur est connecté et qu'il est administrateur
@@ -156,7 +163,7 @@ require_once "header-and-footer/header.php";
 
 
                         ?>
-                            <button class="bg-green-900 p-1 text-white hover:text-green-700">
+                            <button class="bg-red-500 p-1 text-white ">
                                 <a href="delete3.php?id=<?= $article['id'] ?>">Supprimer</a>
                             </button>
                         <?php
@@ -164,19 +171,10 @@ require_once "header-and-footer/header.php";
                         ?>
 
 
+                     
 
+            
 
-                        <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
-
-
-                        <form method="POST" action="like_article.php">
-                            <input type="hidden" name="article_id"  value="<?= $article['id']; ?>">
-                            <input type="submit" class="text-blue-600 hover:underline" value="👍liker ">
-                           
-                    
-
-
-                        </form>
 
                     </div>
 

@@ -14,7 +14,9 @@ $getid = intval($_GET['id']);
 $requser = $db->prepare('SELECT * FROM `utilisateurs` WHERE id = ?');
 $requser->execute([$getid]);
 $userInfos = $requser->fetch();
-
+echo "<pre>"; 
+var_dump($userInfos);
+echo "</pre>"; 
 // Vérifier si l'utilisateur existe dans la base de données
 if (!$userInfos) {
     echo '<p class="text-red-500">Utilisateur introuvable.</p>';

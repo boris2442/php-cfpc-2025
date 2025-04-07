@@ -1,5 +1,5 @@
 <?php
-    session_start();
+session_start();
 
 require_once "database.php";
 $error = "";
@@ -21,7 +21,9 @@ if (!empty($_POST)) {
         $requete->bindValue(":email", $email);
         $requete->execute();
         $users = $requete->fetch();
-       
+        echo "<pre>";
+        var_dump($users);
+        echo "</pre>";
         if (!$users) {
             $error = "❌ Aucun utilisateur trouvé avec cet email.";
         }
@@ -35,7 +37,7 @@ if (!empty($_POST)) {
             $error = " ❌ incorrect password";
         }
 
-      
+
         if (empty($error)) {
 
             $_SESSION['users'] = [
@@ -44,9 +46,11 @@ if (!empty($_POST)) {
                 'roles' => $users['roles'],
                 'pseudo' => $users['pseudo']
             ];
-            
-            // var_dump($_SESSION['users']);
 
+            // var_dump($_SESSION['users']);
+            // echo "<pre>";
+            // print_r($_SESSION['users']);
+            // echo "</pre>";
 
 
             // $_SESSION['id'] = $users['id'];
@@ -76,7 +80,7 @@ if (!empty($_POST)) {
 <?php
 require_once "header-and-footer/header.php";
 ?>
-<?php    require_once "navbar.php"?>
+<?php require_once "navbar.php" ?>
 <h2 class="text-4xl font-bold text-green-900 text-center mb-6">Connectez vous!</h2>
 
 <form method="POST" class=" bg-white p-6 rounded shadow max-w-lg mx-auto">
@@ -104,12 +108,12 @@ require_once "header-and-footer/header.php";
                 <i class="fa-solid fa-eye  absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i>
             </div>
         </div>
-  
+
 
         <div class="w-full text-left flex  gap-[7px] ">
 
 
-   
+
             <label for="souvenir">remember_me!</label>
             <input type="checkbox" name="remember_me" id="souvenir" value="Se souvenir de moi!">
         </div>
