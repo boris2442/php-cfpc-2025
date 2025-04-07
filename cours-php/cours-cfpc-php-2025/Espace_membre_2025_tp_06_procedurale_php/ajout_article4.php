@@ -68,6 +68,16 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
 echo "<pre>";
 print_r($_SESSION['users']);
 echo "</pre>";
+
+
+// $sql = "SELECT * FROM `articles2`";
+// if (!empty($search)) {
+//     $sql .= "WHERE  title LIKE '%$search%' OR content LIKE  '%$search%' OR author LIKE '%$search%' ";
+// }
+// $requete = $db->prepare($sql);
+// $requete->execute();
+// $articles=$requete->fetchAll();
+
 ?>
 
 <?php
@@ -109,19 +119,20 @@ require_once "header-and-footer/header.php";
     <div class="box-container bg-green-500 h-[500px] overflow-auto rounded-[7px]">
 
         <h2 class="text-4xl font-bold text-white text-center mb-6 uppercase p-[5px] ">Listes des articles</h2>
+
+
+
         <form method="GET" class="bg-green-100 w-[400px]  mx-auto my-[10px] rounded-[9999px] grid grid-cols-[80%_20%]">
-            <!-- <div class="flex bg-green-100 mx-auto w-[400px] p-[10px] mb-[20px] rounded-[9999px] items-center ">
-                <div class="w-[80%] ">
-                    <input type="text" name="search" placeholder="recherchez les articles par titre " class="w-[100%] p-[7px]" />
-                </div>
-                <div class="w-[20%] h-[100%]  ">
-                    <input type="submit" name="" value="submit" />
-                </div>
-            </div> -->
+
 
             <input type="text" name="search" placeholder="recherchez les articles par titre " class=" p-[7px] border-none outline-none" />
-            <input type="submit" name="" value="submit" class="bg-green-900 " />
+            <input type="submit" name="" value="submit" class="bg-white rounded-r-full text-[18px]" />
         </form>
+
+
+
+
+
         <div class="flex gap-4 flex-wrap justify-center items-center">
             <?php
             foreach ($articles as $article):
@@ -156,6 +167,17 @@ require_once "header-and-footer/header.php";
 
 
                         <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
+
+
+                        <form method="POST" action="like_article.php">
+                            <input type="hidden" name="article_id"  value="<?= $article['id']; ?>">
+                            <input type="submit" class="text-blue-600 hover:underline" value="👍liker ">
+                           
+                    
+
+
+                        </form>
+
                     </div>
 
 

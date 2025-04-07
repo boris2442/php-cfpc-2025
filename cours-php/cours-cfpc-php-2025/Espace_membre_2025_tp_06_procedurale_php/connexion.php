@@ -1,5 +1,4 @@
 <?php
-
     session_start();
 
 require_once "database.php";
@@ -46,7 +45,7 @@ if (!empty($_POST)) {
                 'pseudo' => $users['pseudo']
             ];
             
-            var_dump($_SESSION['users']);
+            // var_dump($_SESSION['users']);
 
 
 
