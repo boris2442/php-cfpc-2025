@@ -48,7 +48,7 @@ $articles = $requete->fetchAll(PDO::FETCH_ASSOC);
 $title = "Ajouter un article";
 require_once "header-and-footer/header.php";
 ?>
-dkdjkdjkdjwee
+
 <div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4">
     <div class="box-container  flex flex-col justify-center items-center">
 

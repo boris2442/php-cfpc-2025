@@ -1,69 +1,68 @@
 <?php
 session_start();
+
 require_once "database.php";
 require "clean_input.php";
 
-
-if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
-    $requser = $db->prepare("SELECT*FROM `utilisateurs` WHERE id=?");
-    $requser->execute([$_SESSION['id']]);
-
+// Vérifier si l'utilisateur est connecté
+if (isset($_SESSION['users']['id']) && $_SESSION['users']['id'] > 0) {
+    // Récupérer les informations de l'utilisateur depuis la base de données
+    $requser = $db->prepare("SELECT * FROM `utilisateurs` WHERE id=?");
+    $requser->execute([$_SESSION['users']['id']]);
     $user = $requser->fetch();
-    var_dump($user);
 
-    if (!empty($_POST['newspseudo']) ) {
-        $newspseudo =clean_input(($_POST['newspseudo']));
+    // Stocker les informations utilisateur dans la session
+    $_SESSION['users'] = [
+        'id' => $user['id'],
+        'pseudo' => $user['pseudo'],
+        'email' => $user['email'],
+        'avatar' => $user['avatar'],
+        'password' => $user['password'], // Attention : Ne pas afficher le mot de passe
+    ];
+
+    // Mise à jour du pseudo
+    if (!empty($_POST['newspseudo'])) {
+        $newspseudo = clean_input($_POST['newspseudo']);
         if (strlen($newspseudo) < 255) {
-
-            $updatepseudo = $db->prepare("SELECT*FROM `utilisateurs`   WHERE pseudo=?");
+            $updatepseudo = $db->prepare("SELECT * FROM `utilisateurs` WHERE pseudo=?");
             $updatepseudo->execute([$newspseudo]);
             if ($updatepseudo->rowCount() == 0) {
-                $updatepseudo = $db->prepare("UPDATE utilisateurs  SET pseudo=? WHERE id=?");
-                $updatepseudo->execute([$newspseudo, $_SESSION['id']]);
-                $_SESSION['pseudo'] = $newspseudo;
-
+                $updatepseudo = $db->prepare("UPDATE utilisateurs SET pseudo=? WHERE id=?");
+                $updatepseudo->execute([$newspseudo, $_SESSION['users']['id']]);
+                $_SESSION['users']['pseudo'] = $newspseudo; // Mettre à jour le pseudo dans la session
             }
-
         } else {
             $erreur = "Votre pseudo ne doit pas dépasser 255 caractères!";
         }
     }
 
-
+    // Mise à jour du mail
     if (!empty($_POST['newmail']) && $_POST['newmail'] !== $user['email']) {
-
         $newemail = clean_input($_POST['newmail']);
         if (filter_var($newemail, FILTER_VALIDATE_EMAIL)) {
-            $updatemail = $db->prepare("SELECT*FROM utilisateurs  WHERE email=?");
+            $updatemail = $db->prepare("SELECT * FROM utilisateurs WHERE email=?");
             $updatemail->execute([$newemail]);
             if ($updatemail->rowCount() == 0) {
-        
-                $updatemail = $db->prepare("UPDATE utilisateurs  SET mail=?WHERE id=?");
-                $updatemail->execute([$newemail,  $_SESSION['id']]);
-                $_SESSION['mail'] = $newemail;
- 
+                $updatemail = $db->prepare("UPDATE utilisateurs SET mail=? WHERE id=?");
+                $updatemail->execute([$newemail, $_SESSION['users']['id']]);
+                $_SESSION['users']['email'] = $newemail; // Mettre à jour le mail dans la session
             } else {
                 $erreur = "Cette adresse mail est déjà utilisée!";
             }
         } else {
             $erreur = "Votre adresse mail n'est pas valide!";
-
-            // header('Location: profil.php?id='. $_SESSION['id']);
         }
     }
-    //mise a jour du mot de passe
 
-    if (
-        !empty($_POST['newmdp1']) && isset($_POST['newmdp1']) 
-    ) {
-        // $mdp1 = htmlspecialchars(trim($_POST['newmdp1']));
+    // Mise à jour du mot de passe
+    if (!empty($_POST['newmdp1']) && isset($_POST['newmdp1'])) {
         $mdp1 = clean_input($_POST['newmdp1']);
-
         if ($mdp1) {
             $mdp = password_hash($mdp1, PASSWORD_DEFAULT);
             $updatemdp = $db->prepare("UPDATE utilisateurs SET password=? WHERE id=?");
-            $updatemdp->execute([$mdp, $_SESSION['id']]);
-            //
+            $updatemdp->execute([$mdp, $_SESSION['users']['id']]);
+            // Mettre à jour le mot de passe dans la session
+            $_SESSION['users']['password'] = $mdp;
         } else {
             $erreur = "Les deux mots de passe ne correspondent pas!";
         }
@@ -71,71 +70,44 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
         $erreur = "Veuillez renseigner tous les champs!";
     }
 
-
-
-    //mise a jour de l'avatar
-    ////mise en avatar
-    /** 
-     * Mise de l'avatar 
-      * 1 - Verification de l'upload de l'image
-      * 2 - Verification de la taille de l'image
-      * 3 - Verification de l'extension de l'image est autorisé
-      * 4 - Renommer l'image uploadée (id de l'user 'extension de l'image)
-      * 5 - Chemin de destination pour l'upload de l'image
-      * 6 - Deplacement de l'image uploadée vers le dossier de destination
-     * 
-     * */
-    //verificatin de la presence d'un fichier upload
+    // Mise à jour de l'avatar
     if (!empty($_FILES['avatar']['name'])) {
-        $maxsize = 2 * 1024 * 1024;  // 2megaoctet
-        ///tableau des extensiona autorises
+        $maxsize = 2 * 1024 * 1024;  // 2MB
         $valideExtension = ['jpg', 'png', 'gif', 'jpeg'];
-        //verification de la taille de l'image
+
         if ($_FILES['avatar']['size'] <= $maxsize) {
             $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
-            //verification de l'extension des fichiers autorises
             if (in_array($ext, $valideExtension)) {
-                //renommer l'image upploader(id de l'utilisateur.extension de l'image)
-                $newFilename = $_SESSION['id'] . "." . $ext;
-
-                //chemin de destination complete pour l'uppload de l'image
+                $newFilename = $_SESSION['users']['id'] . "." . $ext;
                 $destination = "membres/avatars/" . $newFilename;
-                if(move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)){
-                    $requpdate=$db->prepare("UPDATE utilisateurs SET avatar=? WHERE id=? ");
-                    $requpdate->execute([$newFilename, $_SESSION['id']]);
-                    header('Location: profil.php?id=' . $_SESSION['id']);
+                if (move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
+                    $requpdate = $db->prepare("UPDATE utilisateurs SET avatar=? WHERE id=?");
+                    $requpdate->execute([$newFilename, $_SESSION['users']['id']]);
+                    $_SESSION['users']['avatar'] = $newFilename; // Mettre à jour l'avatar dans la session
+                    header('Location: profil.php?id=' . $_SESSION['users']['id']);
                     exit();
-                    // $requpdate=$db->
-                }else{
-                    $erreur="Erreur lors de l'upload";
+                } else {
+                    $erreur = "Erreur lors de l'upload";
                 }
             } else {
-                $erreur = "format d'images non autoriser. ('.jpg', '.png', '.gif', '.jpeg' requis)";
+                $erreur = "Format d'image non autorisé. ('jpg', 'png', 'gif', 'jpeg' requis)";
             }
         } else {
-            $erreur = "La taille de l'image ne doit pas exceder 2mo";
+            $erreur = "La taille de l'image ne doit pas dépasser 2 Mo";
         }
-        // 
     } else {
-        $erreur = "Veuillez selectionner une image";
+        $erreur = "Veuillez sélectionner une image";
     }
 }
-
-
-
-
 ?>
 
 <?php
-
 require_once "header-and-footer/header.php";
+require_once "navbar.php";
 ?>
 
-
-
-
 <div align="center">
-    <h2 class="text-3xl font-bold">Edition de mon profil</h2>
+    <h2 class="text-3xl font-bold">Édition de mon profil</h2>
     <?php
     if (isset($erreur)) {
         echo '<font color="red">' . $erreur . "</font>";
@@ -146,17 +118,16 @@ require_once "header-and-footer/header.php";
             <div class="flex flex-col gap-[10px] w-[500px] bg-white mx-auto p-[12px] min-h-[500px] justify-center items-center">
                 <div class="mx-auto w-[400px]  flex flex-col gap-[10px]">
                     <label>Pseudo :</label>
-                    <input type="text" name="newspseudo" placeholder="Pseudo" class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" value="<?php echo $user['pseudo'] ?>" />
+                    <input type="text" name="newspseudo" placeholder="Pseudo" class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" value="<?php echo $_SESSION['users']['pseudo'] ?>" />
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
                     <label>Mail :</label>
-                    <input type="text" name="newmail" class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" placeholder="Mail" value="<?php echo $user['email'] ?>" />
+                    <input type="text" name="newmail" class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" placeholder="Mail" value="<?php echo $_SESSION['users']['email'] ?>" />
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
                     <label>Mot de passe :</label>
-                    <input type="password" name="newmdp1"  class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]"  placeholder="Mot de passe"  value="$user['password']" />
+                    <input type="password" name="newmdp1"  class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" placeholder="Mot de passe" value="" />
                 </div>
-               
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
                     <label for="">Avatar :</label>            
                     <input type="file" name="avatar" />
@@ -166,9 +137,7 @@ require_once "header-and-footer/header.php";
                 </div>
             </div>
         </form>
-
     </div>
 </div>
 </body>
-
 </html>

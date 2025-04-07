@@ -1,5 +1,7 @@
 <?php
-session_start();
+
+    session_start();
+
 require_once "database.php";
 $error = "";
 require "clean_input.php";
@@ -13,13 +15,14 @@ if (!empty($_POST)) {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = "email is not valid";
         }
-        $sql = "SELECT* FROM `utilisateurs` WHERE email=:email";
+        // $sql = "SELECT* FROM `utilisateurs` WHERE email=:email";
+        $sql = "SELECT id, pseudo, email, roles, avatar, password FROM `utilisateurs` WHERE email = :email";
+
         $requete = $db->prepare($sql);
         $requete->bindValue(":email", $email);
         $requete->execute();
         $users = $requete->fetch();
-        var_dump($users);
-        // $users = $requete->fetchAll(PDO::FETCH_ASSOC);
+       
         if (!$users) {
             $error = "❌ Aucun utilisateur trouvé avec cet email.";
         }
@@ -27,22 +30,30 @@ if (!empty($_POST)) {
 
         //verification du mot de passe
         $password = $_POST['password'];
-        // $sql = "SELECT* FROM `utilisateurs` WHERE` password=:password";
-        // $requete = $db->prepare($sql);
-        // $requete->bindValue(":password", $password);
-        // $requete->execute();
-        // $users = $requete->fetch();
 
-        if (!password_verify($password, $users['password'])) {
-            $error = " incorrect password";
+
+        if ($users && !password_verify($password, $users['password'])) {
+            $error = " ❌ incorrect password";
         }
 
       
         if (empty($error)) {
-            $_SESSION['id'] = $users['id'];
-            $_SESSION['pseudo'] = $users['pseudo'];
-            $_SESSION['email'] = $users['mail'];
-            $_SESSION['roles'] = $users['roles'];
+
+            $_SESSION['users'] = [
+                'id' => $users['id'],
+                'email' => $users['email'], // c’est bien "mail" dans ta BDD
+                'roles' => $users['roles'],
+                'pseudo' => $users['pseudo']
+            ];
+            
+            var_dump($_SESSION['users']);
+
+
+
+            // $_SESSION['id'] = $users['id'];
+            // $_SESSION['pseudo'] = $users['pseudo'];
+            // $_SESSION['email'] = $users['mail'];
+            // $_SESSION['roles'] = $users['roles'];
             // Si l'utilisateur a coché "Se souvenir de moi"
             if (isset($_POST['remember_me'])) {
                 setcookie('email', $users['email'], time() + 365 * 24 * 3600, "/", null, false, true); // Cookie valide pendant 1 an
@@ -50,9 +61,10 @@ if (!empty($_POST)) {
                 // Si la case n'est pas cochée, supprimer le cookie existant
                 setcookie('email', '', time() - 3600, "/");
             }
-            // header("Location:profil.php?id=". $_SESSION['id']);
-            header("location:profil.php?id=" . $_SESSION['id']);
-            // header("Location:ajout_article.php");
+
+            // header("location:profil.php?id=" . $_SESSION['id']);
+            header("location:profil.php?id=" . $_SESSION['users']['id']);
+
             exit();
         }
     } else {
@@ -65,6 +77,7 @@ if (!empty($_POST)) {
 <?php
 require_once "header-and-footer/header.php";
 ?>
+<?php    require_once "navbar.php"?>
 <h2 class="text-4xl font-bold text-green-900 text-center mb-6">Connectez vous!</h2>
 
 <form method="POST" class=" bg-white p-6 rounded shadow max-w-lg mx-auto">
@@ -92,27 +105,7 @@ require_once "header-and-footer/header.php";
                 <i class="fa-solid fa-eye  absolute right-3 top-3 cursor-pointer text-gray-500" id="togglePassword"></i>
             </div>
         </div>
-        <!-- <div class="text flex  gap-[34px] justify-center">
-          
-            <label for="administrateur">administrateur</label>
-            <input type="radio" name="role" id="administrateur" value="admin">
-            <label for="users">users</label>
-            <input type="radio" name="role" id="users" value="user">
-        </div> -->
-
-        <!-- <div class="text flex gap-[34px] justify-center">
-            <label for="administrateur">Administrateur</label>
-            <input type="radio" name="role" id="administrateur" value="admin" onclick="toggleAccessCode(true)">
-            <label for="users">Utilisateur</label>
-            <input type="radio" name="role" id="users" value="user" onclick="toggleAccessCode(false)">
-        </div>
-
-        <div id="access-code-container" class="text-left flex flex-col gap-[7px]" style="display: none;">
-            <label for="access-code">Code d'accès :</label>
-            <input type="text" id="access-code" name="access_code" placeholder="Entrez le code d'accès"
-                class="w-full border border-green-300 p-2 rounded focus:outline-none focus:border-green-500">
-        </div> -->
-
+  
 
         <div class="w-full text-left flex  gap-[7px] ">
 

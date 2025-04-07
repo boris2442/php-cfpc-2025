@@ -1,5 +1,8 @@
 <?php
-session_start();
+// session_start();
+
+    session_start();
+
 
 // Supprimer tous les cookies
 if (isset($_COOKIE['email'])) {

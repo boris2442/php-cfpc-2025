@@ -16,8 +16,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="./style/style.css">
     <title><?= isset($title) ? htmlspecialchars($title): "Espace membre_2025_admin_user"    ?></title>
+
+    
 </head>
 
-<body class="bg-green-100 pt-[100px] font-family-Poppins  text-[16px]">
+<body class="bg-green-100  font-family-Poppins  text-[16px]">
 
 

@@ -65,7 +65,7 @@ if (!empty($_POST)) {
 <?php
 require_once "header-and-footer/header.php";
 ?>
-
+<?php    require_once "navbar.php"?>
 <h2 class="text-4xl font-bold text-green-900 text-center mb-6">Veuillez vous inscrire</h2>
 
 <form method="POST" action="" class="bg-white p-6 rounded shadow max-w-lg mx-auto">

@@ -1,5 +1,6 @@
 <?php
-session_start();
+ session_start();
+
 require_once "database.php";
 
 // Vérifie si l'utilisateur est connecté et s'il a le rôle 'admin'
@@ -18,7 +19,7 @@ if (isset($_GET['id'])) {
     
     if ($requete->execute()) {
         // Si la suppression est réussie, redirige vers la page d'ajout des articles
-        header("Location: ajout_article.php");  // Redirection vers la page de gestion des articles
+        header("Location: ajout_article4.php");  // Redirection vers la page de gestion des articles
         exit();
     } else {
         echo "Erreur lors de la suppression de l'article.";

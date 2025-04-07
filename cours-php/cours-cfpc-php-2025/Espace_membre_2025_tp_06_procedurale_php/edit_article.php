@@ -34,7 +34,7 @@ if(isset($_POST['submit_article'])){
         $requete->bindValue(':author_article', $author_article);
         $requete->bindValue(':article_content', $article_content);
         if($requete->execute()){
-            header("Location:ajout_article.php");
+            header("Location:ajout_article4.php");
             exit();
         }else{
             echo "Erreur lors de la mise à jour de l'article.";
@@ -53,6 +53,7 @@ if(isset($_POST['submit_article'])){
 <?php
 require_once "header-and-footer/header.php";
 ?>
+<?php    require_once "navbar.php"?>
 <h2 class="text-4xl font-bold text-green-900 text-center mb-6">editer un article</h2>
 
 <form method="POST" action="" class="bg-white p-6 rounded shadow max-w-lg mx-auto">

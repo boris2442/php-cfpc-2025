@@ -1,12 +1,16 @@
 <?php
+// session_start();
+
 session_start();
+
 require_once "database.php";
 require "clean_input.php";
 
 $error = "";
 
 // Vérifie que l'utilisateur est connecté
-if (!isset($_SESSION['pseudo'])) {
+// if (!isset($_SESSION['pseudo'])) {
+if (!isset($_SESSION['users']['pseudo'])) {
     $error = "Vous devez être connecté pour publier un article.";
 } else {
     if (!empty($_POST)) {
@@ -17,7 +21,9 @@ if (!isset($_SESSION['pseudo'])) {
 
             $title = clean_input($_POST['article_title']);
             $content = clean_input($_POST['article_content']);
-            $author_article = $_SESSION['pseudo']; // L'auteur est le pseudo connecté
+            // $author_article = $_SESSION['pseudo'];
+            // L'auteur est le pseudo connecté
+            $author_article = $_SESSION['users']['pseudo']; // L'auteur est le pseudo connecté
 
             if (strlen($title) > 50) {
                 $error = "Le titre de l'article ne doit pas dépasser 50 caractères.";
@@ -58,15 +64,20 @@ $totalArticles = $requeteCount->fetchColumn();
 
 // Calculer le nombre total de pages
 $totalPages = ceil($totalArticles / $articlesPerPage);
+
+echo "<pre>";
+print_r($_SESSION['users']);
+echo "</pre>";
 ?>
 
 <?php
 $title = "Ajouter un article";
 require_once "header-and-footer/header.php";
 ?>
-
+<?php require_once "navbar.php" ?>
 <div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4">
-    <div class="box-container bg-green-500 h-[500px] overflow-auto rounded-[7px]">
+    <div class="box-container  bg-green-500 h-[500px] overflow-auto rounded-[7px]">
+
         <h2 class="text-4xl font-bold text-white text-center mb-4 uppercase">creer un article</h2>
         <form method="POST" action="" class="bg-white p-6 rounded shadow max-w-lg mx-auto">
             <div class="flex flex-col gap-[7px] pt-[7px]">
@@ -96,7 +107,21 @@ require_once "header-and-footer/header.php";
     </div>
 
     <div class="box-container bg-green-500 h-[500px] overflow-auto rounded-[7px]">
+
         <h2 class="text-4xl font-bold text-white text-center mb-6 uppercase p-[5px] ">Listes des articles</h2>
+        <form method="GET" class="bg-green-100 w-[400px]  mx-auto my-[10px] rounded-[9999px] grid grid-cols-[80%_20%]">
+            <!-- <div class="flex bg-green-100 mx-auto w-[400px] p-[10px] mb-[20px] rounded-[9999px] items-center ">
+                <div class="w-[80%] ">
+                    <input type="text" name="search" placeholder="recherchez les articles par titre " class="w-[100%] p-[7px]" />
+                </div>
+                <div class="w-[20%] h-[100%]  ">
+                    <input type="submit" name="" value="submit" />
+                </div>
+            </div> -->
+
+            <input type="text" name="search" placeholder="recherchez les articles par titre " class=" p-[7px] border-none outline-none" />
+            <input type="submit" name="" value="submit" class="bg-green-900 " />
+        </form>
         <div class="flex gap-4 flex-wrap justify-center items-center">
             <?php
             foreach ($articles as $article):
@@ -115,10 +140,13 @@ require_once "header-and-footer/header.php";
 
                         <?php
                         // Vérifie que l'utilisateur est connecté et qu'il est administrateur
-                        if (isset($_SESSION['users']) && $_SESSION['users']['roles'] === 'admin') :
+                        // if (isset($_SESSION['users']) && $_SESSION['users']['roles'] === 'admin') :
+                        if (isset($_SESSION['users']['roles']) && $_SESSION['users']['roles'] === 'admin') :
+
+
                         ?>
                             <button class="bg-green-900 p-1 text-white hover:text-green-700">
-                                <a href="delete.php?id=<?= $article['id'] ?>">Supprimer</a>
+                                <a href="delete3.php?id=<?= $article['id'] ?>">Supprimer</a>
                             </button>
                         <?php
                         endif;
@@ -133,6 +161,10 @@ require_once "header-and-footer/header.php";
 
                 </div>
             <?php endforeach; ?>
+
+
+
+
         </div>
 
         <!-- Pagination -->
