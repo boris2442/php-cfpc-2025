@@ -82,12 +82,12 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
     ////mise en avatar
     /** 
      * Mise de l'avatar 
-      * 1 - Verification de l'upload de l'image
-      * 2 - Verification de la taille de l'image
-      * 3 - Verification de l'extension de l'image est autorisé
-      * 4 - Renommer l'image uploadée (id de l'user 'extension de l'image)
-      * 5 - Chemin de destination pour l'upload de l'image
-      * 6 - Deplacement de l'image uploadée vers le dossier de destination
+     * 1 - Verification de l'upload de l'image
+     * 2 - Verification de la taille de l'image
+     * 3 - Verification de l'extension de l'image est autorisé
+     * 4 - Renommer l'image uploadée (id de l'user 'extension de l'image)
+     * 5 - Chemin de destination pour l'upload de l'image
+     * 6 - Deplacement de l'image uploadée vers le dossier de destination
      * 
      * */
     //verificatin de la presence d'un fichier upload
@@ -105,14 +105,14 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
 
                 //chemin de destination complete pour l'uppload de l'image
                 $destination = "membres/avatars/" . $newFilename;
-                if(move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)){
-                    $requpdate=$db->prepare("UPDATE membres SET avatar=? WHERE id=? ");
+                if (move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
+                    $requpdate = $db->prepare("UPDATE membres SET avatar=? WHERE id=? ");
                     $requpdate->execute([$newFilename, $_SESSION['id']]);
                     header('Location: profil.php?id=' . $_SESSION['id']);
                     exit();
                     // $requpdate=$db->
-                }else{
-                    $erreur="Erreur lors de l'upload";
+                } else {
+                    $erreur = "Erreur lors de l'upload";
                 }
             } else {
                 $erreur = "format d'images non autoriser. ('.jpg', '.png', '.gif', '.jpeg' requis)";
@@ -125,9 +125,6 @@ if (isset($_SESSION['id']) and $_SESSION['id'] > 0) {
         $erreur = "Veuillez selectionner une image";
     }
 }
-
-
-
 
 ?>
 
@@ -159,14 +156,14 @@ require_once "header-and-footer/header.php";
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
                     <label>Mot de passe :</label>
-                    <input type="password" name="newmdp1"  class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]"  placeholder="Mot de passe"  value="" />
+                    <input type="password" name="newmdp1" class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" placeholder="Mot de passe" value="" />
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
                     <label>Confirmation - mot de passe :</label>
                     <input type="password" class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" name="newmdp2" value='' placeholder="Confirmation du mot de passe" />
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
-                    <label for="">Avatar :</label>            
+                    <label for="">Avatar :</label>
                     <input type="file" name="avatar" />
                 </div>
                 <div class="mx-auto w-[400px]">

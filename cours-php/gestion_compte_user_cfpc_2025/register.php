@@ -8,7 +8,7 @@ if ($_POST) {
     echo "</pre>";
 
 
-    ///////////////////username
+    
 
     //recuperation des erreurs sous forme de tableau
     $errors = [];
@@ -73,7 +73,6 @@ if ($_POST) {
         exit();
     }
 }
-
 
 
 

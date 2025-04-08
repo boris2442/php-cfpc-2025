@@ -10,7 +10,7 @@ require_once './includes/database.php';
         </div>
         <form action="" class="form" id="form" method="post">
             <div class="form-control">
-                <label for="username">Nom d'utilisateur ou l'émail</label>
+                <label for="username">Nom d'utilisateur ou l'émail:</label>
                 <input type="text" id="username" placeholder="rostodev" autocomplete="off" name="username">
 
             </div>
