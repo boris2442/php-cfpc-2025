@@ -190,22 +190,6 @@ for ($i = 1; $i <= $totalPages; $i++) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-?>
-
 <?php
 $title = "Ajouter un article";
 require_once "header-and-footer/header.php";
@@ -290,7 +274,7 @@ require_once "header-and-footer/header.php";
                                 <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
                                 <textarea name="comment_content" placeholder="Laissez un commentaire..." required class="w-full p-2 rounded border mb-2 resize-none"></textarea>
                                 <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">Commenter</button>
-                                <button  class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"  onclick="document.getElementById('commentDialog').close()">retouner</button>
+                                <button  class="bg-red-600 text-white px-4 py-1 rounded hover:bg-blue-700"  onclick="document.getElementById('commentDialog').close()">Anuler</button>
                             </form>
                         </dialog>
                     <?php else: ?>
