@@ -4,9 +4,9 @@
  $password = "";
  $database = "gestion_compte_user-cfpc-2025";
 try {
-     $pdo= new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+     $db= new PDO("mysql:host=$servername;dbname=$database", $username, $password);
      // 2-Configurer le mode d'erreur pour lancer des exceptions
-     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     //  3-echo "<div style='background-color:#3c763d; color:white;'>Connexion à la base de donnée réussie</div>";
      
  } catch(PDOException $e) {
