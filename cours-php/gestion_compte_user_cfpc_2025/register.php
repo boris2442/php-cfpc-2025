@@ -38,16 +38,39 @@ if ($_POST) {
 
     ////password
 
+    // if (
+    //     empty($_POST['password']) ||
+    //     !preg_match(
+    //         "/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{8,}$/",
+    //         $_POST['password']
+    //     )
+    // ) {
+    //     $errors['password'] = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre";
+    // } elseif ($_POST['password']!== $_POST['confirm_password']) {
+    //     $errors['confirm_password'] = "Les mots de passe ne correspondent pas";
+    // }
+
+
+
     if (
         empty($_POST['password']) ||
         !preg_match(
-            "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/",
+            "/[a-zA-Z0-9_\/]{8,}$/",
             $_POST['password']
         )
     ) {
         $errors['password'] = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre";
-    } elseif ($_POST['password'] !== $_POST['confirm_password']) {
+    } elseif (trim($_POST['password']) !== trim($_POST['confirm_password'])) {
         $errors['confirm_password'] = "Les mots de passe ne correspondent pas";
+    }
+    //INSERT INTO
+    if (empty($errors)) {
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $stmt = $db->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+        $stmt->execute([$username, $email, $password]);
+        // $_SESSION['success'] = "Inscription réussie";
+        // header('location:login.php');
+        // exit();
     }
 }
 
