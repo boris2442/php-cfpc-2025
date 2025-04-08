@@ -11,7 +11,7 @@ require_once "header-and-footer/header.php";
 <!-- navbar.php (à inclure dans tes pages) -->
 
 <?php
-$title = "Ajouter un article";
+$title = "Espace membre";
 require_once "header-and-footer/footer.php";
 ?>
 <?php    require_once "navbar.php"?>

@@ -63,6 +63,7 @@ if (!empty($_POST)) {
 ?>
 
 <?php
+$title="inscription";
 require_once "header-and-footer/header.php";
 ?>
 <?php    require_once "navbar.php"?>

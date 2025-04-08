@@ -51,6 +51,7 @@ if(isset($_POST['submit_article'])){
 
 
 <?php
+$title="editer un article";
 require_once "header-and-footer/header.php";
 ?>
 <?php    require_once "navbar.php"?>

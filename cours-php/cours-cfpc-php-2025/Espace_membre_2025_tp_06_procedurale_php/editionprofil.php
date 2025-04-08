@@ -102,6 +102,7 @@ if (isset($_SESSION['users']['id']) && $_SESSION['users']['id'] > 0) {
 ?>
 
 <?php
+$title="Édition de mon profil";
 require_once "header-and-footer/header.php";
 require_once "navbar.php";
 ?>
