@@ -1,6 +1,11 @@
 <?php
 session_start();
 require_once('./includes/database.php');
+if($_POST){
+echo "<pre>";
+var_dump($_POST);
+echo "</pre>";
+}
 
 
 
