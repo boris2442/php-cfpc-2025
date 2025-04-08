@@ -34,5 +34,5 @@ if (session_status() == PHP_SESSION_NONE) {
 
     </header>
     <span>
-        <h1>Gestion des comptes utilisateurs</h1>
+        <h1>Gestion de comptes utilisateurs</h1>
     </span>
