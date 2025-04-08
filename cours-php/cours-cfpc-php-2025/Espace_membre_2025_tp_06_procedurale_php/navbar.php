@@ -8,7 +8,7 @@
     <!-- Menu desktop -->
     <div class="hidden md:flex space-x-6">
       <?php if (isset($_SESSION['users'])): ?>
-        <a href="profil.php" class="text-gray-700 hover:text-blue-600">Profil</a>
+        <a href="profil.php?id=<?=$_SESSION['users']['id'] ?>" class="text-gray-700 hover:text-blue-600">Profil</a>
         <a href="editionprofil.php" class="text-gray-700 hover:text-blue-600">Modifier Profil</a>
         <a href="ajout_article4.php" class="text-gray-700 hover:text-blue-600">Ajouter Article</a>
         <a href="deconnexion.php" class="text-red-600 font-semibold hover:text-red-800">Déconnexion</a>

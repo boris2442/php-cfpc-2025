@@ -20,7 +20,7 @@
 
 //             $title = clean_input($_POST['article_title']);
 //             $content = clean_input($_POST['article_content']);
-  
+
 //             $author_article = $_SESSION['users']['pseudo']; 
 
 //             if (strlen($title) > 50) {
@@ -247,50 +247,53 @@ require_once "header-and-footer/header.php";
 
         <h2 class="text-4xl font-bold text-white text-center mb-6 uppercase p-[5px] ">Listes des articles</h2>
 
-
-
-        <!-- <form method="GET" class="bg-green-100 w-[400px]  mx-auto my-[10px] rounded-[9999px] grid grid-cols-[80%_20%]">
-
-
-            <input type="text" name="search" placeholder="recherchez les articles par titre " class=" p-[7px] border-none outline-none" />
-            <input type="submit" name="" value="submit" class="bg-white rounded-r-full text-[18px]" />
-        </form> -->
-
-
-
         <form method="GET" class="bg-green-100 w-[450px] mx-auto my-[10px] rounded-full grid grid-cols-[60%_20%_20%] overflow-hidden">
-    <input type="text" name="search" placeholder="Recherchez les articles par titre" 
-        class="p-[7px] border-none outline-none" />
+            <input type="text" name="search" placeholder="Recherchez les articles par titre"
+                class="p-[7px] border-none outline-none" />
 
-    <input type="submit" value="Rechercher" 
-        class="bg-white text-[16px] font-semibold hover:bg-gray-200 cursor-pointer" />
+            <input type="submit" value="Rechercher"
+                class="bg-white text-[16px] font-semibold hover:bg-gray-200 cursor-pointer" />
 
-    <a href="http://localhost/php-2025/cours-php/cours-cfpc-php-2025/Espace_membre_2025_tp_06_procedurale_php/" 
-       class="bg-green-100 text-center flex items-center justify-center text-[16px] font-semibold hover:bg-gray-200 cursor-pointer">
-        Actualiser
-    </a>
-</form>
+            <a href="http://localhost/php-2025/cours-php/cours-cfpc-php-2025/Espace_membre_2025_tp_06_procedurale_php/"
+                class="bg-green-100 text-center flex items-center justify-center text-[16px] font-semibold hover:bg-gray-200 cursor-pointer">
+                Actualiser
+            </a>
+        </form>
 
 
         <div class="flex gap-4 flex-wrap justify-center items-center">
             <?php
             foreach ($articles as $article):
             ?>
-                <div class="w-[300px] h-[250px] bg-white p-4 rounded shadow mb-4 relative">
+                <div class="w-[300px] min-h-[300px]  bg-white p-4 rounded shadow mb-4 relative">
                     <h4 class="text-green-900  font-bold text-2xl"><span class="">Title:</span> <?= clean_input($article['title']) ?></h4>
                     <h3 class=""><span class="text-green-900  font-bold ">Auteur: </span><span class=""><?= clean_input($article['author'])   ?></span></h3>
 
+                    <!-- Contenu -->
+
                     <h3 class=""><span class="text-green-900  font-bold">Contenu: </span><span class=""><?= clean_input($article['content']) ?></span> </h3>
+
+                    <!-- Date -->
+
                     <p class=""><span class="text-green-900  font-bold">Publié le : </span> <span class=""><?= clean_input($article['date']) ?></span></p>
 
 
+
+                    <!-- Formulaire de commentaire -->
+                    <?php if (isset($_SESSION['users'])): ?>
+                        <form method="POST" action="comment_article.php" class="my-4">
+                            <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
+                            <textarea name="comment_content" placeholder="Laissez un commentaire..." required class="w-full p-2 rounded border mb-2 resize-none"></textarea>
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">Commenter</button>
+                        </form>
+                    <?php else: ?>
+                        <p class="text-sm text-red-600 mt-2">Connectez-vous pour laisser un commentaire.</p>
+                    <?php endif; ?>
                     <div class="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
 
                         <?php
-                        // Vérifie que l'utilisateur est connecté et qu'il est administrateur
-                        // if (isset($_SESSION['users']) && $_SESSION['users']['roles'] === 'admin') :
-                        if (isset($_SESSION['users']['roles']) && $_SESSION['users']['roles'] === 'admin') :
 
+                        if (isset($_SESSION['users']['roles']) && $_SESSION['users']['roles'] === 'admin') :
 
                         ?>
                             <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
@@ -299,12 +302,11 @@ require_once "header-and-footer/header.php";
                         ?>
                         <form method="POST" action="like_article.php">
                             <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
-                            <input type="submit" class="text-blue-600" value="👍 Liker (<?= $article['like_count'] ?? 0 ?>)">
+                            <input type="submit" class="text-blue-600" value="👍  (<?= $article['like_count'] ?? 0 ?>)">
                         </form>
 
                         <?php
-                        // Vérifie que l'utilisateur est connecté et qu'il est administrateur
-                        // if (isset($_SESSION['users']) && $_SESSION['users']['roles'] === 'admin') :
+
                         if (isset($_SESSION['users']['roles']) && $_SESSION['users']['roles'] === 'admin') :
 
 
@@ -317,6 +319,14 @@ require_once "header-and-footer/header.php";
                         ?>
 
                     </div>
+
+                    <!-- Formulaire de commentaire -->
+
+
+
+
+
+
                 </div>
             <?php endforeach; ?>
 
