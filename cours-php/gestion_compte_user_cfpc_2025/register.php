@@ -69,8 +69,8 @@ if ($_POST) {
         $stmt = $db->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
         $stmt->execute([$username, $email, $password]);
         // $_SESSION['success'] = "Inscription réussie";
-        // header('location:login.php');
-        // exit();
+        header('location:login.php');
+        exit();
     }
 }
 
