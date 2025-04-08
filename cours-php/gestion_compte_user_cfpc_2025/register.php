@@ -2,10 +2,23 @@
 session_start();
 require_once('./includes/database.php');
 if($_POST){
-echo "<pre>";
-var_dump($_POST);
-echo "</pre>";
+// echo "<pre>";
+// var_dump($_POST);
+// echo "</pre>";
+
+
+///////////////////username
+
+//recuperation des erreurs sous forme de tableau
+$errors = [];
+if(empty($_POST['username']) || !preg_match("/^[a-zA-Z0-9_]{3,20}$/", $_POST['username']) ){
+    $errors['username'] = "Le nom d'utilisateur requis et doit contenir entre 3 et 20 caractères alphanumériques";
 }
+
+}
+
+
+
 
 
 
@@ -19,6 +32,12 @@ echo "</pre>";
             <h2>S'inscrire</h2>
         </div>
      
+
+     <?php
+if (!empty($errors)) {
+    echo '<div style="color:white; text-align: center; background-color:#ff6c6c;padding:2px 7px; margin-bottom:10px; font-size:23px;">' . reset($errors) . '</div>';
+}
+?>
         <form action="" class="form" id="form" method="post" enctype="multipart/form-data">
             <div class="form-control">
                 <label for="username">Nom d'utilisateur</label>
