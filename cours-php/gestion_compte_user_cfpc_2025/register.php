@@ -2,9 +2,9 @@
 session_start();
 require_once('./includes/database.php');
 if($_POST){
-// echo "<pre>";
-// var_dump($_POST);
-// echo "</pre>";
+echo "<pre>";
+var_dump($_POST);
+echo "</pre>";
 
 
 ///////////////////username
@@ -12,7 +12,8 @@ if($_POST){
 //recuperation des erreurs sous forme de tableau
 $errors = [];
 if(empty($_POST['username']) || !preg_match("/^[a-zA-Z0-9_]{3,20}$/", $_POST['username']) ){
-    $errors['username'] = "Le nom d'utilisateur requis et doit contenir entre 3 et 20 caractères alphanumériques";
+    $errors['username'] = "Le nom  doit contenir entre 3 et 20 caractères alphanumériques";
+    var_dump($errors['username']);
 }
 
 }
