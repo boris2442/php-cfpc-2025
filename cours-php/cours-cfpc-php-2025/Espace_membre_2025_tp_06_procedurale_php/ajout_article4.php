@@ -281,11 +281,18 @@ require_once "header-and-footer/header.php";
 
                     <!-- Formulaire de commentaire -->
                     <?php if (isset($_SESSION['users'])): ?>
-                        <form method="POST" action="comment_article.php" class="my-4">
-                            <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
-                            <textarea name="comment_content" placeholder="Laissez un commentaire..." required class="w-full p-2 rounded border mb-2 resize-none"></textarea>
-                            <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">Commenter</button>
-                        </form>
+
+                        <button onclick="document.getElementById('commentDialog').showModal()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
+                            Laisser un commentaire
+                        </button>
+                        <dialog id="commentDialog" class="rounded p-4 w-full max-w-md">
+                            <form method="POST" action="comment_article.php" class="my-4">
+                                <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
+                                <textarea name="comment_content" placeholder="Laissez un commentaire..." required class="w-full p-2 rounded border mb-2 resize-none"></textarea>
+                                <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">Commenter</button>
+                                <button  class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"  onclick="document.getElementById('commentDialog').close()">retouner</button>
+                            </form>
+                        </dialog>
                     <?php else: ?>
                         <p class="text-sm text-red-600 mt-2">Connectez-vous pour laisser un commentaire.</p>
                     <?php endif; ?>
