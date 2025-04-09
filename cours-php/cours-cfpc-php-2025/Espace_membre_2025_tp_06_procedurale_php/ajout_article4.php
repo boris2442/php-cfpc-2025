@@ -2,7 +2,7 @@
 
 
 session_start();
-
+// phpinfo();
 require_once "database.php";
 require "clean_input.php";
 
@@ -98,11 +98,6 @@ for ($i = 1; $i <= $totalPages; $i++) {
 
 ?>
 
-
-
-
-
-
 <?php
 $title = "Ajouter un article";
 require_once "header-and-footer/header.php";
@@ -110,7 +105,7 @@ require_once "header-and-footer/header.php";
 <?php require_once "navbar.php" ?>
 <div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4 mt-[40px]">
     <!-- <div class="container grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-4 p-4 "> -->
-    <div class="box-container  bg-green-500 h-[500px] overflow-auto rounded-[7px]">
+    <div class="box-container  bg-blue-400 h-[500px] overflow-auto rounded-[7px]">
 
         <h2 class="text-4xl font-bold text-white text-center mb-4 uppercase">creer un article</h2>
         <form method="POST" action="" class="bg-white p-6 rounded shadow max-w-lg mx-auto">
@@ -140,11 +135,11 @@ require_once "header-and-footer/header.php";
         </form>
     </div>
 
-    <div class="box-container bg-green-500 h-[500px] overflow-auto rounded-[7px]">
+    <div class="box-container bg-blue-400 h-[500px] overflow-auto rounded-[7px] relative">
+        <h2 class="text-4xl font-bold text-red-400 text-center mb-6 uppercase p-[5px] sticky top-0 left-0 z-10">Listes des articles</h2>
 
-        <h2 class="text-4xl font-bold text-white text-center mb-6 uppercase p-[5px] ">Listes des articles</h2>
 
-        <form method="GET" class="bg-green-100 w-[450px] mx-auto my-[10px] rounded-full grid grid-cols-[60%_20%_20%] overflow-hidden">
+        <form method="GET" class="bg-green-100 w-[450px] mx-auto my-[10px] rounded-full grid grid-cols-[60%_20%_20%] overflow-hidden sticky top-7 left-0 z-10">
             <input type="text" name="search" placeholder="Recherchez les articles par titre"
                 class="p-[7px] border-none outline-none" />
 
@@ -179,15 +174,17 @@ require_once "header-and-footer/header.php";
                     <!-- Formulaire de commentaire -->
                     <?php if (isset($_SESSION['users'])): ?>
 
-                        <button onclick="document.getElementById('commentDialog').showModal()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
+                        <button  onclick="document.getElementById('commentDialog').showModal()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
                             Laisser un commentaire
                         </button>
                         <dialog id="commentDialog" class="rounded p-4 w-full max-w-md">
+                   
                             <form method="POST" action="comment_article.php" class="my-4">
                                 <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
+                                
                                 <textarea name="comment_content" placeholder="Laissez un commentaire..." required class="w-full p-2 rounded border mb-2 resize-none"></textarea>
                                 <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">Commenter</button>
-                                <button  class="bg-red-600 text-white px-4 py-1 rounded hover:bg-blue-700"  onclick="document.getElementById('commentDialog').close()">Anuler</button>
+                                <button type="button"  class="bg-red-600 text-white px-4 py-1 rounded hover:bg-blue-700"  onclick="document.getElementById('commentDialog').close()">Anuler</button>
                             </form>
                         </dialog>
                     <?php else: ?>
@@ -200,7 +197,7 @@ require_once "header-and-footer/header.php";
                         if (isset($_SESSION['users']['roles']) && $_SESSION['users']['roles'] === 'admin') :
 
                         ?>
-                            <button class="bg-green-900 p-1 text-white hover:text-green-700 "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
+                            <button class="bg-blue-400 p-1 text-white hover:text-blue-100 hover:rounded-lg "><a href="edit_article.php?id=<?= $article['id'] ?>" class="">Modifier</a></button>
                         <?php
                         endif;
                         ?>
