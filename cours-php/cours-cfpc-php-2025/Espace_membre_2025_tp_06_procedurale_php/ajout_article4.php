@@ -104,7 +104,7 @@ $title = "Ajouter un article";
 require_once "header-and-footer/header.php";
 ?>
 <?php require_once "navbar.php" ?>
-<div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4 mt-[40px]">
+<div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4 mt-[40px] relative">
     <!-- <div class="container grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-4 p-4 "> -->
     <div class="box-container  bg-blue-400 h-[500px] overflow-auto rounded-[7px]">
 
@@ -179,9 +179,9 @@ require_once "header-and-footer/header.php";
                         <button onclick="document.getElementById('commentDialog').showModal()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
                             Laisser un commentaire
                         </button>
-                        <dialog id="commentDialog" class="rounded p-4 w-full max-w-md">
+                        <dialog id="commentDialog" class="rounded p-4 w-full max-w-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-lg">
 
-                            <form action="../../comment_article.php" method="POST" class="my-4">
+                            <form action="../../comment_article.php" method="POST" class="my-4 mx-auto ">
                                 <input type="hidden" name="article_id" value="<?= $article['id']?>">
                                 <?php
                                 var_dump($article['id']);
