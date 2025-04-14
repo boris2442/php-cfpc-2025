@@ -11,13 +11,13 @@ require_once('./includes/functions.php');
 // // $alphanum=array_merge($chiffre,$minuscule,$majuscule);
 // $alphanum = array_merge(range(0, 9), range('a', 'z'), range('A', 'Z')); //4.cette methode permet de fusionner les tableaux pour creer un tableau alphanumerique
 //fusionne
-// $alphanumstring = implode('', $alphanum); 
-//5.concatene les elements en une chaine de caractere
+// $alphanumstring = implode('', $alphanum); //5.concatene les elements en une chaine de caractere
+
 //6 La methode str_repeat permet de repeter les elements 
 //  $token1=str_shuffle(str_repeat($alphanumstring, 100)); 
 //str
-//  $token2=substr(str_shuffle(str_repeat($alphanumstring, 100)), 0, 100); 
-//la methode substr permet de retourner les valeurs d'un tableau 
+//  $token2=substr(str_shuffle(str_repeat($alphanumstring, 100)), 0, 100); //la methode substr permet de retourner les valeurs d'un tableau 
+
 // echo '<pre>';
 // print_r($chiffre);
 // print_r($minuscule);
@@ -57,7 +57,7 @@ if ($_POST) {
         $stmt->execute([$username]);
         if ($stmt->rowCount() > 0) {
             $errors['username'] = "Ce nom d'utilisateur existe déjà";
-            // var_dump($errors['username']);
+    
         }
     }
     //email

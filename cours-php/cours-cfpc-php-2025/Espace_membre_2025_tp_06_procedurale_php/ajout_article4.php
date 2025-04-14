@@ -6,6 +6,7 @@ session_start();
 require_once "database.php";
 require "clean_input.php";
 
+
 $error = "";
 
 // Vérifie que l'utilisateur est connecté
@@ -158,6 +159,7 @@ require_once "header-and-footer/header.php";
             foreach ($articles as $article):
             ?>
                 <div class="w-[300px] min-h-[300px]  bg-white p-4 rounded shadow mb-4 relative">
+                   
                     <h4 class="text-green-900  font-bold text-2xl"><span class="">Title:</span> <?= clean_input($article['title']) ?></h4>
                     <h3 class=""><span class="text-green-900  font-bold ">Auteur: </span><span class=""><?= clean_input($article['author'])   ?></span></h3>
 
@@ -174,22 +176,31 @@ require_once "header-and-footer/header.php";
                     <!-- Formulaire de commentaire -->
                     <?php if (isset($_SESSION['users'])): ?>
 
-                        <button  onclick="document.getElementById('commentDialog').showModal()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
+                        <button onclick="document.getElementById('commentDialog').showModal()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
                             Laisser un commentaire
                         </button>
                         <dialog id="commentDialog" class="rounded p-4 w-full max-w-md">
-                   
+
                             <form method="POST" action="comment_article.php" class="my-4">
-                                <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
+                                <input type="hidden" name="article_id" value="<?= $article['id']?>">
+                                <?php
+                                var_dump($article['id']);
+                                ?>
+                                <textarea name="comment_content" placeholder="Laissez un commentaire..." class="w-full p-2 rounded border mb-2 resize-none"></textarea>
                                 
-                                <textarea name="comment_content" placeholder="Laissez un commentaire..." required class="w-full p-2 rounded border mb-2 resize-none"></textarea>
-                                <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">Commenter</button>
-                                <button type="button"  class="bg-red-600 text-white px-4 py-1 rounded hover:bg-blue-700"  onclick="document.getElementById('commentDialog').close()">Anuler</button>
+                                <input type="submit" value="Commenter" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700" name='commenter' />
+                                <button type="button" class="bg-red-600 text-white px-4 py-1 rounded hover:bg-blue-700" onclick="document.getElementById('commentDialog').close()">Anuler</button>
                             </form>
                         </dialog>
+              
                     <?php else: ?>
                         <p class="text-sm text-red-600 mt-2">Connectez-vous pour laisser un commentaire.</p>
-                    <?php endif; ?>
+                    <?php endif; ?> 
+
+
+           
+
+
                     <div class="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
 
                         <?php
@@ -247,6 +258,8 @@ require_once "header-and-footer/header.php";
         </div>
     </div>
 </div>
+
+
 
 <?php
 require_once "header-and-footer/footer.php";
