@@ -57,7 +57,6 @@ if ($_POST) {
         $stmt->execute([$username]);
         if ($stmt->rowCount() > 0) {
             $errors['username'] = "Ce nom d'utilisateur existe déjà";
-    
         }
     }
     //email
@@ -127,6 +126,10 @@ if ($_POST) {
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         mail($mail, $subject, $message, $headers);
+        //////Envoie d'un message vers la page de connexion
+        $_SESSION['flash']['success'] = "Un email de confirmation a été envoyé à $mail. Veuillez verifier  votre adresse email afin de confirmer votre compte.";
+        header('location:login.php');
+        exit();
         // die();
         // var_dump(  $stmt);
         // die();
@@ -135,25 +138,15 @@ if ($_POST) {
         // exit();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ?>
-<?php require_once './includes/header.php'; ?>
 
+
+
+
+
+
+
+<?php require_once './includes/header.php'; ?>
 
 <div class="content">
     <div class="container">
