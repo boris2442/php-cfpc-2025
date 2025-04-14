@@ -45,8 +45,9 @@ if ($_POST) {
 
     //recuperation des erreurs sous forme de tableau
     $errors = [];
-    if (empty($_POST['username'])
-          || !preg_match("/^[a-zA-Z0-9_]{3,20}$/", $_POST['username'])
+    if (
+        empty($_POST['username'])
+        || !preg_match("/^[a-zA-Z0-9_]{3,20}$/", $_POST['username'])
     ) {
         $errors['username'] = "Le nom  doit contenir entre 3 et 20 caractères alphanumériques";
         // var_dump($errors['username']);
@@ -113,6 +114,20 @@ if ($_POST) {
             'password' => $password,
             'confirmation_token' => $token
         ]);
+        $userId = $db->lastInsertId(); //retourne l'id du dernier utilisateur inserer
+        // var_dump($userId);
+
+        $mail = $_POST['email'];
+        $subject = "Confirmation du compte";
+        $link = "localhost/php-2025/cours-php/gestion_compte_user_cfpc_2025/confirm?id=$userId&token=$token";
+        $message = "Afin de confirmer votre compte, merci de cliquer sur ce lien :   <a href='$link'>Confirmer mon compte</a>";
+
+
+        // Envoi de l'e-mail en utilisant le format HTML
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        mail($mail, $subject, $message, $headers);
+        // die();
         // var_dump(  $stmt);
         // die();
         // $_SESSION['success'] = "Inscription réussie";
