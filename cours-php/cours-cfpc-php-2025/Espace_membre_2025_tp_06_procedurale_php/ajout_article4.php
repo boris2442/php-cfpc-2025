@@ -183,9 +183,7 @@ require_once "header-and-footer/header.php";
 
                             <form action="../../comment_article.php" method="POST" class="my-4 mx-auto ">
                                 <input type="hidden" name="article_id" value="<?= $article['id']?>">
-                                <?php
-                                var_dump($article['id']);
-                                ?>
+                              
                                 <textarea name="comment_content" placeholder="Laissez un commentaire..." class="w-full p-2 rounded border mb-2 resize-none"></textarea>
                                 
                                 <input type="submit" value="Commenter" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700" name='commenter' />
@@ -212,9 +210,9 @@ require_once "header-and-footer/header.php";
                         <?php
                         endif;
                         ?>
-                        <form  action="like_article.php" method="post" >
+                        <form  action="../../like_article.php" method="post" >
                             <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
-                            <input type="submit" class="text-blue-600" value="👍  (<?= $article['like_count'] ?? 0 ?>)">
+                            <input type="submit" class="text-blue-600" value="👍 ❤️   (<?= $article['like_count'] ?? 0 ?>)">
                         </form>
 
                         <?php
