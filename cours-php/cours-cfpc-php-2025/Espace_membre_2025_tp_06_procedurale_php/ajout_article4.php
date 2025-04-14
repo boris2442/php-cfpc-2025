@@ -181,7 +181,7 @@ require_once "header-and-footer/header.php";
                         </button>
                         <dialog id="commentDialog" class="rounded p-4 w-full max-w-md">
 
-                            <form method="POST" action="comment_article.php" class="my-4">
+                            <form action="../../comment_article.php" method="POST" class="my-4">
                                 <input type="hidden" name="article_id" value="<?= $article['id']?>">
                                 <?php
                                 var_dump($article['id']);
@@ -212,7 +212,7 @@ require_once "header-and-footer/header.php";
                         <?php
                         endif;
                         ?>
-                        <form method="POST" action="like_article.php">
+                        <form  action="like_article.php" method="post" >
                             <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
                             <input type="submit" class="text-blue-600" value="👍  (<?= $article['like_count'] ?? 0 ?>)">
                         </form>

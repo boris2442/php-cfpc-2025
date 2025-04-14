@@ -1,16 +1,10 @@
 <?php
-session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['test'])) {
-    $article_id = $_POST['test'] ?? '';
-    // $content = trim($_POST['comment_content'] ?? '');
-
-    var_dump($article_id);
-    if (!empty($article_id)) {
-        // Insérer le commentaire en BDD
-    } else {
-        echo "Champs requis manquants.";
-    }
+if(!empty($_POST)){
+    $nom = $_POST['nom'];
+    $text = $_POST['text'];
+    echo "Nom: $nom <br>";
+    echo "Text: $text <br>";
 }else{
-    echo "Aucune donnée reçue.";
+    echo "Aucun formulaire soumis";
 }
