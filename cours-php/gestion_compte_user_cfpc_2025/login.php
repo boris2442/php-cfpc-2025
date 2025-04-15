@@ -1,7 +1,36 @@
 <?php
 session_start();
 require_once './includes/database.php';
- ?>
+require_once './includes/clean_input.php';
+require_once './includes/functions.php';
+$error = [];
+if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['password'])) {
+    $sql = "SELECT * FROM users WHERE (username = :username OR email = :username) AND confirmate_at IS NOT NULL";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':username', $_POST['username']);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+        if (password_verify($_POST['password'], $user['password'])) {
+            $_SESSION['auth'] = $user['id'];
+            $_SESSION['flash']['success'] = "Bienvenue {$user['username']} !";
+            if (!empty($_POST['remember'])) {
+                setcookie('remember', $user['id'] . '==' . $user['password'], time() + 60 * 60 * 24 * 7, null, null, false, true);
+            }
+            header('Location: index.php');
+            exit();
+        } else {
+            $error['password'] = "Mot de passe incorrect !";
+        }
+    } else {
+        $error['username'] = "Nom d'utilisateur ou mot de passe incorrect !";
+    }
+}
+
+
+
+?>
 <?php require_once './includes/header.php'; ?>
 <div class=" content">
     <div class="container">

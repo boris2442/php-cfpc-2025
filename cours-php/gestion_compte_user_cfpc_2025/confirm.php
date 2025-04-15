@@ -23,20 +23,16 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
 if($user && $user['confirmation_token']==$token){
-    // echo "<pre>";
-    // print_r($user);
-    // echo "</pre>";
-    // echo "le token est valide";
-    // var_dump($user['confirmed_token']);
-    // var_dump($token);
+    
     $stmt = $db->prepare("UPDATE users SET confirmation_token = NULL, confirmate_at=NOW() WHERE id = ?");
     $stmt->execute([$userId]);
     $_SESSION['flash']['success'] = "Votre compte a été confirmé avec succès !";
-    $_SESSION['auth'] = $userId; // Store the user ID in the session
-    header('Location: login.php');
-} else {
+   
+    $_SESSION['auth'] = $userId;  //enregistrer l'utilisateur dans la variable de sessionn qui a pour key auth
+    header('Location: login.php');//redirection de l'utilisateur vers la page de connexion
+} else {//si l'utilisateur n'existe pas, 
     $_SESSION['flash']['error'] = "Le lien de confirmation est invalide ou a déjà été utilisé.";
-    header('Location: login.php');
+    header('Location: register.php');
     exit();
 }
 

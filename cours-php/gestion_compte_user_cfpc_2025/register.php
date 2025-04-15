@@ -119,10 +119,35 @@ if ($_POST) {
         $mail = $_POST['email'];
         $subject="Confirmation du compte";
         $link="http://localhost/php-2025/cours-php/gestion_compte_user_cfpc_2025/confirm?id=$userId&token=$token";
-        $message="Afin de confirmer votre compte, merci de cliquer sur ce lien :   <a href='$link'>Confirmer mon compte</a>";
+        // $message="Afin de confirmer votre compte, merci de cliquer sur ce lien :   <a href='$link'>Confirmer mon compte</a>";
 
+        $message = "
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: 'Poppins', Arial, sans-serif;
+                    background-color: #f4f4f4;
+                    color: #333;
+                }
+                a {
+                    color: #007BFF;
+                    font-family:'Italianno', sans-serif;
+                
+                    text-decoration: underline;
+                }
+            </style>
+        </head>
+        <body>
+            <p>Bonjour,</p>
+            <p>Afin de confirmer votre compte, merci de cliquer sur ce lien :</p>
+            <p><a href='$link'>Confirmer mon compte</a></p>
+            <p>Merci,</p>
+            <p>L'équipe de gestion des comptes utilisateurs</p>
+        </body>
+        </html>
+    ";
 
-        // Envoi de l'e-mail en utilisant le format HTML
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         mail($mail, $subject, $message, $headers);
