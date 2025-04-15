@@ -240,15 +240,20 @@ nav ul li a:active{
     color: #8a6d3b;
   }
 #password{
+  
+}
+.parent-icon-eye{
   position: relative;
 
 }
 #togglePassword{
-    position: absolute;
-    /* top: 10px; */
-    right: 0;
+
+    position: absolute !important;
+    
+    right: 10%;
    top: 0px;
-    font-size: 20px;
+    font-size: 40px;
     color: cyan;
     transition: 0.3s;
+    background-color: red;
   }

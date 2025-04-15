@@ -16,7 +16,8 @@ if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['password'])) 
             $_SESSION['auth'] = $user['id'];
             $_SESSION['flash']['success'] = "Bienvenue {$user['username']} !";
             if (!empty($_POST['remember'])) {
-                setcookie('remember', $user['id'] . '==' . $user['password'], time() + 60 * 60 * 24 * 7, null, null, false, true);
+                // setcookie('remember', $user['id'] . '==' . $user['password'], time() + 60 * 60 * 24 * 7, null, null, false, true);
+                setcookie('email', $user['email'], time() + 365 * 24 * 3600, "/", null, false, true); // Cookie valide pendant 1 an
             }else {
                 // Si la case n'est pas cochée, supprimer le cookie existant
                 setcookie('email', '', time() - 3600, "/");
@@ -43,16 +44,16 @@ if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['password'])) 
         <form action="" class="form" id="form" method="post">
             <div class="form-control">
                 <label for="username">Nom d'utilisateur ou l'émail:</label>
-                <input type="text" id="username" placeholder="rostodev" autocomplete="off" name="username">
+                <input type="text" id="username" placeholder="rostodev" autocomplete="off" name="username" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
 
             </div>
 
-            <div class=" form-control">
+            <div class=" form-control parent-icon-eye">
                 <label for="password">Mot de passe <a class="passforget" href="remember.php">(J'ai oublié mon mot de
                         passe)</a>
                 </label>
-                <input type="password" id="password" name="password">
                 <i class="fa-solid fa-eye  icon-remember" id="togglePassword"></i>
+                <input type="password" id="password" name="password">
             </div>
             <div class="form-controlg remember">
           
@@ -66,6 +67,7 @@ if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['password'])) 
 
     </div>
 </div>
+<script src="./javascript/script.js"></script>
 <?php
 require_once './includes/footer.php';
 ?>
