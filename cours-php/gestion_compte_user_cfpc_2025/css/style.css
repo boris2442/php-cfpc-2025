@@ -239,3 +239,16 @@ nav ul li a:active{
     background-color: #fcf8e3;
     color: #8a6d3b;
   }
+#password{
+  position: relative;
+
+}
+#togglePassword{
+    position: absolute;
+    /* top: 10px; */
+    right: 0;
+   top: 0px;
+    font-size: 20px;
+    color: cyan;
+    transition: 0.3s;
+  }

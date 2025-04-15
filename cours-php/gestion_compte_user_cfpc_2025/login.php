@@ -52,9 +52,10 @@ if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['password'])) 
                         passe)</a>
                 </label>
                 <input type="password" id="password" name="password">
-
+                <i class="fa-solid fa-eye  icon-remember" id="togglePassword"></i>
             </div>
             <div class="form-controlg remember">
+          
                 <label for="remember"> <input type="checkbox" name="remember" value="1"> Se souvenir de moi</label>
 
 
