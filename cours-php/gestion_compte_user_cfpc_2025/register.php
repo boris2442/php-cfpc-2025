@@ -105,7 +105,7 @@ if ($_POST) {
         //appele la fonction generateToken pour generer un token aleatoire de 100 caracteres
         $token = generateToken(100);
         var_dump($token);
-        // die();
+     
         $stmt = $db->prepare("INSERT INTO users (username, email, password, confirmation_token) VALUES (:username, :email, :password, :confirmation_token)");
         $stmt->execute([
             'username' => $username,
@@ -117,9 +117,9 @@ if ($_POST) {
         // var_dump($userId);
 
         $mail = $_POST['email'];
-        $subject = "Confirmation du compte";
-        $link = "localhost/php-2025/cours-php/gestion_compte_user_cfpc_2025/confirm?id=$userId&token=$token";
-        $message = "Afin de confirmer votre compte, merci de cliquer sur ce lien :   <a href='$link'>Confirmer mon compte</a>";
+        $subject="Confirmation du compte";
+        $link="http://localhost/php-2025/cours-php/gestion_compte_user_cfpc_2025/confirm?id=$userId&token=$token";
+        $message="Afin de confirmer votre compte, merci de cliquer sur ce lien :   <a href='$link'>Confirmer mon compte</a>";
 
 
         // Envoi de l'e-mail en utilisant le format HTML

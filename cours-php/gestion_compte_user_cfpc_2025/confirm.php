@@ -5,17 +5,40 @@ require_once('./includes/clean_input.php');
 require_once('./includes/functions.php');
 //recuperation de l'id de l'utilisateur
 // Check if the user is logged in
-$userId=$_GET['id'] ?? null; // Get the user ID from the URL parameter
+$userId=$db->lastInsertId(); // Get the last inserted ID (user ID) from the database
 
+
+$userId=$_GET['id'] ?? null; // Get the user ID from the URL parameter
+var_dump($_GET['id']);
+var_dump($userId);
 $token=$_GET['token']; // Get the token from the URL parameter
 //recupere l'id de l'utilisateur a partir du token
 $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
 
 $stmt->execute([$userId]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+// echo "<pre>";
+// print_r($user);
+// echo "</pre>";
 
-var_dump($user);
 
+if($user && $user['confirmation_token']==$token){
+    // echo "<pre>";
+    // print_r($user);
+    // echo "</pre>";
+    // echo "le token est valide";
+    // var_dump($user['confirmed_token']);
+    // var_dump($token);
+    $stmt = $db->prepare("UPDATE users SET confirmation_token = NULL, confirmate_at=NOW() WHERE id = ?");
+    $stmt->execute([$userId]);
+    $_SESSION['flash']['success'] = "Votre compte a été confirmé avec succès !";
+    $_SESSION['auth'] = $userId; // Store the user ID in the session
+    header('Location: login.php');
+} else {
+    $_SESSION['flash']['error'] = "Le lien de confirmation est invalide ou a déjà été utilisé.";
+    header('Location: login.php');
+    exit();
+}
 
 
 
