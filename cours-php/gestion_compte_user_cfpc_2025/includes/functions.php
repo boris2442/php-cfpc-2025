@@ -4,6 +4,11 @@ function generateToken($length){
     $alphanumstring = implode('', $alphanum); 
     return substr(str_shuffle(str_repeat($alphanumstring, $length)), 0,  $length); 
 }
+
+
+
+
+
 //void ne retourne rien
 /**
  * fonction qui permet de generer une fonction de facon alestoire

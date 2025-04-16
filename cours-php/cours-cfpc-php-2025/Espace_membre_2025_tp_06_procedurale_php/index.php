@@ -10,8 +10,11 @@ require_once "header-and-footer/header.php";
 
 <!-- navbar.php (à inclure dans tes pages) -->
 
+
+<?php    require_once "navbar.php"?> 
+
+
+
 <?php
-$title = "Espace membre";
 require_once "header-and-footer/footer.php";
 ?>
-<?php    require_once "navbar.php"?>

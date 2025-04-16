@@ -10,6 +10,7 @@
 
   
 
+<link rel="icon" type="image/png" href="header-and-footer/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -20,7 +21,7 @@
     <link rel="stylesheet" href="./style/style.css">
     <title><?= isset($title) ? htmlspecialchars($title): "Espace membre_2025_admin_user"    ?></title>
 
-    <link rel="icon" type="image/png" href="./logo.png">
+   
 </head>
 
 <body class="bg-green-100 font-family-Poppins   text-[16px]">
