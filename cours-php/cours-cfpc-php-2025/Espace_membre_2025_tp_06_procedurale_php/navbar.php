@@ -3,7 +3,7 @@
 <nav class="bg-white shadow-md p-4">
   <div class="container mx-auto flex items-center justify-between">
     <!-- Logo -->
-    <a href="index.php" class="text-2xl font-bold text-green-600">GreenSphere</a>
+    <a href="index.php" class="text-2xl font-bold text-green-600 uppercase font-'Parkinsans','Poppins'">GreenSphere</a>
 
     <!-- Menu desktop -->
     <div class="hidden md:flex space-x-6">
