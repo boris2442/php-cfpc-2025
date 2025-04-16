@@ -50,7 +50,13 @@ $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $startLimit = ($currentPage - 1) * $articlesPerPage;
 
 // Préparer la requête avec ou sans recherche
-$sql = "SELECT * FROM articles2";
+////////////////////////
+
+// $sql = "SELECT * FROM articles2";/////////////////////////////////////
+$sql = "SELECT a.*, COUNT(l.id) AS like_count 
+        FROM articles2 a 
+        LEFT JOIN likes_article l ON a.id = l.article_id";
+//////////////////
 $params = [];
 
 if (!empty($search)) {
@@ -58,7 +64,8 @@ if (!empty($search)) {
     $params[':search'] = "%$search%";
 }
 
-$sql .= " ORDER BY date DESC LIMIT :start, :limit";
+// $sql .= " ORDER BY date DESC LIMIT :start, :limit";////////////////////////////
+$sql .= " GROUP BY a.id ORDER BY date DESC LIMIT :start, :limit";
 
 // Préparer et exécuter la requête avec la pagination
 $requete = $db->prepare($sql);
@@ -104,7 +111,8 @@ $title = "Ajouter un article";
 require_once "header-and-footer/header.php";
 ?>
 <?php require_once "navbar.php" ?>
-<div class="container grid grid-cols-2 md:grid-cols-2 gap-4 p-4 mt-[40px] relative">
+<p class='pl-[16px] pb-[20px]'>Article disponible: <?= $totalArticles?></p>
+<div class="container grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-[40px] relative mx-auto">
     <!-- <div class="container grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-4 p-4 "> -->
     <div class="box-container  bg-blue-400 h-[500px] overflow-auto rounded-[7px]">
 
@@ -136,8 +144,8 @@ require_once "header-and-footer/header.php";
         </form>
     </div>
 
-    <div class="box-container bg-blue-400 h-[500px] overflow-auto rounded-[7px] relative">
-        <h2 class="text-4xl font-bold text-red-400 text-center mb-6 uppercase p-[5px] sticky top-0 left-0 z-10">Listes des articles</h2>
+    <div class="box-container bg-blue-400 h-auto md:h-[500px] md:overflow-auto   rounded-[7px] relative">
+        <h2 class="text-4xl font-bold text-white text-center mb-6 uppercase p-[5px] sticky top-0 left-0 z-10">Listes des articles</h2>
 
 
         <form method="GET" class="bg-green-100 w-[450px] mx-auto my-[10px] rounded-full grid grid-cols-[60%_20%_20%] overflow-hidden sticky top-7 left-0 z-10">
@@ -159,7 +167,7 @@ require_once "header-and-footer/header.php";
             foreach ($articles as $article):
             ?>
                 <div class="w-[300px] min-h-[300px]  bg-white p-4 rounded shadow mb-4 relative">
-                   
+
                     <h4 class="text-green-900  font-bold text-2xl"><span class="">Title:</span> <?= clean_input($article['title']) ?></h4>
                     <h3 class=""><span class="text-green-900  font-bold ">Auteur: </span><span class=""><?= clean_input($article['author'])   ?></span></h3>
 
@@ -171,32 +179,33 @@ require_once "header-and-footer/header.php";
 
                     <p class=""><span class="text-green-900  font-bold">Publié le : </span> <span class=""><?= clean_input($article['date']) ?></span></p>
 
-
+                    <span class="text-blue-600 font-bold">Likes : <?= htmlspecialchars($article['like_count'] ?? 0); ?></span>
 
                     <!-- Formulaire de commentaire -->
+                                        <!-- Formulaire de commentaire -->
                     <?php if (isset($_SESSION['users'])): ?>
-
+<!-- javascript formulaire commentaire,,,,,,,,,,,,,,,,, -->
                         <button onclick="document.getElementById('commentDialog').showModal()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
                             Laisser un commentaire
                         </button>
                         <dialog id="commentDialog" class="rounded p-4 w-full max-w-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-lg">
 
                             <form action="../../comment_article.php" method="POST" class="my-4 mx-auto ">
-                                <input type="hidden" name="article_id" value="<?= $article['id']?>">
-                              
+                                <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+
                                 <textarea name="comment_content" placeholder="Laissez un commentaire..." class="w-full p-2 rounded border mb-2 resize-none"></textarea>
-                                
+
                                 <input type="submit" value="Commenter" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700" name='commenter' />
                                 <button type="button" class="bg-red-600 text-white px-4 py-1 rounded hover:bg-blue-700" onclick="document.getElementById('commentDialog').close()">Anuler</button>
                             </form>
                         </dialog>
-              
+
                     <?php else: ?>
                         <p class="text-sm text-red-600 mt-2">Connectez-vous pour laisser un commentaire.</p>
-                    <?php endif; ?> 
+                    <?php endif; ?>
 
 
-           
+
 
 
                     <div class="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
@@ -210,9 +219,16 @@ require_once "header-and-footer/header.php";
                         <?php
                         endif;
                         ?>
-                        <form  action="../../like_article.php" method="post" >
+                        <form action="../../like_article.php" method="post">
                             <input type="hidden" name="article_id" value="<?= $article['id']; ?>">
-                            <input type="submit" class="text-blue-600" value="👍 ❤️   (<?= $article['like_count'] ?? 0 ?>)">
+                            <input type="submit" class="text-blue-600" value="👍 ❤️  
+                             ( <?= $article['like_count']  ?? 0   ?>  )  ">
+
+
+
+
+
+
                         </form>
 
                         <?php
@@ -230,7 +246,7 @@ require_once "header-and-footer/header.php";
 
                     </div>
 
-                    <!-- Formulaire de commentaire -->
+ 
 
 
 
