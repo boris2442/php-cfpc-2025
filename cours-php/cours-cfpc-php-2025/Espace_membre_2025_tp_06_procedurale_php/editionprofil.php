@@ -102,7 +102,7 @@ if (isset($_SESSION['users']['id']) && $_SESSION['users']['id'] > 0) {
 ?>
 
 <?php
-$title="Édition de mon profil";
+$title = "Édition de mon profil";
 require_once "header-and-footer/header.php";
 require_once "navbar.php";
 ?>
@@ -127,10 +127,10 @@ require_once "navbar.php";
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
                     <label>Mot de passe :</label>
-                    <input type="password" name="newmdp1"  class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" placeholder="Mot de passe" value="" />
+                    <input type="password" name="newmdp1" class="border-2 border-solid border-green-500 p-[5px] w-[350px] rounded-[5px]" placeholder="Mot de passe" value="" />
                 </div>
                 <div class="mx-auto w-[400px] flex flex-col gap-[10px]">
-                    <label for="">Avatar :</label>            
+                    <label for="">Avatar :</label>
                     <input type="file" name="avatar" />
                 </div>
                 <div class="mx-auto w-[400px]">
@@ -141,4 +141,5 @@ require_once "navbar.php";
     </div>
 </div>
 </body>
+
 </html>

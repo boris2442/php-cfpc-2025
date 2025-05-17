@@ -59,10 +59,23 @@ if (!empty($_POST)) {
             // $_SESSION['roles'] = $users['roles'];
             // Si l'utilisateur a coché "Se souvenir de moi"
             if (isset($_POST['remember_me'])) {
-                setcookie('email', $users['email'], time() + 365 * 24 * 3600, "/", null, false, true); // Cookie valide pendant 1 an
+                setcookie(
+                    'email',  //nom du cookie
+                    $users['email'],  //valeur a stocker
+                    time() + 365 * 24 * 3600,  //3. date d’expiration (timestamp) : ici « now + 1 an »
+                    "/",  //le chemin accessible sur le domaine ("/" pour tout le site)
+                    null,  // le domaine (null = domaine courant)
+                    false,  //secure (false = cookie envoyé en HTTP et HTTPS, true = uniquement HTTPS)
+                    true  // httponly (true = inaccessible en JavaScript, renforce la sécurité)
+                ); // Cookie valide pendant 1 an
             } else {
                 // Si la case n'est pas cochée, supprimer le cookie existant
-                setcookie('email', '', time() - 3600, "/");
+                setcookie(
+                    'email', //nom du cookie
+                 '', //On lui assigne une chaîne vide, c’est-à-dire qu’il ne contient plus rien.
+                  time() - 3600, //time() renvoie l’heure actuelle en secondes depuis le 1er janvier 1970.
+                   "/" //On indique que l’on supprime le cookie défini sur l’ensemble du site 
+                );
             }
 
             // header("location:profil.php?id=" . $_SESSION['id']);

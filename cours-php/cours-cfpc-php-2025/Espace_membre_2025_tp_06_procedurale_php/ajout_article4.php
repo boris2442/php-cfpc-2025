@@ -111,7 +111,7 @@ $title = "Ajouter un article";
 require_once "header-and-footer/header.php";
 ?>
 <?php require_once "navbar.php" ?>
-<p class='pl-[16px] pb-[20px]'>Article disponible: <?= $totalArticles?></p>
+<p class='pl-[16px] pb-[20px]'>Article disponible: <?= $totalArticles ?></p>
 <div class="container grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-[40px] relative mx-auto">
     <!-- <div class="container grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-4 p-4 "> -->
     <div class="box-container  bg-blue-400 h-[500px] overflow-auto rounded-[7px]">
@@ -182,9 +182,9 @@ require_once "header-and-footer/header.php";
                     <span class="text-blue-600 font-bold">Likes : <?= htmlspecialchars($article['like_count'] ?? 0); ?></span>
 
                     <!-- Formulaire de commentaire -->
-                                        <!-- Formulaire de commentaire -->
+                    <!-- Formulaire de commentaire -->
                     <?php if (isset($_SESSION['users'])): ?>
-<!-- javascript formulaire commentaire,,,,,,,,,,,,,,,,, -->
+                        <!-- javascript formulaire commentaire,,,,,,,,,,,,,,,,, -->
                         <button onclick="document.getElementById('commentDialog').showModal()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
                             Laisser un commentaire
                         </button>
@@ -246,7 +246,7 @@ require_once "header-and-footer/header.php";
 
                     </div>
 
- 
+
 
 
 
